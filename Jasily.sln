@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily", "Jasily\Jasily.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.PCL259", "Jasily.PCL259\Jasily.PCL259.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
