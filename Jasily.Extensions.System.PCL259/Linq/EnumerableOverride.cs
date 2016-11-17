@@ -42,13 +42,13 @@ namespace System.Linq
 
         public static T[] ToArray<T>([NotNull] this T[] source, int count) => source.ToArray(0, count);
 
-        public static T[] ToArray<T>([NotNull] this T[] source, int startIndex, int count)
+        public static T[] ToArray<T>([NotNull] this T[] source, int offset, int count)
         {
-            source.CheckRange(startIndex, count);
+            source.CheckRange(offset, count);
 
             count = Math.Min(count, source.Length);
             var ret = new T[count];
-            Array.Copy(source, startIndex, ret, 0, count);
+            Array.Copy(source, offset, ret, 0, count);
             return ret;
         }
 

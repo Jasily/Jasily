@@ -16,16 +16,16 @@ namespace Jasily.Collections.Generic
             }
         }
 
-        public static IEnumerable<IndexValuePair<T>> EnumerateWithIndex<T>([NotNull] this T[] array, int startIndex = 0)
+        public static IEnumerable<IndexValuePair<T>> EnumerateWithIndex<T>([NotNull] this T[] array, int offset = 0)
         {
-            array.CheckRange(startIndex);
-            return CreateBy(array, startIndex, array.Length);
+            array.CheckRange(offset);
+            return CreateBy(array, offset, array.Length);
         }
 
-        public static IEnumerable<IndexValuePair<T>> EnumerateWithIndex<T>([NotNull] this T[] array, int startIndex, int count)
+        public static IEnumerable<IndexValuePair<T>> EnumerateWithIndex<T>([NotNull] this T[] array, int offset, int count)
         {
-            array.CheckRange(startIndex, count);
-            return CreateBy(array, startIndex, count);
+            array.CheckRange(offset, count);
+            return CreateBy(array, offset, count);
         }
 
         public static IEnumerable<IndexValuePair<T>> EnumerateWithIndex<T>([NotNull] this IEnumerable<T> source)
