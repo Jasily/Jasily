@@ -29,6 +29,8 @@ namespace System.Linq
 
         #endregion
 
+        #region to
+
         public static T[] ToArray<T>([NotNull] this T[] source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -49,5 +51,57 @@ namespace System.Linq
             Array.Copy(source, startIndex, ret, 0, count);
             return ret;
         }
+
+        public static List<T> ToList<T>([NotNull] this IEnumerable<T> source, int capacity)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var list = new List<T>(capacity);
+            list.AddRange(source);
+            return list;
+        }
+
+        #endregion
+
+        #region orderby
+
+        public static IOrderedEnumerable<T> OrderBy<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] IComparer<T> comparer)
+            => source.OrderBy(z => z, comparer);
+
+        public static IOrderedEnumerable<T> OrderBy<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] Comparison<T> comparison)
+            => source.OrderBy(z => z, Comparer<T>.Create(comparison));
+
+        public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>([NotNull] this IEnumerable<TSource> source,
+            [NotNull] Func<TSource, TKey> keySelector, [NotNull] Comparison<TKey> comparison)
+            => source.OrderBy(keySelector, Comparer<TKey>.Create(comparison));
+
+        public static IOrderedEnumerable<T> OrderByDescending<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] IComparer<T> comparer)
+            => source.OrderByDescending(z => z, comparer);
+
+        public static IOrderedEnumerable<T> OrderByDescending<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] Comparison<T> comparison)
+            => source.OrderByDescending(z => z, Comparer<T>.Create(comparison));
+
+        public static IOrderedEnumerable<TSource> OrderByDescending<TSource, TKey>(
+            [NotNull] this IEnumerable<TSource> source, [NotNull] Func<TSource, TKey> keySelector,
+            [NotNull] Comparison<TKey> comparison)
+            => source.OrderByDescending(keySelector, Comparer<TKey>.Create(comparison));
+
+        #endregion
+
+        #region first or default
+
+        public static T? FirstOrNull<T>([NotNull] this IEnumerable<T> source)
+            where T : struct
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            foreach (var item in source) return item;
+            return null;
+        }
+
+        #endregion
     }
 }

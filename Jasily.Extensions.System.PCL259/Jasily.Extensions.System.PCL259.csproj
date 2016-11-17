@@ -41,6 +41,7 @@
     <Compile Include="Collections\Generic\ArrayExtensions.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
+    <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="Linq\EnumerableOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
