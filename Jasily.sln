@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.PCL259", "Jasily.PCL259\Jasily.PCL259.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.PCL259", "Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj", "{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Interfaces.PCL259", "Jasily.Interfaces.PCL259\Jasily.Interfaces.PCL259.csproj", "{C37786F7-4816-4151-952B-2CF9CB38116D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D825D5A8-00F4-4D48-85E1-58B66F3958D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D825D5A8-00F4-4D48-85E1-58B66F3958D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D825D5A8-00F4-4D48-85E1-58B66F3958D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C37786F7-4816-4151-952B-2CF9CB38116D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C37786F7-4816-4151-952B-2CF9CB38116D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C37786F7-4816-4151-952B-2CF9CB38116D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C37786F7-4816-4151-952B-2CF9CB38116D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
