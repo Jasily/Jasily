@@ -121,6 +121,14 @@ namespace System.Collections.Generic
 
         #endregion
 
+        public static bool TryAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+        {
+            if (dict == null) throw new ArgumentNullException(nameof(dict));
+            if (dict.ContainsKey(key)) return false;
+            dict.Add(key, value);
+            return true;
+        }
+
         public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
