@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace System.Collections.Generic
@@ -121,6 +122,7 @@ namespace System.Collections.Generic
 
         #endregion
 
+        [PublicAPI]
         public static bool TryAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
@@ -129,10 +131,32 @@ namespace System.Collections.Generic
             return true;
         }
 
+        [PublicAPI]
         public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             return new ReadOnlyDictionary<TKey, TValue>(dict);
+        }
+    }
+
+    public static class EnumeratorExtensions
+    {
+        [PublicAPI]
+        public static IEnumerable<T> Take<T>([NotNull] this IEnumerator<T> enumerator, int count)
+        {
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
+            if (count < 1) throw new ArgumentOutOfRangeException(nameof(count), count, "must > 0.");
+            return TakeIterator(enumerator, count);
+        }
+
+        internal static IEnumerable<T> TakeIterator<T>([NotNull] this IEnumerator<T> enumerator, int count)
+        {
+            Debug.Assert(enumerator != null && count >= 0);
+            while (count > 0 && enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+                count--;
+            }
         }
     }
 }

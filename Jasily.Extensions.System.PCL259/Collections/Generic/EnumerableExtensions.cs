@@ -2,7 +2,7 @@
 
 namespace System.Collections.Generic
 {
-    public static class EnumerableExtensions
+    internal static class EnumerableExtensions
     {
         public static void ForEach<T>([NotNull] this IEnumerable<T> source, [NotNull] Action<T> action)
         {
@@ -53,6 +53,12 @@ namespace System.Collections.Generic
             {
                 throw new ArgumentException(e.Message, e);
             }
+        }
+
+        public static IEnumerable<T> AsReadOnly<T>([NotNull] this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            foreach (var item in source) yield return item;
         }
     }
 }

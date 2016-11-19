@@ -4,6 +4,28 @@ namespace System.Collections.Generic
 {
     public static class ArrayExtensions
     {
+        public static void ForEach<T>([NotNull] this T[] source, [NotNull] Action<T> action)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
+            for (var i = 0; i < source.Length; i++)
+            {
+                action(source[i]);
+            }
+        }
+
+        public static void ForEach<T>([NotNull] this T[] source, [NotNull] Action<int, T> action)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
+            for (var i = 0; i < source.Length; i++)
+            {
+                action(i, source[i]);
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

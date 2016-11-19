@@ -35,6 +35,7 @@ namespace System.Linq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
+            if (source.Length == 0) return (T[])Enumerable.Empty<T>();
             var ret = new T[source.Length];
             Array.Copy(source, ret, source.Length);
             return ret;
@@ -47,6 +48,7 @@ namespace System.Linq
             source.CheckRange(offset, count);
 
             count = Math.Min(count, source.Length);
+            if (count == 0) return (T[]) Enumerable.Empty<T>();
             var ret = new T[count];
             Array.Copy(source, offset, ret, 0, count);
             return ret;
@@ -100,6 +102,27 @@ namespace System.Linq
             if (source == null) throw new ArgumentNullException(nameof(source));
             foreach (var item in source) return item;
             return null;
+        }
+
+        #endregion
+
+        #region any and all
+
+        public static bool Any<TSource>([NotNull] this TSource[] source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.Length > 0;
+        }
+
+        public static bool Any<TSource>([NotNull] this TSource[] source, [NotNull] Func<TSource, bool> predicate)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            for (var i = 0; i < source.Length; i++)
+            {
+                if (predicate(source[i])) return true;
+            }
+            return false;
         }
 
         #endregion

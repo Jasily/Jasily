@@ -1,6 +1,6 @@
 namespace System
 {
-    public enum StringPosition
+    public enum Position
     {
         Start,
 
