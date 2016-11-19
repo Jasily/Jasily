@@ -38,11 +38,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Enum.cs" />
     <Compile Include="Collections\Generic\IndexValuePair.cs" />
+    <Compile Include="DateTimeConverter.cs" />
     <Compile Include="IO\AsyncWriteStream.cs" />
     <Compile Include="IO\WrapStream.cs" />
+    <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
+    <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />
+    <Compile Include="Linq\Expressions\Cache\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReachableException.cs" />
+    <Compile Include="Releaser.cs" />
+    <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="TypedEventHandler.cs" />
+    <Compile Include="TypedEventHandlerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations.PCL328, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
@@ -56,6 +65,7 @@
       <Name>Jasily.Extensions.System.PCL259</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
