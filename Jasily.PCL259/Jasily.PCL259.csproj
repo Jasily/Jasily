@@ -42,6 +42,8 @@
     <Compile Include="Collections\Generic\IndexValuePair.cs" />
     <Compile Include="DateTimeConverter.cs" />
     <Compile Include="IO\AsyncWriteStream.cs" />
+    <Compile Include="IO\MergedReadonlyStream.cs" />
+    <Compile Include="IO\ReadonlyStream.cs" />
     <Compile Include="IO\WrapStream.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />
