@@ -163,19 +163,9 @@ namespace System.IO
 
             var buffer = new byte[maxCount];
             int readed;
-            if (reuseBuffer)
+            while ((readed = stream.Read(buffer, 0, maxCount)) != 0)
             {
-                while ((readed = stream.Read(buffer, 0, maxCount)) != 0)
-                {
-                    yield return readed != maxCount ? buffer.ToArray(readed) : buffer;
-                }
-            }
-            else
-            {
-                while ((readed = stream.Read(buffer, 0, maxCount)) != 0)
-                {
-                    yield return readed != maxCount ? buffer.ToArray(readed) : buffer.ToArray();
-                }
+                yield return readed != maxCount ? buffer.ToArray(readed) : reuseBuffer ? buffer : buffer.ToArray();
             }
         }
 
