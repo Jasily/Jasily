@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Reflection;
 using Jasily.DependencyInjection.Internal;
 using JetBrains.Annotations;
 
@@ -9,18 +9,12 @@ namespace Jasily.DependencyInjection
 {
     public class ServiceProvider : IServiceProvider, IDisposable, IValueStore
     {
-        private readonly Dictionary<Type, TypedServiceEntry> typedServices
-            = new Dictionary<Type, TypedServiceEntry>();
-        private readonly Dictionary<string, NamedServiceEntry> namedServices
-            = new Dictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<Service, object> valueStore
             = new Dictionary<Service, object>(); 
 
-        protected ServiceProvider([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors)
+        protected ServiceProvider()
         {
-            if (serviceDescriptors == null) throw new ArgumentNullException(nameof(serviceDescriptors));
             this.RootProvider = (RootServiceProvider) this;
-            this.Init(serviceDescriptors);
         }
 
         // This constructor is called exclusively to create a child scope from the parent
@@ -29,29 +23,6 @@ namespace Jasily.DependencyInjection
             Debug.Assert(parent != null);
             this.RootProvider = parent.RootProvider;
             this.ParentProvider = parent;
-        }
-
-        private void Init(IEnumerable<IServiceDescriptor> serviceDescriptors)
-        {
-            var descriptors = serviceDescriptors.ToArray();
-            foreach (var descriptor in descriptors)
-            {
-                var service = new Service(descriptor);
-                TypedServiceEntry typed;
-                if (!this.typedServices.TryGetValue(service.ServiceType, out typed))
-                {
-                    typed = new TypedServiceEntry();
-                    this.typedServices.Add(service.ServiceType, typed);
-                }
-                typed.Add(service);
-                NamedServiceEntry named;
-                if (!this.namedServices.TryGetValue(service.ServiceName, out named))
-                {
-                    named = new NamedServiceEntry();
-                    this.namedServices.Add(service.ServiceName, named);
-                }
-                named.Add(service);
-            }
         }
 
         [NotNull]
@@ -89,47 +60,15 @@ namespace Jasily.DependencyInjection
 
         internal Service ResolveService([NotNull] Type serviceType, [CanBeNull] string serviceName)
         {
+            var request = new ResolveRequest(serviceType, serviceName);
             for (var i = 0; i < this.RootProvider.ResolveMode.Length; i++)
             {
                 var level = this.RootProvider.ResolveMode[i];
-
-                // current
-                var serviceEntry = this.ResolveService(serviceType, serviceName, level);
-                var service = serviceEntry?.Resolve(serviceType, serviceName, level);
-                if (service != null) return service;
-
-                // parent
-                serviceEntry = this.ParentProvider?.ResolveService(serviceType, serviceName, level);
-                service = serviceEntry?.Resolve(serviceType, serviceName, level);
+                var serviceEntry = this.RootProvider.ServiceResolver.ResolveService(serviceType, serviceName, level);
+                var service = serviceEntry?.Resolve(request, level);
                 if (service != null) return service;
 
             }
-            return null;
-        }
-
-        private ServiceEntry ResolveService([NotNull] Type serviceType, [CanBeNull] string serviceName, ResolveLevel level)
-        {
-            switch (level)
-            {
-                case ResolveLevel.TypeAndName:
-                case ResolveLevel.Type:
-                    TypedServiceEntry typedServiceEntry;
-                    if (this.typedServices.TryGetValue(serviceType, out typedServiceEntry))
-                        return typedServiceEntry;
-                    break;
-                case ResolveLevel.NameAndType:
-                    if (serviceName != null)
-                    {
-                        NamedServiceEntry namedServiceEntry;
-                        if (this.namedServices.TryGetValue(serviceName, out namedServiceEntry))
-                            return namedServiceEntry;
-                    }
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             return null;
         }
 
@@ -149,9 +88,30 @@ namespace Jasily.DependencyInjection
             }
         }
 
-        public void Dispose()
+        internal IServiceCallSite[] ResolveParametersCallSites(ISet<IServiceDescriptor> serviceChain, ParameterInfo[] parameters)
         {
-            throw new NotImplementedException();
+            var parameterCallSites = new IServiceCallSite[parameters.Length];
+            for (var index = 0; index < parameters.Length; index++)
+            {
+                var parameter = parameters[index];
+                var callSite = this.ResolveServiceCallSite(parameter.ParameterType, parameter.Name, serviceChain);
+                if (callSite == null && parameter.HasDefaultValue)
+                {
+                    callSite = new ConstantCallSite(parameter.DefaultValue);
+                }
+                if (callSite == null) return null;
+                parameterCallSites[index] = callSite;
+            }
+            return parameterCallSites;
+        }
+
+        public virtual void Dispose()
+        {
+            foreach (var kvp in this.valueStore)
+            {
+                (kvp.Value as IDisposable)?.Dispose();
+            }
+            this.valueStore.Clear();
         }
 
         object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
@@ -165,13 +125,22 @@ namespace Jasily.DependencyInjection
             return value;
         }
 
+        public ServiceProvider CreateScoped() => new ServiceProvider(this);
+
         public static IList<IServiceDescriptor> CreateServiceCollection() => new List<IServiceDescriptor>();
 
         public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors) 
-            => new RootServiceProvider(serviceDescriptors, RootServiceProvider.DefaultResolveMode);
+            => Build(serviceDescriptors, RootServiceProvider.DefaultResolveMode);
 
         public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
             [NotNull] IEnumerable<ResolveLevel> mode)
-            => new RootServiceProvider(serviceDescriptors, mode);
+            => new RootServiceProvider(serviceDescriptors, mode, new ServiceProviderSettings());
+
+        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors, ServiceProviderSettings settings)
+            => new RootServiceProvider(serviceDescriptors, RootServiceProvider.DefaultResolveMode, settings);
+
+        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
+            [NotNull] IEnumerable<ResolveLevel> mode, ServiceProviderSettings settings)
+            => new RootServiceProvider(serviceDescriptors, mode, settings);
     }
 }

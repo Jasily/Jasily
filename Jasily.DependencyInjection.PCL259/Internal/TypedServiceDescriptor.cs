@@ -39,10 +39,7 @@ namespace Jasily.DependencyInjection.Internal
                     return new CreateInstanceCallSite(this.implementationType);
                 }
 
-                parameterCallSites = this.TryResolveParametersCallSites(
-                    provider,
-                    serviceChain,
-                    parameters);
+                parameterCallSites = provider.ResolveParametersCallSites(serviceChain, parameters);
 
                 if (parameterCallSites == null) throw new InvalidOperationException();
 
@@ -58,10 +55,7 @@ namespace Jasily.DependencyInjection.Internal
             {
                 var parameters = constructor.GetParameters();
 
-                var currentParameterCallSites = this.TryResolveParametersCallSites(
-                    provider,
-                    serviceChain,
-                    parameters);
+                var currentParameterCallSites = provider.ResolveParametersCallSites(serviceChain, parameters);
 
                 if (currentParameterCallSites != null)
                 {
@@ -100,24 +94,6 @@ namespace Jasily.DependencyInjection.Internal
                     ? (IServiceCallSite) new CreateInstanceCallSite(this.implementationType)
                     : new ConstructorCallSite(bestConstructor, parameterCallSites);
             }
-        }
-
-        private IServiceCallSite[] TryResolveParametersCallSites(ServiceProvider provider, ISet<IServiceDescriptor> serviceChain,
-            ParameterInfo[] parameters)
-        {
-            var parameterCallSites = new IServiceCallSite[parameters.Length];
-            for (var index = 0; index < parameters.Length; index++)
-            {
-                var parameter = parameters[index];
-                var callSite = provider.ResolveServiceCallSite(parameter.ParameterType, parameter.Name, serviceChain);
-                if (callSite == null && parameter.HasDefaultValue)
-                {
-                    callSite = new ConstantCallSite(parameter.DefaultValue);
-                }
-                if (callSite == null) return null;
-                parameterCallSites[index] = callSite;
-            }
-            return parameterCallSites;
         }
     }
 }

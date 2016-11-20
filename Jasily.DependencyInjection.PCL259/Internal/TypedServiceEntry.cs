@@ -61,23 +61,23 @@ namespace Jasily.DependencyInjection.Internal
             list.Add(service);
         }
 
-        public override Service Resolve(Type serviceType, string serviceName, ResolveLevel level)
+        public override Service Resolve(ResolveRequest resolveRequest, ResolveLevel level)
         {
             switch (level)
             {
                 case ResolveLevel.TypeAndName:
-                    if (serviceName == null)
+                    if (resolveRequest.ServiceName == null)
                     {
                         return this.Last;
                     }
                     else if (this.entries != null)
                     {
-                        return this.entries.FirstOrDefault(z => StringComparer.Equals(serviceName, z.ServiceName));
+                        return this.entries.FirstOrDefault(z => StringComparer.Equals(resolveRequest.ServiceName, z.ServiceName));
                     }
                     else if (this.entriesMap != null)
                     {
                         List<Service> list;
-                        if (this.entriesMap.TryGetValue(serviceName, out list))
+                        if (this.entriesMap.TryGetValue(resolveRequest.ServiceName, out list))
                         {
                             return list[list.Count - 1];
                         }

@@ -1,6 +1,6 @@
 ﻿namespace Jasily.DependencyInjection.Internal
 {
-    public class CallSiteRuntimeResolver
+    internal interface IImmutableCallSite : IServiceCallSite
     {
         
     }

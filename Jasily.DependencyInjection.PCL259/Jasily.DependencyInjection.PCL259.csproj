@@ -34,23 +34,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Attributes\EntryPoint.cs" />
     <Compile Include="Internal\CallSiteExpressionBuilder.cs" />
-    <Compile Include="Internal\CallSiteRuntimeResolver.cs" />
     <Compile Include="Internal\ConstantCallSite.cs" />
     <Compile Include="Internal\ConstructorCallSite.cs" />
     <Compile Include="Internal\CreateInstanceCallSite.cs" />
+    <Compile Include="Internal\ExpressionCache.cs" />
     <Compile Include="Internal\FactoryServiceDescriptor.cs" />
+    <Compile Include="Internal\IImmutableCallSite.cs" />
+    <Compile Include="Internal\IInstanceCallSite.cs" />
     <Compile Include="Internal\InstanceServiceDescriptor.cs" />
     <Compile Include="Internal\IServiceCallSite.cs" />
     <Compile Include="Internal\IServiceCallSiteProvider.cs" />
     <Compile Include="Internal\IValueStore.cs" />
+    <Compile Include="Internal\MethodCallSite.cs" />
     <Compile Include="Internal\NamedServiceEntry.cs" />
     <Compile Include="Internal\Service.cs" />
     <Compile Include="Internal\ServiceDescriptor.cs" />
     <Compile Include="Internal\ServiceEntry.cs" />
+    <Compile Include="Internal\ServiceResolver.cs" />
     <Compile Include="Internal\TypedServiceDescriptor.cs" />
     <Compile Include="Internal\TypedServiceEntry.cs" />
     <Compile Include="IServiceDescriptor.cs" />
+    <Compile Include="MethodInvoker.cs" />
     <Compile Include="ResolveLevel.cs" />
     <Compile Include="ResolveResult.cs" />
     <Compile Include="RootServiceProvider.cs" />
@@ -58,6 +64,7 @@
     <Compile Include="ServiceLifetime.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceProviderSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

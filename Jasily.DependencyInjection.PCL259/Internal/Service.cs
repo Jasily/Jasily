@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class Service : IValueStore
+    internal class Service : IValueStore, IDisposable
     {
+        private static readonly Func<ServiceProvider, object> Null = (_ => null);
+
         private IValueStore valueStore;
         private bool isValueCreated;
         private object value;
         private Func<ServiceProvider, object> instanceAccessor;
+        private TypeInfo serviceTypeInfo;
 
         public Service(IServiceDescriptor descriptor)
         {
@@ -25,6 +30,10 @@ namespace Jasily.DependencyInjection.Internal
 
         [NotNull]
         public Type ServiceType => this.Descriptor.ServiceType;
+
+        [NotNull]
+        public TypeInfo ServiceTypeInfo
+            => this.serviceTypeInfo ?? (this.serviceTypeInfo = this.ServiceType.GetTypeInfo());
 
         object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
@@ -69,7 +78,6 @@ namespace Jasily.DependencyInjection.Internal
             var callSite = (this.Descriptor as IServiceCallSite) ??
                            (this.Descriptor as IServiceCallSiteProvider)?.CreateServiceCallSite(provider, serviceChain);
             if (callSite != null) return callSite;
-            
 
             throw new NotImplementedException();
         }
@@ -77,26 +85,40 @@ namespace Jasily.DependencyInjection.Internal
         private Func<ServiceProvider, object> CreateServiceAccessor(ServiceProvider serviceProvider)
         {
             var callSite = this.GetCallSite(serviceProvider, new HashSet<IServiceDescriptor>());
-            return callSite != null
-                ? RealizeServiceAccessor(serviceProvider, this, callSite)
-                : (_ => null);
+            if (callSite == null) return Null;
+            if (callSite is IImmutableCallSite) return callSite.ResolveValue;
+            return RealizeServiceAccessor(serviceProvider.RootProvider, this, callSite);
         }
 
-        private static Func<ServiceProvider, object> RealizeServiceAccessor(ServiceProvider serviceProvider, Service service, IServiceCallSite callSite)
+        private static Func<ServiceProvider, object> RealizeServiceAccessor(RootServiceProvider serviceProvider,
+            Service service, IServiceCallSite callSite)
         {
+            Debug.Assert(serviceProvider.Setting.CompileAfterCallCount != null);
+            var compileAfter = serviceProvider.Setting.CompileAfterCallCount.Value;
+
             var callCount = 0;
             return provider =>
             {
-                if (Interlocked.Increment(ref callCount) == 2)
+                if (Interlocked.Increment(ref callCount) == compileAfter)
                 {
                     Task.Run(() =>
                     {
-                        var func = new CallSiteExpressionBuilder(new CallSiteRuntimeResolver()).Build(callSite);
+                        serviceProvider.Log($"begin compile {service}");
+                        var func = new CallSiteExpressionBuilder().Build(callSite);
                         Interlocked.Exchange(ref service.instanceAccessor, func);
                     });
                 }
                 return callSite.ResolveValue(provider);
             };
+        }
+
+        public override string ToString() => $"{this.ServiceType.Name} {this.ServiceName}";
+
+        public void Dispose()
+        {
+            this.isValueCreated = false;
+            (this.valueStore as IDisposable)?.Dispose();
+            this.valueStore = null;
         }
     }
 }

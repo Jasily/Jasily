@@ -22,15 +22,14 @@ namespace Jasily.DependencyInjection.Internal
         public Expression ResolveExpression(ParameterExpression provider)
         {
             var parameters = this.constructorInfo.GetParameters();
-            return Expression.New(
-                this.constructorInfo,
+            return Expression.New(this.constructorInfo,
                 this.parameterCallSites.Select((c, i) =>
                     Expression.Convert(c.ResolveExpression(provider), parameters[i].ParameterType)));
         }
 
         public object ResolveValue(ServiceProvider provider)
         {
-            object[] parameterValues = new object[this.parameterCallSites.Length];
+            var parameterValues = new object[this.parameterCallSites.Length];
             for (var index = 0; index < parameterValues.Length; index++)
             {
                 parameterValues[index] = this.parameterCallSites[index].ResolveValue(provider);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
@@ -10,6 +11,27 @@ namespace Jasily.DependencyInjection.Internal
 
         public abstract void Add(Service service);
 
-        public abstract Service Resolve([NotNull] Type serviceType, [CanBeNull] string serviceName, ResolveLevel level);
+        public abstract Service Resolve([NotNull] ResolveRequest resolveRequest, ResolveLevel level);
+    }
+
+    internal class ResolveRequest
+    {
+        private TypeInfo serviceTypeInfo;
+
+        public ResolveRequest(Type serviceType, string serviceName)
+        {
+            this.ServiceType = serviceType;
+            this.ServiceName = serviceName;
+        }
+
+        [NotNull]
+        public Type ServiceType { get; }
+
+        [CanBeNull]
+        public string ServiceName { get; }
+
+        [NotNull]
+        public TypeInfo ServiceTypeInfo
+            => this.serviceTypeInfo ?? (this.serviceTypeInfo = this.ServiceType.GetTypeInfo());
     }
 }

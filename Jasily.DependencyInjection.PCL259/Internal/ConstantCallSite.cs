@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class ConstantCallSite : IServiceCallSite
+    internal class ConstantCallSite : IImmutableCallSite
     {
         internal object DefaultValue { get; }
 
@@ -12,7 +12,7 @@ namespace Jasily.DependencyInjection.Internal
         }
 
         public Expression ResolveExpression(ParameterExpression provider)
-            => Expression.Constant(this.DefaultValue);
+            => this.DefaultValue == null ? ExpressionCache.Null : Expression.Constant(this.DefaultValue);
 
         public object ResolveValue(ServiceProvider provider) => this.DefaultValue;
     }

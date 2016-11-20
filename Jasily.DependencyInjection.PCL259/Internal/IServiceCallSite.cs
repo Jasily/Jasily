@@ -2,7 +2,7 @@
 
 namespace Jasily.DependencyInjection.Internal
 {
-    public interface IServiceCallSite
+    internal interface IServiceCallSite
     {
         Expression ResolveExpression(ParameterExpression provider);
 
