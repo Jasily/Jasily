@@ -52,10 +52,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
     <Compile Include="Jasily.Extensions.System\TestStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.DependencyInjection.PCL259\Jasily.DependencyInjection.PCL259.csproj">
+      <Project>{5c6dcff1-1e53-4fda-9fb6-8239ab485eb1}</Project>
+      <Name>Jasily.DependencyInjection.PCL259</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
