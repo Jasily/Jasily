@@ -45,6 +45,7 @@
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
+    <Compile Include="Collections\Generic\EnumeratorExtensions.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
     <Compile Include="ComparableExtensions.cs" />
     <Compile Include="EventHandlerExtensions.cs" />

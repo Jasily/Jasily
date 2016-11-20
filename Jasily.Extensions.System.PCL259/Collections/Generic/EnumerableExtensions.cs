@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace System.Collections.Generic
 {
@@ -58,7 +59,22 @@ namespace System.Collections.Generic
         public static IEnumerable<T> AsReadOnly<T>([NotNull] this IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            foreach (var item in source) yield return item;
+            return new Enumerable<T>(source);
+        }
+
+        private class Enumerable<T> : IEnumerable<T>
+        {
+            private readonly IEnumerable<T> baseEnumerable;
+
+            public Enumerable([NotNull] IEnumerable<T> baseEnumerable)
+            {
+                Debug.Assert(baseEnumerable != null);
+                this.baseEnumerable = baseEnumerable;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => this.baseEnumerable.GetEnumerator();
+
+            public IEnumerator<T> GetEnumerator() => this.baseEnumerable.GetEnumerator();
         }
     }
 }
