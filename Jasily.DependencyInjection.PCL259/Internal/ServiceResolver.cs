@@ -8,12 +8,15 @@ namespace Jasily.DependencyInjection.Internal
 {
     internal class ServiceResolver : IDisposable
     {
+        private static readonly Type EnumerableType = typeof(IEnumerable<>);
         private readonly List<Service> services
             = new List<Service>();
         private readonly Dictionary<Type, TypedServiceEntry> typedServices
             = new Dictionary<Type, TypedServiceEntry>();
         private readonly Dictionary<string, NamedServiceEntry> namedServices
             = new Dictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<Type, TypedServiceEntry> enumerableServices
+            = new Dictionary<Type, TypedServiceEntry>();
 
         public ServiceResolver([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors)
         {
@@ -28,38 +31,26 @@ namespace Jasily.DependencyInjection.Internal
             {
                 var service = new Service(descriptor);
                 this.services.Add(service);
-                TypedServiceEntry typed;
-                if (!this.typedServices.TryGetValue(service.ServiceType, out typed))
-                {
-                    typed = new TypedServiceEntry();
-                    this.typedServices.Add(service.ServiceType, typed);
-                }
-                typed.Add(service);
-                NamedServiceEntry named;
-                if (!this.namedServices.TryGetValue(service.ServiceName, out named))
-                {
-                    named = new NamedServiceEntry();
-                    this.namedServices.Add(service.ServiceName, named);
-                }
-                named.Add(service);
+                GetServiceEntry(this.typedServices, service.ServiceType).Add(service);
+                GetServiceEntry(this.namedServices, service.ServiceName).Add(service);
             }
         }
 
-        public ServiceEntry ResolveService([NotNull] Type serviceType, [CanBeNull] string serviceName, ResolveLevel level)
+        public ServiceEntry ResolveServiceEntry([NotNull] ResolveRequest request, ResolveLevel level)
         {
             switch (level)
             {
                 case ResolveLevel.TypeAndName:
                 case ResolveLevel.Type:
                     TypedServiceEntry typedServiceEntry;
-                    if (this.typedServices.TryGetValue(serviceType, out typedServiceEntry))
+                    if (this.typedServices.TryGetValue(request.ServiceType, out typedServiceEntry))
                         return typedServiceEntry;
                     break;
                 case ResolveLevel.NameAndType:
-                    if (serviceName != null)
+                    if (request.ServiceName != null)
                     {
                         NamedServiceEntry namedServiceEntry;
-                        if (this.namedServices.TryGetValue(serviceName, out namedServiceEntry))
+                        if (this.namedServices.TryGetValue(request.ServiceName, out namedServiceEntry))
                             return namedServiceEntry;
                     }
                     break;
@@ -80,6 +71,28 @@ namespace Jasily.DependencyInjection.Internal
             this.services.Clear();
             this.typedServices.Clear();
             this.namedServices.Clear();
+        }
+
+        private static TypedServiceEntry GetServiceEntry(Dictionary<Type, TypedServiceEntry> typedServices, Type serviceType)
+        {
+            TypedServiceEntry typed;
+            if (!typedServices.TryGetValue(serviceType, out typed))
+            {
+                typed = new TypedServiceEntry();
+                typedServices.Add(serviceType, typed);
+            }
+            return typed;
+        }
+
+        private static NamedServiceEntry GetServiceEntry(Dictionary<string, NamedServiceEntry> namedServices, string serviceName)
+        {
+            NamedServiceEntry named;
+            if (!namedServices.TryGetValue(serviceName, out named))
+            {
+                named = new NamedServiceEntry();
+                namedServices.Add(serviceName, named);
+            }
+            return named;
         }
     }
 }

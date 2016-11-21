@@ -64,7 +64,7 @@ namespace Jasily.DependencyInjection
             for (var i = 0; i < this.RootProvider.ResolveMode.Length; i++)
             {
                 var level = this.RootProvider.ResolveMode[i];
-                var serviceEntry = this.RootProvider.ServiceResolver.ResolveService(serviceType, serviceName, level);
+                var serviceEntry = this.RootProvider.ServiceResolver.ResolveServiceEntry(request, level);
                 var service = serviceEntry?.Resolve(request, level);
                 if (service != null) return service;
 
@@ -72,7 +72,8 @@ namespace Jasily.DependencyInjection
             return null;
         }
 
-        internal IServiceCallSite ResolveServiceCallSite([NotNull] Type serviceType, [CanBeNull] string serviceName, ISet<IServiceDescriptor> serviceChain)
+        internal IServiceCallSite ResolveServiceCallSite([NotNull] Type serviceType, [CanBeNull] string serviceName,
+            ISet<IServiceDescriptor> serviceChain)
         {
             var service = this.ResolveService(serviceType, serviceName);
             if (service == null) return null;
@@ -125,7 +126,7 @@ namespace Jasily.DependencyInjection
             return value;
         }
 
-        public ServiceProvider CreateScoped() => new ServiceProvider(this);
+        public ServiceProvider CreateScope() => new ServiceProvider(this);
 
         public static IList<IServiceDescriptor> CreateServiceCollection() => new List<IServiceDescriptor>();
 
