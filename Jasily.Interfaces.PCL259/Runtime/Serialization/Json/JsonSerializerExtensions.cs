@@ -8,17 +8,16 @@ namespace Jasily.Interfaces.Runtime.Serialization.Json
 {
     public static class JsonSerializerExtensions
     {
-        public static IJsonSerializerProvider JsonSerializerProvider { get; set; }
-            = new JsonSerializerProvider();
-
-        private static IJsonSerializerProvider GetSerializerProvider()
+        static JsonSerializerExtensions()
         {
-            var provider = JsonSerializerProvider;
-            if (provider == null) throw new InvalidOperationException();
-            return provider;
+            if (JasilySettings<IJsonSerializerProvider>.Value == null)
+            {
+                JasilySettings<IJsonSerializerProvider>.Value = new JsonSerializerProvider();
+            }
         }
 
-        public static T JsonToObject<T>(this Stream stream) => GetSerializerProvider().DeserializeToObject<T>(stream);
+        public static T JsonToObject<T>(this Stream stream)
+            => JasilySettings<IJsonSerializerProvider>.GetOrThrow().DeserializeToObject<T>(stream);
 
         public static T JsonToObject<T>([NotNull] this byte[] bytes)
         {
@@ -38,6 +37,7 @@ namespace Jasily.Interfaces.Runtime.Serialization.Json
 
         public static T JsonToObject<T>([NotNull] this string s) => JsonToObject<T>(s, Encoding.UTF8);
 
-        public static byte[] ObjectToJson([NotNull] this object obj) => GetSerializerProvider().SerializeToBytes(obj);
+        public static byte[] ObjectToJson([NotNull] this object obj)
+            => JasilySettings<IJsonSerializerProvider>.GetOrThrow().SerializeToBytes(obj);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace System.Threading
+﻿using System.Threading;
+
+namespace Jasily.Threading
 {
     public struct InterlockedBoolean
     {

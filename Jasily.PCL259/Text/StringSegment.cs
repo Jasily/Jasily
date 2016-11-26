@@ -1,8 +1,10 @@
+using System;
+using Jasily.Interfaces;
 using JetBrains.Annotations;
 
-namespace System.Text
+namespace Jasily.Text
 {
-    public struct StringSegment
+    public struct StringSegment : IInitializedValueType
     {
         public StringSegment(string str)
         {
@@ -40,15 +42,12 @@ namespace System.Text
 
         public int Count { get; }
 
-        public bool IsValid() => this.String != null;
+        public bool IsInitialized => this.String != null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <exception cref="InvalidOperationException"></exception>
-        public void ThrowIfInvalid()
+        public override string ToString()
         {
-            if (!this.IsValid()) throw new InvalidOperationException($"{nameof(StringSegment)} is invalid.");
+            this.ThrowIfInvalid(nameof(StringSegment));
+            return this.String.Substring(this.StartIndex, this.Count);
         }
     }
 }

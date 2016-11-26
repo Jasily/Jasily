@@ -35,7 +35,7 @@ namespace System.Threading.Tasks
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            return await Task.Run(async () => selector(await task)).ConfigureAwait(false);
+            return await Task.Run(async () => selector(await task.ConfigureAwait(false))).ConfigureAwait(false);
         }
     }
 }

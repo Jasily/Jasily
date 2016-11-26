@@ -9,7 +9,7 @@ namespace System.Collections.Generic
         public static IReadOnlyList<T> AsReadOnly<T>([NotNull] this IList<T> list) => new ReadOnlyCollection<T>(list);
 
         /// <summary>
-        /// return a simple synchronized list which copy from http://referencesource.microsoft.com/.
+        /// return a simple synchronized list.
         /// if you want to use better solution, use System.Collections.Concurrent.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -21,6 +21,10 @@ namespace System.Collections.Generic
             return new SynchronizedList<T>(list);
         }
 
+        /// <summary>
+        /// copy from http://referencesource.microsoft.com/.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         private class SynchronizedList<T> : IList<T>, ICollection
         {
             private readonly IList<T> list;

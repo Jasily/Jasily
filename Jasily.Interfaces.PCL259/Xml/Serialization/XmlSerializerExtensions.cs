@@ -8,17 +8,16 @@ namespace Jasily.Interfaces.Xml.Serialization
 {
     public static class XmlSerializerExtensions
     {
-        public static IXmlSerializerProvider XmlSerializerProvider { get; set; }
-            = new XmlSerializerProvider();
-
-        private static IXmlSerializerProvider GetSerializerProvider()
+        static XmlSerializerExtensions()
         {
-            var provider = XmlSerializerProvider;
-            if (provider == null) throw new InvalidOperationException();
-            return provider;
+            if (JasilySettings<IXmlSerializerProvider>.Value == null)
+            {
+                JasilySettings<IXmlSerializerProvider>.Value = new XmlSerializerProvider();
+            }
         }
 
-        public static T XmlToObject<T>(this Stream stream) => GetSerializerProvider().DeserializeToObject<T>(stream);
+        public static T XmlToObject<T>(this Stream stream)
+            => JasilySettings<IXmlSerializerProvider>.GetOrThrow().DeserializeToObject<T>(stream);
 
         public static T XmlToObject<T>([NotNull] this byte[] bytes)
         {
@@ -38,6 +37,7 @@ namespace Jasily.Interfaces.Xml.Serialization
 
         public static T XmlToObject<T>([NotNull] this string s) => XmlToObject<T>(s, Encoding.UTF8);
 
-        public static byte[] ObjectToXml(this object obj) => GetSerializerProvider().SerializeToBytes(obj);
+        public static byte[] ObjectToXml(this object obj)
+            => JasilySettings<IXmlSerializerProvider>.GetOrThrow().SerializeToBytes(obj);
     }
 }

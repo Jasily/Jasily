@@ -7,11 +7,14 @@ using JetBrains.Annotations;
 
 namespace Jasily.Cache
 {
-    public class Enum<T>
+    public static class Enum<T>
         where T : struct, IComparable, IFormattable
     {
-        private readonly bool isFlags;
-        private readonly EnumItem[] items;
+        // ReSharper disable once StaticMemberInGenericType
+        private static readonly string Name;
+        // ReSharper disable once StaticMemberInGenericType
+        private static readonly bool IsFlags;
+        private static readonly EnumItem[] Items;
 
         private class EnumItem
         {
@@ -31,23 +34,23 @@ namespace Jasily.Cache
 
         private static ulong ToUlong(T e) => e.ConvertUnchecked<T, ulong>();
 
-        public static Enum<T> Default { get; } = new Enum<T>();
-
-        private Enum()
+        static Enum()
         {
             var ti = typeof(T).GetTypeInfo();
-            if (!ti.IsEnum) throw new InvalidOperationException();
-            this.isFlags = ti.GetCustomAttribute<FlagsAttribute>() != null;
-            this.items = ((T[]) Enum.GetValues(typeof(T)))
+            if (!ti.IsEnum) throw new InvalidOperationException($"{ti.Name} is NOT enum type.");
+
+            Name = ti.Name;
+            IsFlags = ti.GetCustomAttribute<FlagsAttribute>() != null;
+            Items = ((T[]) Enum.GetValues(typeof(T)))
                 .Select(z => new EnumItem(ToUlong(z), z, z.ToString()))
                 .OrderBy(z => z.Value)
                 .ToArray();
         }
 
-        private EnumItem TryGetEnumItem(T e)
+        private static EnumItem TryGetEnumItem(T e)
         {
             var val = ToUlong(e);
-            return this.items.FirstOrDefault(z => z.Value == val);
+            return Items.FirstOrDefault(z => z.Value == val);
         }
 
         /// <summary>
@@ -56,17 +59,17 @@ namespace Jasily.Cache
         /// <param name="e"></param>
         /// <param name="completeMatch">if set true, if not complete match, will return null.</param>
         /// <returns></returns>
-        private IEnumerable<EnumItem> SplitFlagItems(T e, bool completeMatch)
+        private static IEnumerable<EnumItem> SplitFlagItems(T e, bool completeMatch)
         {
-            if (!this.isFlags) throw new InvalidOperationException();
+            if (!IsFlags) throw new InvalidOperationException();
 
             var val = ToUlong(e);
 
             if (val == 0)
             {
-                if (this.items.Length > 0 && this.items[0].Value == 0)
+                if (Items.Length > 0 && Items[0].Value == 0)
                 {
-                    return new[] { this.items[0] };
+                    return new[] { Items[0] };
                 }
                 else
                 {
@@ -75,7 +78,7 @@ namespace Jasily.Cache
             }
 
             var matchs = new List<EnumItem>();
-            foreach (var item in this.items.Reverse())
+            foreach (var item in Items.Reverse())
             {
                 if (item.Value == 0) break;
 
@@ -88,34 +91,51 @@ namespace Jasily.Cache
             return val != 0 && completeMatch ? null : matchs;
         }
 
-        public bool IsDefined(T e) => this.TryGetEnumItem(e) != null;
+        public static bool IsDefined(T e) => TryGetEnumItem(e) != null;
 
-        public IEnumerable<T> SplitFlags(T e, bool completeMatch = true)
-            => this.SplitFlagItems(e, completeMatch)?.Select(z => z.Item);
+        /// <summary>
+        /// if complete match, return null when match false.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="completeMatch"></param>
+        /// <returns></returns>
+        [CanBeNull]
+        public static IEnumerable<T> SplitFlags(T e, bool completeMatch = true)
+            => SplitFlagItems(e, completeMatch)?.Select(z => z.Item);
 
-        public string ToString(T e)
+        public static string ToString(T e)
         {
-            var value = this.isFlags
-                ? this.SplitFlagItems(e, true)?.Select(z => z.Name).JoinAsString(", ")
-                : this.TryGetEnumItem(e)?.Name;
+            var value = IsFlags
+                ? SplitFlagItems(e, true)?.Select(z => z.Name).JoinAsString(", ")
+                : TryGetEnumItem(e)?.Name;
             return value ?? e.ToString();
         }
 
-        public IEnumerable<T> All() => this.items.Select(z => z.Item);
+        /// <summary>
+        /// get all enum from T.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<T> All() => Items.Select(z => z.Item);
 
-        public bool TryParse([NotNull] string value, StringComparison comparison, ref T result)
+        public static bool TryParse([NotNull] string value, bool ignoreCase, out T result)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            var matchs = this.items.Where(z => string.Equals(z.Name, value, comparison)).ToArray();
-            if (matchs.Length != 0)
+            var comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            var matchs = Items.FirstOrDefault(z => string.Equals(z.Name, value, comparison));
+            if (matchs != null)
             {
-                result = matchs[0].Item;
+                result = matchs.Item;
                 return true;
             }
-
-            result = default(T);
-            return false;
+            else
+            {
+                result = default(T);
+                return false;
+            }
         }
+
+        public static string ToFullString(T value, string spliter = ".")
+            => string.Concat(Name, spliter ?? ".", value.ToString());
     }
 }

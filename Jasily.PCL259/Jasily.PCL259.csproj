@@ -38,20 +38,77 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
+    <Compile Include="Cache\TaskCache.cs" />
+    <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
+    <Compile Include="Collections\Generic\CriticalValue.cs" />
+    <Compile Include="Collections\Generic\GroupedList.cs" />
     <Compile Include="Collections\Generic\IndexValuePair.cs" />
+    <Compile Include="Collections\Generic\Queue.cs" />
+    <Compile Include="Collections\Generic\Range.cs" />
+    <Compile Include="Collections\Generic\RangeDictionary.cs" />
+    <Compile Include="Collections\Generic\RangeMode.cs" />
+    <Compile Include="ComponentModel\Editor\BaseEditor.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrEmptyAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrWhiteSpaceAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\CollectionConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullCollectionConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullOrTrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\Int32ToStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\ToStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\TrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\WhiteSpaceToNullOrTrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\WhiteSpaceToNullStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\EditableAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\EditableMemberAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\EditableViewModelAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\IEditor.cs" />
+    <Compile Include="ComponentModel\Editor\IPropertyContainer.cs" />
+    <Compile Include="ComponentModel\Editor\MemberEditor.cs" />
+    <Compile Include="ComponentModel\Editor\ObjectEditorViewModel.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteToObjectConditionAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Property.cs" />
+    <Compile Include="ComponentModel\Editor\PropertyMapper.cs" />
+    <Compile Include="ComponentModel\Editor\ViewModelEditor.cs" />
+    <Compile Include="ComponentModel\NotifyPropertyChangedObject.cs" />
+    <Compile Include="ComponentModel\NotifyPropertyChangedAttribute.cs" />
+    <Compile Include="ComponentModel\PropertySelector.cs" />
+    <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
+    <Compile Include="ComponentModel\ViewModel.cs" />
     <Compile Include="DateTimeConverter.cs" />
+    <Compile Include="DayOfWeek.cs" />
+    <Compile Include="DayOfWeekExtensions.cs" />
+    <Compile Include="Diagnostics\Debug.cs" />
+    <Compile Include="GlobalEvent.cs" />
     <Compile Include="IO\AsyncWriteStream.cs" />
+    <Compile Include="IO\IStringSegmentReader.cs" />
     <Compile Include="IO\MergedReadonlyStream.cs" />
     <Compile Include="IO\ReadonlyStream.cs" />
+    <Compile Include="IO\StringReader.cs" />
     <Compile Include="IO\WrapStream.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />
     <Compile Include="Linq\Expressions\Cache\Extensions.cs" />
+    <Compile Include="Net\Http\Headers\RangeHeader.cs" />
+    <Compile Include="Net\Http\HttpUriBuilder.cs" />
+    <Compile Include="Net\Sockets\Port.cs" />
+    <Compile Include="ObjectContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReachableException.cs" />
+    <Compile Include="Reflection\Attributes\EntryAttribute.cs" />
+    <Compile Include="Reflection\Activator.cs" />
+    <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />
+    <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Text\StringSegment.cs" />
+    <Compile Include="Text\StringSegmentExtensions.cs" />
+    <Compile Include="Threading\InterlockedBoolean.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Threading\SemaphoreSlimExtensions.cs" />
     <Compile Include="TypedEventHandler.cs" />
     <Compile Include="TypedEventHandlerExtensions.cs" />
   </ItemGroup>
@@ -65,6 +122,10 @@
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.Interfaces.PCL259\Jasily.Interfaces.PCL259.csproj">
+      <Project>{c37786f7-4816-4151-952b-2cf9cb38116d}</Project>
+      <Name>Jasily.Interfaces.PCL259</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

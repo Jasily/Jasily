@@ -21,21 +21,5 @@ namespace System.Text
             builder.Append(value, startIndex, value.Length - startIndex);
             return builder;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="segment"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static StringBuilder Append([NotNull] this StringBuilder builder, StringSegment segment)
-        {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
-            segment.ThrowIfInvalid();
-            builder.Append(segment.String, segment.StartIndex, segment.Count);
-            return builder;
-        }
     }
 }
