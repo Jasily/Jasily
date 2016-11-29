@@ -2,11 +2,11 @@
 using System.IO;
 using JetBrains.Annotations;
 
-namespace Jasily.IO
+namespace Jasily.IO.Internal
 {
-    public class WrapStream : Stream
+    public abstract class WrapStream : Stream
     {
-        public WrapStream([NotNull] Stream baseStream)
+        protected WrapStream([NotNull] Stream baseStream)
         {
             if (baseStream == null) throw new ArgumentNullException(nameof(baseStream));
             this.BaseStream = baseStream;

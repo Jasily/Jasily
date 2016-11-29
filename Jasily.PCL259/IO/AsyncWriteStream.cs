@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Jasily.IO.Internal;
 using JetBrains.Annotations;
 
 namespace Jasily.IO

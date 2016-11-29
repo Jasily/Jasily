@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Jasily.IO
+namespace Jasily.IO.Internal
 {
     public abstract class ReadonlyStream : Stream
     {
