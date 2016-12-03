@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace Jasily.Threading
 {
@@ -21,39 +22,44 @@ namespace Jasily.Threading
             e.Release();
         }
 
-        public static async Task<Releaser<SemaphoreSlim>> LockAsync(this SemaphoreSlim semaphore)
+        public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore)
         {
+            if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             await semaphore.WaitAsync();
             return CreateReleaser(semaphore);
         }
 
-        public static async Task<Releaser<SemaphoreSlim>> LockAsync(this SemaphoreSlim semaphore,
+        public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
             int millisecondsTimeout)
         {
+            if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(millisecondsTimeout)
                 ? CreateReleaser(semaphore)
                 : new Releaser<SemaphoreSlim>();
         }
 
-        public static async Task<Releaser<SemaphoreSlim>> LockAsync(this SemaphoreSlim semaphore,
+        public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
             int millisecondsTimeout, CancellationToken cancellationToken)
         {
+            if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(millisecondsTimeout, cancellationToken)
                 ? CreateReleaser(semaphore)
                 : new Releaser<SemaphoreSlim>();
         }
 
-        public static async Task<Releaser<SemaphoreSlim>> LockAsync(this SemaphoreSlim semaphore,
+        public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
             TimeSpan timeout)
         {
+            if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(timeout)
                 ? CreateReleaser(semaphore)
                 : new Releaser<SemaphoreSlim>();
         }
 
-        public static async Task<Releaser<SemaphoreSlim>> LockAsync(this SemaphoreSlim semaphore,
+        public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
             TimeSpan timeout, CancellationToken cancellationToken)
         {
+            if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(timeout, cancellationToken)
                 ? CreateReleaser(semaphore)
                 : new Releaser<SemaphoreSlim>();

@@ -18,10 +18,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection
             var provider = ServiceProvider.Build(list, new ServiceProviderSettings { EnableDebug = true });
             foreach (var _ in Enumerable.Range(0, 10))
             {
-                var result = (ResolveResult)provider.GetService(typeof(KeyValuePair<string, int>));
-                Assert.IsNotNull(result);
-                Assert.IsTrue(result.HasValue);
-                var service = result.Value;
+                var service = provider.GetService(typeof(KeyValuePair<string, int>));
                 Assert.IsNotNull(service);
                 Assert.IsInstanceOfType(service, typeof(KeyValuePair<string, int>));
                 var kvp = (KeyValuePair<string, int>)service;

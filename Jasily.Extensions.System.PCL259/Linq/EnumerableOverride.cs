@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+// ReSharper disable ForCanBeConvertedToForeach
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace System.Linq
 {
@@ -17,7 +20,7 @@ namespace System.Linq
             }
         }
 
-        public static IEnumerable<T> Skip<T>([NotNull] this IList<T> source, int count)
+        public static IEnumerable<T> Skip<T>([NotNull] this List<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -30,29 +33,6 @@ namespace System.Linq
         #endregion
 
         #region to
-
-        public static T[] ToArray<T>([NotNull] this T[] source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            if (source.Length == 0) return (T[])Enumerable.Empty<T>();
-            var ret = new T[source.Length];
-            Array.Copy(source, ret, source.Length);
-            return ret;
-        }
-
-        public static T[] ToArray<T>([NotNull] this T[] source, int count) => source.ToArray(0, count);
-
-        public static T[] ToArray<T>([NotNull] this T[] source, int offset, int count)
-        {
-            source.CheckRange(offset, count);
-
-            count = Math.Min(count, source.Length);
-            if (count == 0) return (T[]) Enumerable.Empty<T>();
-            var ret = new T[count];
-            Array.Copy(source, offset, ret, 0, count);
-            return ret;
-        }
 
         public static List<T> ToList<T>([NotNull] this IEnumerable<T> source, int capacity)
         {
@@ -106,23 +86,12 @@ namespace System.Linq
 
         #endregion
 
-        #region any and all
+        #region any
 
-        public static bool Any<TSource>([NotNull] this TSource[] source)
+        public static bool Any([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.Length > 0;
-        }
-
-        public static bool Any<TSource>([NotNull] this TSource[] source, [NotNull] Func<TSource, bool> predicate)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            for (var i = 0; i < source.Length; i++)
-            {
-                if (predicate(source[i])) return true;
-            }
-            return false;
+            return source.GetEnumerator().MoveNext();
         }
 
         #endregion

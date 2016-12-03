@@ -2,7 +2,7 @@
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal interface IValueStore
+    internal interface IValueStore : IDisposable
     {
         object GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator);
     }

@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace System.Collections.Generic
 {
-    internal static class EnumerableExtensions
+    public static class EnumerableExtensions
     {
         public static void ForEach<T>([NotNull] this IEnumerable<T> source, [NotNull] Action<T> action)
         {

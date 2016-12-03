@@ -4,21 +4,17 @@ namespace System.Threading.Tasks
 {
     public static class TaskExtensions
     {
-        public static void EnsureStarted([NotNull] this Task task, TaskScheduler scheduler = null)
+        public static void EnsureStarted([NotNull] this Task task)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
+            if (task.Status == TaskStatus.Created) task.Start();
+        }
 
-            if (task.Status == TaskStatus.Created)
-            {
-                if (scheduler == null)
-                {
-                    task.Start();
-                }
-                else
-                {
-                    task.Start(scheduler);
-                }
-            }
+        public static void EnsureStarted([NotNull] this Task task, [NotNull] TaskScheduler scheduler)
+        {
+            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (scheduler == null) throw new ArgumentNullException(nameof(scheduler));
+            if (task.Status == TaskStatus.Created) task.Start(scheduler);
         }
 
         /// <summary>
@@ -35,7 +31,19 @@ namespace System.Threading.Tasks
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            return await Task.Run(async () => selector(await task.ConfigureAwait(false))).ConfigureAwait(false);
+            return await Task.Run(async () => 
+                selector(await task.ConfigureAwait(false))
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task<TTo> AsyncSelectAsync<TFrom, TTo>([NotNull] this Task<TFrom> task,
+            [NotNull] Func<TFrom, Task<TTo>> asyncSelector)
+        {
+            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (asyncSelector == null) throw new ArgumentNullException(nameof(asyncSelector));
+            return await Task.Run(async () =>
+                await asyncSelector(await task.ConfigureAwait(false)).ConfigureAwait(false)
+            ).ConfigureAwait(false);
         }
     }
 }

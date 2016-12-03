@@ -56,9 +56,12 @@ namespace System.Linq
             }
         }
 
+        #region edit enumerable
+
+        #region add
+
         [PublicAPI]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T value,
-            Position position)
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T value, Position position)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -133,6 +136,91 @@ namespace System.Linq
             if (source == null) throw new ArgumentNullException(nameof(source));
             return index == 0 ? AppendToStartIterator(source, value) : AppendToIndexIterator(source, value, index, true);
         }
+
+        #endregion
+
+        #region set
+
+        [PublicAPI]
+        public static IEnumerable<T> Set<T>([NotNull] this IEnumerable<T> source, int index, T item)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+
+            var i = 0;
+            using (var itor = source.GetEnumerator())
+            {
+                while (i < index && itor.MoveNext())
+                {
+                    yield return itor.Current;
+                    i++;
+                }
+
+                if (i == index && itor.MoveNext())
+                {
+                    yield return item;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                while (itor.MoveNext())
+                {
+                    yield return itor.Current;
+                }
+            }
+        }
+
+        #endregion
+
+        #region join
+
+        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, T spliter)
+        {
+            using (var itor = source.GetEnumerator())
+            {
+                if (!itor.MoveNext()) yield break;
+                while (true)
+                {
+                    yield return itor.Current;
+                    if (!itor.MoveNext()) yield break;
+                    yield return spliter;
+                }
+            }
+        }
+
+        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, Func<T> spliterFunc)
+        {
+            using (var itor = source.GetEnumerator())
+            {
+                if (!itor.MoveNext()) yield break;
+                while (true)
+                {
+                    yield return itor.Current;
+                    if (!itor.MoveNext()) yield break;
+                    yield return spliterFunc();
+                }
+            }
+        }
+
+        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, Action action)
+        {
+            using (var itor = source.GetEnumerator())
+            {
+                if (!itor.MoveNext()) yield break;
+                while (true)
+                {
+                    yield return itor.Current;
+                    if (!itor.MoveNext()) yield break;
+                    action();
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         public static IEnumerable<IEnumerable<TSource>> SplitChunks<TSource>([NotNull] this IEnumerable<TSource> source, int chunkSize)
         {

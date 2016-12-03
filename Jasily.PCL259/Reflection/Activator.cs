@@ -10,7 +10,7 @@ namespace Jasily.Reflection
 {
     public class Activator<T> : IActivator
     {
-        private static readonly Func<T> ActivatorFunc;
+        private static readonly System.Func<T> ActivatorFunc;
 
         static Activator()
         {
@@ -86,7 +86,7 @@ namespace Jasily.Reflection
                     ? Expression.New(entryCtor)
                     : Expression.New(entryCtor, entryParams.Select(Expression.Constant));
 
-                ActivatorFunc = Expression.Lambda<Func<T>>(@new).Compile();
+                ActivatorFunc = Expression.Lambda<System.Func<T>>(@new).Compile();
             }
         }
 

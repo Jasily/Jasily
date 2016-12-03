@@ -22,5 +22,7 @@ namespace Jasily.Text
             builder.Append(segment.String, segment.StartIndex, segment.Count);
             return builder;
         }
+
+        public static StringSegment ToSegment([NotNull] this string str) => new StringSegment(str);
     }
 }

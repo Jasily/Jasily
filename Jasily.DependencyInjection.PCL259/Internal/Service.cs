@@ -8,11 +8,8 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class Service : IValueStore, IDisposable
+    internal class Service : IValueStore
     {
-        private static readonly Func<ServiceProvider, object> Null = (_ => null);
-
-        private IValueStore valueStore;
         private bool isValueCreated;
         private object value;
         private Func<ServiceProvider, object> instanceAccessor;
@@ -41,8 +38,11 @@ namespace Jasily.DependencyInjection.Internal
 
             lock (this)
             {
-                this.value = creator(provider);
-                this.isValueCreated = true;
+                if (!this.isValueCreated)
+                {
+                    this.value = creator(provider);
+                    this.isValueCreated = true;
+                }
             }
 
             return this.value;
@@ -57,15 +57,11 @@ namespace Jasily.DependencyInjection.Internal
 
             if (this.Descriptor.Lifetime != ServiceLifetime.Transient)
             {
-                if (this.valueStore == null)
-                {
-                    var store = this.Descriptor.Lifetime == ServiceLifetime.Singleton
-                        ? this
-                        : (IValueStore) provider;
-                    Interlocked.CompareExchange(ref this.valueStore, store, null);
-                }
+                var store = this.Descriptor.Lifetime == ServiceLifetime.Singleton
+                    ? this
+                    : (IValueStore) provider;
 
-                return this.valueStore.GetValue(this, provider, this.instanceAccessor);
+                return store.GetValue(this, provider, this.instanceAccessor);
             }
             else
             {
@@ -73,7 +69,7 @@ namespace Jasily.DependencyInjection.Internal
             }
         }
 
-        public IServiceCallSite GetCallSite(ServiceProvider provider, ISet<IServiceDescriptor> serviceChain)
+        public IServiceCallSite GetCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
             var callSite = (this.Descriptor as IServiceCallSite) ??
                            (this.Descriptor as IServiceCallSiteProvider)?.CreateServiceCallSite(provider, serviceChain);
@@ -84,8 +80,8 @@ namespace Jasily.DependencyInjection.Internal
 
         private Func<ServiceProvider, object> CreateServiceAccessor(ServiceProvider serviceProvider)
         {
-            var callSite = this.GetCallSite(serviceProvider, new HashSet<IServiceDescriptor>());
-            if (callSite == null) return Null;
+            var callSite = this.GetCallSite(serviceProvider, new HashSet<Service>());
+            if (callSite == null) return Cache.Func<ServiceProvider, object>.Default;
             if (callSite is IImmutableCallSite) return callSite.ResolveValue;
             return RealizeServiceAccessor(serviceProvider.RootProvider, this, callSite);
         }
@@ -117,8 +113,8 @@ namespace Jasily.DependencyInjection.Internal
         public void Dispose()
         {
             this.isValueCreated = false;
-            (this.valueStore as IDisposable)?.Dispose();
-            this.valueStore = null;
+            (this.value as IDisposable)?.Dispose();
+            this.value = null;
         }
     }
 }

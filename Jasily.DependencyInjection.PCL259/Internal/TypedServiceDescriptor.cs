@@ -19,7 +19,7 @@ namespace Jasily.DependencyInjection.Internal
             this.implementationType = implementationType;
         }
 
-        public IServiceCallSite CreateServiceCallSite(ServiceProvider provider, ISet<IServiceDescriptor> serviceChain)
+        public IServiceCallSite CreateServiceCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
             var constructors = this.implementationType.GetTypeInfo()
                 .DeclaredConstructors
@@ -39,7 +39,7 @@ namespace Jasily.DependencyInjection.Internal
                     return new CreateInstanceCallSite(this.implementationType);
                 }
 
-                parameterCallSites = provider.ResolveParametersCallSites(serviceChain, parameters);
+                parameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
 
                 if (parameterCallSites == null) throw new InvalidOperationException();
 
@@ -55,7 +55,7 @@ namespace Jasily.DependencyInjection.Internal
             {
                 var parameters = constructor.GetParameters();
 
-                var currentParameterCallSites = provider.ResolveParametersCallSites(serviceChain, parameters);
+                var currentParameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
 
                 if (currentParameterCallSites != null)
                 {

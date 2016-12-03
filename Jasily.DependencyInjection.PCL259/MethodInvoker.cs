@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using Jasily.Cache;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection
@@ -16,6 +18,7 @@ namespace Jasily.DependencyInjection
 
         public void Invoke<T>(T obj, string methodName)
         {
+            var method = TypeDescriptor<T>.RuntimeMethods().FirstOrDefault(z => z.Name == methodName);
             throw new NotImplementedException();
         }
 

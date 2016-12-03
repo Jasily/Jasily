@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
     <Compile Include="Jasily.Extensions.System\TestStringExtensions.cs" />
+    <Compile Include="Jasily\Text\TestStringSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,9 +38,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
-    <Compile Include="Cache\TaskCache.cs" />
+    <Compile Include="Cache\Func.cs" />
+    <Compile Include="Cache\Task.cs" />
+    <Compile Include="Cache\TypeDescriptor.cs" />
+    <Compile Include="Cache\TypeInfoDescriptor.cs" />
+    <Compile Include="Collections\IncrementBit.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
     <Compile Include="Collections\Generic\CriticalValue.cs" />
@@ -110,11 +115,14 @@
     <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
     <Compile Include="Singleton.cs" />
+    <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />
     <Compile Include="Threading\InterlockedBoolean.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Threading\SemaphoreSlimExtensions.cs" />
+    <Compile Include="Threading\Tasks\FixedTaskScheduler.cs" />
+    <Compile Include="Threading\Timeout.cs" />
     <Compile Include="TypedEventHandler.cs" />
     <Compile Include="TypedEventHandlerExtensions.cs" />
   </ItemGroup>

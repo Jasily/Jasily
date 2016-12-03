@@ -4,6 +4,6 @@ namespace Jasily.DependencyInjection.Internal
 {
     internal interface IServiceCallSiteProvider
     {
-        IServiceCallSite CreateServiceCallSite(ServiceProvider provider, ISet<IServiceDescriptor> serviceChain);
+        IServiceCallSite CreateServiceCallSite(ServiceProvider provider, ISet<Service> serviceChain);
     }
 }

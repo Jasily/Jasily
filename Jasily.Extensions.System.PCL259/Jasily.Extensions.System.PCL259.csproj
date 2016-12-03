@@ -58,6 +58,7 @@
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
     <Compile Include="Linq\AsyncEnumerableExtensions.cs" />
+    <Compile Include="Linq\EnumerableAsyncExtensions.cs" />
     <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="Linq\EnumerableOverride.cs" />
     <Compile Include="Linq\Generater.cs" />

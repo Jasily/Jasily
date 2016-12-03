@@ -160,22 +160,18 @@ namespace System
 
         #endregion
 
+        #region substring
+
         [NotNull]
-        public static string Substring([NotNull] this string str, int length, Position position)
+        public static string Take([NotNull] this string str, int count)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
-            if (str.Length <= length) return str;
-            switch (position)
-            {
-                case Position.Start:
-                    return str.Substring(0, length);
-                case Position.End:
-                    return str.Substring(str.Length - length, length);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(position), position, null);
-            }
+            if (count > str.Length) return str;
+            return str.Substring(0, count);
         }
-        
+
+        #endregion
+
         #region replace
 
         public static string Replace([NotNull] this string str, [NotNull] string oldValue, [NotNull] string newValue,
@@ -617,14 +613,14 @@ namespace System
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty(this string text) => string.IsNullOrEmpty(text);
+        public static bool IsNullOrEmpty([CanBeNull] this string text) => string.IsNullOrEmpty(text);
 
         /// <summary>
         /// return String.IsNullOrWhiteSpace(text)
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static bool IsNullOrWhiteSpace(this string text) => string.IsNullOrWhiteSpace(text);
+        public static bool IsNullOrWhiteSpace([CanBeNull] this string text) => string.IsNullOrWhiteSpace(text);
 
         /// <summary>
         /// return String.Concat(texts)

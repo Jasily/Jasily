@@ -14,17 +14,13 @@ namespace Jasily.Threading
             this.value = value ? True : False;
         }
 
-        public bool Value => this.value == True;
+        public bool Read() => Volatile.Read(ref this.value) == True;
 
-        public bool Read()
-            => Volatile.Read(ref this.value) == True;
-
-        public void Write(bool value)
-            => Volatile.Write(ref this.value, value ? True : False);
+        public void Write(bool value) => Volatile.Write(ref this.value, value ? True : False);
 
         public bool CompareExchange(bool value, bool compared)
             => Interlocked.CompareExchange(ref this.value, value ? True : False, compared ? True : False) == True;
 
-        public static implicit operator bool(InterlockedBoolean value) => value.Value;
+        public static implicit operator bool(InterlockedBoolean value) => value.Read();
     }
 }

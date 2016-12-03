@@ -165,7 +165,7 @@ namespace System.IO
             int readed;
             while ((readed = stream.Read(buffer, 0, maxCount)) != 0)
             {
-                yield return readed != maxCount ? buffer.ToArray(readed) : reuseBuffer ? buffer : buffer.ToArray();
+                yield return readed != maxCount ? buffer.ToArray() : reuseBuffer ? buffer : buffer.ToArray();
             }
         }
 

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection
 {
-    public class ServiceProvider : IServiceProvider, IDisposable, IValueStore
+    public class ServiceProvider : IServiceProvider, IValueStore
     {
         private readonly Dictionary<Service, object> valueStore
             = new Dictionary<Service, object>(); 
@@ -32,13 +32,12 @@ namespace Jasily.DependencyInjection
         internal ServiceProvider ParentProvider { get; }
 
         /// <summary>
-        /// return a <see cref="ResolveResult"/> object.
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        [NotNull]
-        public object GetService([NotNull] Type serviceType) => this.GetService(serviceType, null);
+        [CanBeNull]
+        public object GetService([NotNull] Type serviceType) => this.GetService(serviceType, null).Value;
 
         /// <summary>
         /// return a <see cref="ResolveResult"/> object.
@@ -72,30 +71,30 @@ namespace Jasily.DependencyInjection
             return null;
         }
 
-        internal IServiceCallSite ResolveServiceCallSite([NotNull] Type serviceType, [CanBeNull] string serviceName,
-            ISet<IServiceDescriptor> serviceChain)
+        internal IServiceCallSite ResolveCallSite([NotNull] Type serviceType, [CanBeNull] string serviceName,
+            ISet<Service> serviceChain)
         {
             var service = this.ResolveService(serviceType, serviceName);
             if (service == null) return null;
 
             try
             {
-                if (!serviceChain.Add(service.Descriptor)) throw new InvalidOperationException();
+                if (!serviceChain.Add(service)) throw new InvalidOperationException();
                 return service.GetCallSite(this, serviceChain);
             }
             finally
             {
-                serviceChain.Remove(service.Descriptor);
+                serviceChain.Remove(service);
             }
         }
 
-        internal IServiceCallSite[] ResolveParametersCallSites(ISet<IServiceDescriptor> serviceChain, ParameterInfo[] parameters)
+        internal IServiceCallSite[] ResolveCallSites(ParameterInfo[] parameters, ISet<Service> serviceChain)
         {
             var parameterCallSites = new IServiceCallSite[parameters.Length];
             for (var index = 0; index < parameters.Length; index++)
             {
                 var parameter = parameters[index];
-                var callSite = this.ResolveServiceCallSite(parameter.ParameterType, parameter.Name, serviceChain);
+                var callSite = this.ResolveCallSite(parameter.ParameterType, parameter.Name, serviceChain);
                 if (callSite == null && parameter.HasDefaultValue)
                 {
                     callSite = new ConstantCallSite(parameter.DefaultValue);
