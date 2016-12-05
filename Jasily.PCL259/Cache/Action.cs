@@ -9,6 +9,4 @@
     {
         public static System.Action<T> Empty { get; } = _ => { };
     }
-
-
 }

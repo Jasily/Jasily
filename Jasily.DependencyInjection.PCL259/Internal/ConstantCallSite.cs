@@ -12,7 +12,7 @@ namespace Jasily.DependencyInjection.Internal
         }
 
         public Expression ResolveExpression(ParameterExpression provider)
-            => this.DefaultValue == null ? ExpressionCache.Null : Expression.Constant(this.DefaultValue);
+            => this.DefaultValue == null ? Cache.Expression.Null : Expression.Constant(this.DefaultValue);
 
         public object ResolveValue(ServiceProvider provider) => this.DefaultValue;
     }

@@ -127,6 +127,8 @@ namespace Jasily.DependencyInjection
 
         public ServiceProvider CreateScope() => new ServiceProvider(this);
 
+        #region static helper
+
         public static IList<IServiceDescriptor> CreateServiceCollection() => new List<IServiceDescriptor>();
 
         public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors) 
@@ -142,5 +144,7 @@ namespace Jasily.DependencyInjection
         public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
             [NotNull] IEnumerable<ResolveLevel> mode, ServiceProviderSettings settings)
             => new RootServiceProvider(serviceDescriptors, mode, settings);
+
+        #endregion
     }
 }

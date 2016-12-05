@@ -9,8 +9,7 @@ namespace Jasily.DependencyInjection
 {
     internal sealed class RootServiceProvider : ServiceProvider
     {
-        public static readonly ResolveLevel[] DefaultResolveMode = new ResolveLevel[]
-        {
+        public static readonly ResolveLevel[] DefaultResolveMode = {
             ResolveLevel.TypeAndName,
             ResolveLevel.Type,
             ResolveLevel.NameAndType,

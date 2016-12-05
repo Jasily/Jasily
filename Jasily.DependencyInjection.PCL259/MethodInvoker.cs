@@ -16,20 +16,26 @@ namespace Jasily.DependencyInjection
             this.provider = provider;
         }
 
-        public void Invoke<T>(T obj, string methodName)
+        private static MethodInfo GetSingleMethod<T>([NotNull] string methodName)
         {
-            var method = TypeDescriptor<T>.RuntimeMethods().FirstOrDefault(z => z.Name == methodName);
-            throw new NotImplementedException();
+            if (methodName == null) throw new ArgumentNullException(nameof(methodName));
+            return TypeDescriptor<T>.RuntimeMethods(methodName).Single();
         }
 
-        public TResult Invoke<T, TResult>(T obj, string methodName)
-        {
-            throw new NotImplementedException();
-        }
+        public void Invoke<T>(T obj, [NotNull] string methodName)
+            => this.Invoke(obj, GetSingleMethod<T>(methodName));
+
+        public TResult Invoke<T, TResult>(T obj, string methodName) 
+            => this.Invoke<T, TResult>(obj, GetSingleMethod<T>(methodName));
 
         public void Invoke<T>(T obj, MethodInfo methodInfo)
         {
-            
+            throw new NotImplementedException();
+        }
+
+        public TResult Invoke<T, TResult>(T obj, MethodInfo methodInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

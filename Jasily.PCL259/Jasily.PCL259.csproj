@@ -41,10 +41,13 @@
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
-    <Compile Include="Cache\Func.cs" />
+    <Compile Include="Cache\Expression.cs" />
+    <Compile Include="Cache\Funcs\ObjectFunc.cs" />
+    <Compile Include="Cache\Funcs\StringFunc.cs" />
     <Compile Include="Cache\Task.cs" />
     <Compile Include="Cache\TypeDescriptor.cs" />
     <Compile Include="Cache\TypeInfoDescriptor.cs" />
+    <Compile Include="Collections\Generic\NameValuePair.cs" />
     <Compile Include="Collections\IncrementBit.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
@@ -55,6 +58,7 @@
     <Compile Include="Collections\Generic\Range.cs" />
     <Compile Include="Collections\Generic\RangeDictionary.cs" />
     <Compile Include="Collections\Generic\RangeMode.cs" />
+    <Compile Include="Collections\ObjectModel\GroupedObservableCollection.cs" />
     <Compile Include="ComponentModel\Editor\BaseEditor.cs" />
     <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrEmptyAttribute.cs" />
     <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrWhiteSpaceAttribute.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Diagnostics\Debug.cs" />
     <Compile Include="GlobalEvent.cs" />
     <Compile Include="IO\AsyncWriteStream.cs" />
+    <Compile Include="IO\ByteSize.cs" />
     <Compile Include="IO\ExtensionsStream.cs" />
     <Compile Include="IO\IStreamHandler.cs" />
     <Compile Include="IO\IStreamReadHandler.cs" />
@@ -115,11 +120,15 @@
     <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
     <Compile Include="Singleton.cs" />
+    <Compile Include="Text\NoneEncoding.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />
     <Compile Include="Threading\InterlockedBoolean.cs" />
+    <Compile Include="Threading\IResource.cs" />
+    <Compile Include="Threading\LockFreeResource.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Threading\Resource.cs" />
     <Compile Include="Threading\SemaphoreSlimExtensions.cs" />
     <Compile Include="Threading\Tasks\FixedTaskScheduler.cs" />
     <Compile Include="Threading\Timeout.cs" />

@@ -39,7 +39,6 @@
     <Compile Include="Internal\ConstantCallSite.cs" />
     <Compile Include="Internal\ConstructorCallSite.cs" />
     <Compile Include="Internal\CreateInstanceCallSite.cs" />
-    <Compile Include="Internal\ExpressionCache.cs" />
     <Compile Include="Internal\FactoryServiceDescriptor.cs" />
     <Compile Include="Internal\IImmutableCallSite.cs" />
     <Compile Include="Internal\IInstanceCallSite.cs" />
@@ -76,6 +75,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
+      <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
+      <Name>Jasily.Extensions.System.PCL259</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
       <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
       <Name>Jasily.PCL259</Name>

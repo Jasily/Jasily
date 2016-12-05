@@ -81,7 +81,7 @@ namespace Jasily.DependencyInjection.Internal
         private Func<ServiceProvider, object> CreateServiceAccessor(ServiceProvider serviceProvider)
         {
             var callSite = this.GetCallSite(serviceProvider, new HashSet<Service>());
-            if (callSite == null) return Cache.Func<ServiceProvider, object>.Default;
+            if (callSite == null) return Cache.Funcs.ObjectFunc.AlwaysDefault<ServiceProvider, object>();
             if (callSite is IImmutableCallSite) return callSite.ResolveValue;
             return RealizeServiceAccessor(serviceProvider.RootProvider, this, callSite);
         }

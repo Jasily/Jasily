@@ -45,5 +45,7 @@ namespace System.Threading.Tasks
                 await asyncSelector(await task.ConfigureAwait(false)).ConfigureAwait(false)
             ).ConfigureAwait(false);
         }
+
+        public static Task<TResult> AsTaskResult<TResult>([CanBeNull] this TResult value) => Task.FromResult(value);
     }
 }

@@ -12,28 +12,31 @@ namespace System
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="s"></param>
         /// <returns></returns>
-        public static byte[] GetBytes([NotNull] this string str) => GetBytes(str, Encoding.UTF8);
+        public static byte[] GetBytes([NotNull] this string s) => GetBytes(s, Encoding.UTF8);
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="s"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static byte[] GetBytes([NotNull] this string str, [NotNull] Encoding encoding)
+        public static byte[] GetBytes([NotNull] this string s, [NotNull] Encoding encoding)
         {
-            if (str == null) throw new ArgumentNullException(nameof(str));
             if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            return encoding.GetBytes(str);
+            return encoding.GetBytes(s);
         }
 
         #endregion
 
         public static string Repeat([CanBeNull] this string str, int count)
-            => str == null ? null : (count == 0 ? string.Empty : string.Concat(Enumerable.Repeat(str, count)));
+        {
+            // make sure raise Exception whatever str is null or not.
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            return str == null ? null : (count == 0 ? string.Empty : string.Concat(Enumerable.Repeat(str, count)));
+        }
 
         #region between
 
@@ -41,6 +44,7 @@ namespace System
         public static string Between([NotNull] this string str, int leftIndex, int rightIndex)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
+            if (rightIndex == leftIndex) return string.Empty;
             if (rightIndex < leftIndex) throw new ArgumentException();
             return str.Substring(leftIndex, rightIndex - leftIndex);
         }
@@ -465,14 +469,6 @@ namespace System
 
         #endregion
 
-        #region get string
-
-        public static string GetString([NotNull] this char[] array) => new string(array);
-
-        public static string GetString([NotNull] this IEnumerable<char> array) => new string(array.ToArray());
-
-        #endregion
-
         #region common part
 
         public static string CommonStart(this string[] source)
@@ -611,16 +607,16 @@ namespace System
         /// <summary>
         /// return String.IsNullOrEmpty(text)
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty([CanBeNull] this string text) => string.IsNullOrEmpty(text);
+        public static bool IsNullOrEmpty([CanBeNull] this string value) => string.IsNullOrEmpty(value);
 
         /// <summary>
         /// return String.IsNullOrWhiteSpace(text)
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsNullOrWhiteSpace([CanBeNull] this string text) => string.IsNullOrWhiteSpace(text);
+        public static bool IsNullOrWhiteSpace([CanBeNull] this string value) => string.IsNullOrWhiteSpace(value);
 
         /// <summary>
         /// return String.Concat(texts)
