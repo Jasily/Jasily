@@ -41,6 +41,7 @@
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Descriptors\Descriptor.cs" />
     <Compile Include="Cache\Descriptors\IDescriptor.cs" />
+    <Compile Include="Cache\Descriptors\Internal\MemberInfoDescriptor.cs" />
     <Compile Include="Cache\Descriptors\TypeDescriptor.cs" />
     <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />

@@ -67,6 +67,7 @@ namespace System.Collections.Generic
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static ArraySegment<T> ToSegment<T>([NotNull] this T[] array, int offset)
             => new ArraySegment<T>(array, offset, array.Length - offset);
 
@@ -80,6 +81,7 @@ namespace System.Collections.Generic
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="ArgumentException"></exception>
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static ArraySegment<T> ToSegment<T>([NotNull] this T[] array, int offset, int count)
             => new ArraySegment<T>(array, offset, count);
     }

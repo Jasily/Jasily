@@ -6,6 +6,7 @@ namespace Jasily.Cache.Funcs
     {
         private static System.Func<string, bool> isNullOrEmpty;
         private static System.Func<string, bool> isNullOrWhiteSpace;
+        private static System.Func<string, int> length;
 
         [NotNull]
         public static System.Func<string, bool> IsNullOrEmpty()
@@ -14,5 +15,8 @@ namespace Jasily.Cache.Funcs
         [NotNull]
         public static System.Func<string, bool> IsNullOrWhiteSpace()
             => isNullOrWhiteSpace ?? (isNullOrWhiteSpace = string.IsNullOrWhiteSpace);
+
+        public static System.Func<string, int> Length()
+            => length ?? (length = s => s.Length);
     }
 }
