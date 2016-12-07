@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Jasily.Cache;
+using Jasily.Cache.Descriptors;
+using Jasily.Cache.Internal;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection
@@ -19,7 +20,9 @@ namespace Jasily.DependencyInjection
         private static MethodInfo GetSingleMethod<T>([NotNull] string methodName)
         {
             if (methodName == null) throw new ArgumentNullException(nameof(methodName));
-            return TypeDescriptor<T>.RuntimeMethods(methodName).Single();
+            return Default<TypeDescriptor<T>>.Value()
+                .RuntimeMethods(methodName).Single()
+                .DescriptedObject;
         }
 
         public void Invoke<T>(T obj, [NotNull] string methodName)

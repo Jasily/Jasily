@@ -39,14 +39,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\Action.cs" />
+    <Compile Include="Cache\Descriptors\Descriptor.cs" />
+    <Compile Include="Cache\Descriptors\IDescriptor.cs" />
+    <Compile Include="Cache\Descriptors\TypeDescriptor.cs" />
     <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
     <Compile Include="Cache\Expression.cs" />
     <Compile Include="Cache\Funcs\ObjectFunc.cs" />
     <Compile Include="Cache\Funcs\StringFunc.cs" />
+    <Compile Include="Cache\Internal\Default.cs" />
     <Compile Include="Cache\Task.cs" />
-    <Compile Include="Cache\TypeDescriptor.cs" />
-    <Compile Include="Cache\TypeInfoDescriptor.cs" />
+    <Compile Include="Cache\Descriptors\TypeInfoDescriptor.cs" />
     <Compile Include="Collections\Generic\NameValuePair.cs" />
     <Compile Include="Collections\IncrementBit.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
@@ -87,7 +90,7 @@
     <Compile Include="ComponentModel\PropertySelector.cs" />
     <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
     <Compile Include="ComponentModel\ViewModel.cs" />
-    <Compile Include="DateTimeConverter.cs" />
+    <Compile Include="Utils\DateTimeHelper.cs" />
     <Compile Include="DayOfWeek.cs" />
     <Compile Include="DayOfWeekExtensions.cs" />
     <Compile Include="Diagnostics\Debug.cs" />

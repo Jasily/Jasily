@@ -9,7 +9,7 @@ namespace Jasily.Reflection
 {
     public class Activator<T> : IActivator
     {
-        private static readonly System.Func<T> ActivatorFunc;
+        private static readonly Func<T> ActivatorFunc;
 
         static Activator()
         {
@@ -89,11 +89,13 @@ namespace Jasily.Reflection
             }
         }
 
-        public T Create()
+        public static T CreateInstance()
         {
             if (ActivatorFunc == null) throw new NotSupportedException("cannot create instance.");
             return ActivatorFunc();
         }
+
+        public T Create() => CreateInstance();
 
         object IActivator.Create() => this.Create();
     }

@@ -10,25 +10,39 @@ namespace Jasily.Cache
     public static class Enum<T>
         where T : struct, IComparable, IFormattable
     {
+        /// <summary>
+        /// if count of enum items large then this count, then use Map to get item.
+        /// </summary>
+        private const int Threshold = 10;
         // ReSharper disable once StaticMemberInGenericType
         private static readonly string Name;
         // ReSharper disable once StaticMemberInGenericType
         private static readonly bool IsFlags;
         private static readonly EnumItem[] Items;
+        private static readonly Dictionary<ulong, EnumItem> ItemsMap;
 
         private class EnumItem
         {
-            internal readonly ulong Value;
+            /// <summary>
+            /// the actual member value that enum define.
+            /// </summary>
+            internal readonly ulong EnumValue;
 
+            /// <summary>
+            /// 
+            /// </summary>
             internal readonly T Item;
 
-            internal readonly string Name;
+            /// <summary>
+            /// cached name of enum.
+            /// </summary>
+            internal readonly string EnumName;
 
             public EnumItem(ulong value, T item, string name)
             {
-                this.Value = value;
+                this.EnumValue = value;
                 this.Item = item;
-                this.Name = name;
+                this.EnumName = name;
             }
         }
 
@@ -43,14 +57,17 @@ namespace Jasily.Cache
             IsFlags = ti.GetCustomAttribute<FlagsAttribute>() != null;
             Items = ((T[]) Enum.GetValues(typeof(T)))
                 .Select(z => new EnumItem(ToUlong(z), z, z.ToString()))
-                .OrderBy(z => z.Value)
+                .OrderBy(z => z.EnumValue)
                 .ToArray();
+            ItemsMap = Items.ToDictionary(z => z.EnumValue);
         }
 
         private static EnumItem TryGetEnumItem(T e)
         {
             var val = ToUlong(e);
-            return Items.FirstOrDefault(z => z.Value == val);
+            return Items.Length > Threshold
+                ? ItemsMap.GetValueOrDefault(val)
+                : Items.FirstOrDefault(z => z.EnumValue == val);
         }
 
         /// <summary>
@@ -67,7 +84,7 @@ namespace Jasily.Cache
 
             if (val == 0)
             {
-                if (Items.Length > 0 && Items[0].Value == 0)
+                if (Items.Length > 0 && Items[0].EnumValue == 0)
                 {
                     return new[] { Items[0] };
                 }
@@ -80,11 +97,11 @@ namespace Jasily.Cache
             var matchs = new List<EnumItem>();
             foreach (var item in Items.Reverse())
             {
-                if (item.Value == 0) break;
+                if (item.EnumValue == 0) break;
 
-                if ((item.Value & val) == item.Value)
+                if ((item.EnumValue & val) == item.EnumValue)
                 {
-                    val -= item.Value;
+                    val -= item.EnumValue;
                     matchs.Insert(0, item);
                 }
             }
@@ -106,8 +123,8 @@ namespace Jasily.Cache
         public static string ToString(T e)
         {
             var value = IsFlags
-                ? SplitFlagItems(e, true)?.Select(z => z.Name).JoinAsString(", ")
-                : TryGetEnumItem(e)?.Name;
+                ? SplitFlagItems(e, true)?.Select(z => z.EnumName).JoinAsString(", ")
+                : TryGetEnumItem(e)?.EnumName;
             return value ?? e.ToString();
         }
 
@@ -122,7 +139,7 @@ namespace Jasily.Cache
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             var comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-            var matchs = Items.FirstOrDefault(z => string.Equals(z.Name, value, comparison));
+            var matchs = Items.FirstOrDefault(z => string.Equals(z.EnumName, value, comparison));
             if (matchs != null)
             {
                 result = matchs.Item;
