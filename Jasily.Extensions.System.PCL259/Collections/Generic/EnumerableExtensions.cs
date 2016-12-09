@@ -5,6 +5,13 @@ namespace System.Collections.Generic
 {
     public static class EnumerableExtensions
     {
+        public static void EmptyForEach<T>([NotNull] this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            foreach (var _ in source) { }
+        }
+
         public static void ForEach<T>([NotNull] this IEnumerable<T> source, [NotNull] Action<T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

@@ -52,8 +52,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CodeTimer.cs" />
+    <Compile Include="CodeTimerResult.cs" />
     <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
     <Compile Include="Jasily.Extensions.System\TestStringExtensions.cs" />
+    <Compile Include="Jasily\Reflection\Descriptors\TestTypeDescriptor.cs" />
     <Compile Include="Jasily\Reflection\TestActivator.cs" />
     <Compile Include="Jasily\Text\TestStringSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +78,9 @@
       <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
       <Name>Jasily.PCL259</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Jasily\Cache\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

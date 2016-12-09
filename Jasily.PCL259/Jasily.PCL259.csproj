@@ -39,10 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\Action.cs" />
-    <Compile Include="Cache\Descriptors\Descriptor.cs" />
-    <Compile Include="Cache\Descriptors\IDescriptor.cs" />
-    <Compile Include="Cache\Descriptors\Internal\MemberInfoDescriptor.cs" />
-    <Compile Include="Cache\Descriptors\TypeDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\FieldInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\Internal\MemberInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\MethodInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\PropertyInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\TypeDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\TypeInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\Descriptor.cs" />
+    <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
     <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
     <Compile Include="Cache\Expression.cs" />
@@ -50,7 +54,6 @@
     <Compile Include="Cache\Funcs\StringFunc.cs" />
     <Compile Include="Cache\Internal\Default.cs" />
     <Compile Include="Cache\Task.cs" />
-    <Compile Include="Cache\Descriptors\TypeInfoDescriptor.cs" />
     <Compile Include="Collections\Generic\NameValuePair.cs" />
     <Compile Include="Collections\IncrementBit.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
@@ -91,6 +94,10 @@
     <Compile Include="ComponentModel\PropertySelector.cs" />
     <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
     <Compile Include="ComponentModel\ViewModel.cs" />
+    <Compile Include="Diagnostics\DataCheck.cs" />
+    <Compile Include="Text\IStringFinderSource.cs" />
+    <Compile Include="Text\StringFinder.cs" />
+    <Compile Include="Text\TextReplacer.cs" />
     <Compile Include="Utils\DateTimeHelper.cs" />
     <Compile Include="DayOfWeek.cs" />
     <Compile Include="DayOfWeekExtensions.cs" />

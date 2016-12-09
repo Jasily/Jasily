@@ -1,9 +1,9 @@
 using System.Reflection;
-using Jasily.Cache.Descriptors.Internal;
+using Jasily.Reflection.Descriptors.Internal;
 
 // ReSharper disable StaticMemberInGenericType
 
-namespace Jasily.Cache.Descriptors
+namespace Jasily.Reflection.Descriptors
 {
     public class TypeInfoDescriptor<T> : MemberInfoDescriptor<TypeInfo>
     {

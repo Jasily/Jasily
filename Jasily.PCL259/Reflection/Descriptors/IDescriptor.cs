@@ -1,4 +1,4 @@
-﻿namespace Jasily.Cache.Descriptors
+﻿namespace Jasily.Reflection.Descriptors
 {
     public interface IDescriptor<out T>
         where T : class

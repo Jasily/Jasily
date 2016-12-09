@@ -637,5 +637,15 @@ namespace System
             => string.Join(spliter, texts);
 
         #endregion
+
+        #region null <=> empty
+
+        [NotNull]
+        public static string EmptyIfNull([CanBeNull] this string str) => str ?? string.Empty;
+
+        [CanBeNull]
+        public static string NullIfEmpty<T>([CanBeNull] this string str) => string.IsNullOrEmpty(str) ? null : str;
+
+        #endregion
     }
 }

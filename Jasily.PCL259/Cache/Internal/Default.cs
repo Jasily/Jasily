@@ -3,6 +3,7 @@
     /// <summary>
     /// <typeparamref name="T" /> should always be no-status.
     /// never use <code>object.ReferenceEquals()</code> for test this instance.
+    /// DO NOT use this class unless you known what your doing.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public static class Default<T>

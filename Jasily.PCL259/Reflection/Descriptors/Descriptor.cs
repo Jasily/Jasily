@@ -1,10 +1,10 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Jasily.Cache.Descriptors
+namespace Jasily.Reflection.Descriptors
 {
     public class Descriptor<T> : IDescriptor<T>
-        where T : class 
+        where T : class
     {
         public Descriptor([NotNull] T obj)
         {
