@@ -1,17 +1,15 @@
 ﻿using System;
 
 #if WINDOWS_DESKTOP
-
 using Jasily.Windows.Data.ValueConverters.Internal;
-
-namespace Jasily.Windows.Data.ValueConverters
-
 #elif WINDOWS_UWP
-
 using Jasily.UI.Xaml.Data.ValueConverters.Internal;
+#endif
 
+#if WINDOWS_DESKTOP
+namespace Jasily.Windows.Data.ValueConverters
+#elif WINDOWS_UWP
 namespace Jasily.UI.Xaml.Data.ValueConverters
-
 #endif
 {
     public class ScaleValueConverter : InvariantValueConverter

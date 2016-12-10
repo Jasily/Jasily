@@ -107,32 +107,30 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Jasily.Shared\Net\Sockets\SocketExtensions.cs">
-      <Link>Net\Sockets\SocketExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Jasily.Shared\Threading\UISynchronizationContext.cs">
+    <Compile Include="..\Jasily.Desktop\Threading\UISynchronizationContext.cs">
       <Link>Threading\UISynchronizationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\BooleanToVisibilityValueConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\BooleanToVisibilityValueConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\BooleanToVisibilityValueConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\Internal\InvariantValueConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\Internal\InvariantValueConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\Internal\InvariantValueConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\ItemsEmptyToCollapsedConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\ItemsEmptyToCollapsedConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\ItemsEmptyToCollapsedConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\NullCollapsedValueConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\NullCollapsedValueConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\NullCollapsedValueConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\ScaleValueConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\ScaleValueConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\ScaleValueConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Shared\Windows\Data\ValueConverters\StringToVisibilityValueConverter.cs">
+    <Compile Include="..\Jasily.Desktop\Windows\Data\ValueConverters\StringToVisibilityValueConverter.cs">
       <Link>UI\Xaml\Data\ValueConverters\StringToVisibilityValueConverter.cs</Link>
     </Compile>
     <Compile Include="ApplicationModel\Background\BackgroundTaskRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemInfo.cs" />
     <EmbeddedResource Include="Properties\Jasily.UWP10240.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +139,7 @@
       <Name>Jasily.Extensions.System.PCL259</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

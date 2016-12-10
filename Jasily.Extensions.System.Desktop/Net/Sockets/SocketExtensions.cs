@@ -15,9 +15,9 @@ namespace System.Net.Sockets
         {
             if (socket == null) throw new ArgumentNullException(nameof(socket));
             if (args == null) throw new ArgumentNullException(nameof(args));
-
+            
             var tcs = new TaskCompletionSource<SocketError>();
-
+            
             EventHandler<SocketAsyncEventArgs> onComplete = null;
             onComplete = (s, e) =>
             {
