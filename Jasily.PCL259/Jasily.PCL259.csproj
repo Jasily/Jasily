@@ -39,6 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\Action.cs" />
+    <Compile Include="Cache\Funcs\FuncTemplate.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Net\WebResult.cs" />
+    <Compile Include="Net\WebResultExtensions.cs" />
     <Compile Include="Reflection\Descriptors\FieldInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\Internal\MemberInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\MethodInfoDescriptor.cs" />

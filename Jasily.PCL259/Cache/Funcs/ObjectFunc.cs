@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
 namespace Jasily.Cache.Funcs
 {
@@ -9,44 +10,38 @@ namespace Jasily.Cache.Funcs
     public static class ObjectFunc
     {
         [NotNull]
-        public static System.Func<object, bool> IsNull() => C.IsNull ?? (C.IsNull = o => ReferenceEquals(null, o));
+        public static FuncTemplate<object, bool> IsNull { get; } = new FuncTemplate<object, bool>(o => ReferenceEquals(null, o));
 
         [NotNull]
-        public static System.Func<T, bool> AlwaysFalse<T>()
-            => C<T>.AlwaysFalse ?? (C<T>.AlwaysFalse = _ => false);
+        public static FuncTemplate<object, bool> IsNotNull { get; } = new FuncTemplate<object, bool>(o => !ReferenceEquals(null, o));
 
         [NotNull]
-        public static System.Func<T, bool> AlwaysTrue<T>()
-            => C<T>.AlwaysTrue ?? (C<T>.AlwaysTrue = _ => true);
+        public static FuncTemplate<T, bool> ReturnFalse<T>() => C<T>.ReturnFalseFunc;
 
         [NotNull]
-        public static System.Func<TResult> AlwaysDefault<TResult>()
-            => C<TResult>.AlwaysDefault ?? (C<TResult>.AlwaysDefault = () => default(TResult));
+        public static FuncTemplate<T, bool> ReturnTrue<T>() => C<T>.ReturnTrueFunc;
 
         [NotNull]
-        public static System.Func<T, TResult> AlwaysDefault<T, TResult>()
-            => C<T, TResult>.AlwaysDefault ?? (C<T, TResult>.AlwaysDefault = _ => default(TResult));
+        public static System.Func<TResult> ReturnDefault<TResult>() => C<TResult>.ReturnDefaultFunc;
 
         [NotNull]
-        public static System.Func<T, T> ReturnSelf<T>()
-            => C<T>.ReturnSelf ?? (C<T>.ReturnSelf = z => z);
+        public static FuncTemplate<T, TResult> ReturnDefault<T, TResult>() => C<T, TResult>.ReturnDefaultFunc;
 
-        private static class C
-        {
-            public static System.Func<object, bool> IsNull;
-        }
+        [NotNull]
+        public static FuncTemplate<T, T> ReturnSelf<T>() => C<T>.ReturnSelfFunc;
 
         private static class C<T>
         {
-            public static System.Func<T, bool> AlwaysFalse;
-            public static System.Func<T, bool> AlwaysTrue;
-            public static System.Func<T> AlwaysDefault;
-            public static System.Func<T, T> ReturnSelf;
+            public static readonly Func<T> ReturnDefaultFunc = () => default(T);
+
+            public static readonly FuncTemplate<T, bool> ReturnFalseFunc = new FuncTemplate<T, bool>(_ => false);
+            public static readonly FuncTemplate<T, bool> ReturnTrueFunc = new FuncTemplate<T, bool>(_ => true);
+            public static readonly FuncTemplate<T, T> ReturnSelfFunc = new FuncTemplate<T, T>(o => o);
         }
 
         private static class C<T, TResult>
         {
-            public static System.Func<T, TResult> AlwaysDefault;
+            public static readonly FuncTemplate<T, TResult> ReturnDefaultFunc = new FuncTemplate<T, TResult>(_ => default(TResult));
         }
     }
 }

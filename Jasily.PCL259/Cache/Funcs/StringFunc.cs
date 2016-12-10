@@ -4,19 +4,13 @@ namespace Jasily.Cache.Funcs
 {
     public static class StringFunc
     {
-        private static System.Func<string, bool> isNullOrEmpty;
-        private static System.Func<string, bool> isNullOrWhiteSpace;
-        private static System.Func<string, int> length;
+        [NotNull]
+        public static FuncTemplate<string, bool> IsNullOrEmpty { get; } = new FuncTemplate<string, bool>(string.IsNullOrEmpty);
 
         [NotNull]
-        public static System.Func<string, bool> IsNullOrEmpty()
-            => isNullOrEmpty ?? (isNullOrEmpty = string.IsNullOrEmpty);
+        public static FuncTemplate<string, bool> IsNullOrWhiteSpace { get; } = new FuncTemplate<string, bool>(string.IsNullOrWhiteSpace);
 
         [NotNull]
-        public static System.Func<string, bool> IsNullOrWhiteSpace()
-            => isNullOrWhiteSpace ?? (isNullOrWhiteSpace = string.IsNullOrWhiteSpace);
-
-        public static System.Func<string, int> Length()
-            => length ?? (length = s => s.Length);
+        public static FuncTemplate<string, int> Length { get; } = new FuncTemplate<string, int>(s => s.Length);
     }
 }
