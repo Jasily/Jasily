@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -647,5 +648,22 @@ namespace System
         public static string NullIfEmpty<T>([CanBeNull] this string str) => string.IsNullOrEmpty(str) ? null : str;
 
         #endregion
+
+        /// <summary>
+        /// since unicode code point can large then char.MaxValue, we need int to save it.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static int[] ToUnicodeChars([NotNull] this string str)
+        {
+            var indexs = StringInfo.ParseCombiningCharacters(str);
+            if (indexs.Length == 0) return (int[])Enumerable.Empty<int>();
+            var chars = new int[indexs.Length];
+            for (var i = 0; i < indexs.Length; i++)
+            {
+                chars[i] = char.ConvertToUtf32(str, indexs[i]);
+            }
+            return chars;
+        }
     }
 }
