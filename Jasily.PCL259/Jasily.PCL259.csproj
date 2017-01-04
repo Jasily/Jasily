@@ -135,7 +135,6 @@
     <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
     <Compile Include="Singleton.cs" />
-    <Compile Include="Text\NoneEncoding.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />

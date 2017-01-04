@@ -61,5 +61,12 @@ namespace Jasily.Threading
             sender.ReleaseRaised -= this.Locker_ReleaseRaised;
             this.Release(e);
         }
+
+        public Releaser<int> AcquireOrThrow(int count = 1)
+        {
+            var releaser = this.Acquire(count);
+            if (!releaser.IsAcquired) throw new InvalidOperationException();
+            return releaser;
+        }
     }
 }
