@@ -99,7 +99,11 @@ namespace Jasily.ComponentModel
             get { return this.refreshPropertiesMapper; }
             set
             {
-                this.refreshProperties = value.GetProperties(this);
+                if (this.refreshPropertiesMapper == value) return;
+                if (value != null)
+                {
+                    this.refreshProperties = value.GetProperties(this);
+                }
                 this.refreshPropertiesMapper = value;
             }
         }
