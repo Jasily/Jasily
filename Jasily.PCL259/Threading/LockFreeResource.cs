@@ -34,7 +34,7 @@ namespace Jasily.Threading
             while (true)
             {
                 var current = this.currentCount;
-                if (current + count > this.maxCount) throw new SemaphoreFullException();
+                if (current + count > this.maxCount) throw new InvalidOperationException();
                 if (Interlocked.CompareExchange(ref this.currentCount, current + count, current) == current)
                     return current;
             }
