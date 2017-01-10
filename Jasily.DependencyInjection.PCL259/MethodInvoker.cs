@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 
@@ -15,25 +14,16 @@ namespace Jasily.DependencyInjection
             this.provider = provider;
         }
 
-        private static MethodInfo GetSingleMethod<T>([NotNull] string methodName)
+        public void Invoke<T>(T obj, [NotNull] MethodInfo methodInfo)
         {
-            if (methodName == null) throw new ArgumentNullException(nameof(methodName));
-            return typeof(T).GetRuntimeMethods().Single(z => z.Name == methodName);
-        }
-
-        public void Invoke<T>(T obj, [NotNull] string methodName)
-            => this.Invoke(obj, GetSingleMethod<T>(methodName));
-
-        public TResult Invoke<T, TResult>(T obj, string methodName) 
-            => this.Invoke<T, TResult>(obj, GetSingleMethod<T>(methodName));
-
-        public void Invoke<T>(T obj, MethodInfo methodInfo)
-        {
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
             throw new NotImplementedException();
         }
 
-        public TResult Invoke<T, TResult>(T obj, MethodInfo methodInfo)
+        public TResult Invoke<T, TResult>(T obj, [NotNull] MethodInfo methodInfo)
         {
+            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (methodInfo.ReturnType == typeof(void)) throw new InvalidOperationException("method has no return value.");
             throw new NotImplementedException();
         }
     }

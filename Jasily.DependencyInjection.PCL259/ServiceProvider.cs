@@ -88,6 +88,12 @@ namespace Jasily.DependencyInjection
             }
         }
 
+        /// <summary>
+        /// if cannot resolve, return null.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="serviceChain"></param>
+        /// <returns></returns>
         internal IServiceCallSite[] ResolveCallSites(ParameterInfo[] parameters, ISet<Service> serviceChain)
         {
             var parameterCallSites = new IServiceCallSite[parameters.Length];

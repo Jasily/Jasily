@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Jasily.DependencyInjection.Attributes;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
@@ -19,6 +20,16 @@ namespace Jasily.DependencyInjection.Internal
             this.implementationType = implementationType;
         }
 
+        private IServiceCallSite ResolveConstructorCallSite(ServiceProvider provider, ISet<Service> serviceChain,
+            ConstructorInfo constructor)
+        {
+            var parameters = constructor.GetParameters();
+            if (parameters.Length == 0) return new CreateInstanceCallSite(this.implementationType);
+
+            var parameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
+            return parameterCallSites == null ? null : new ConstructorCallSite(constructor, parameterCallSites);
+        }
+
         public IServiceCallSite CreateServiceCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
             var constructors = this.implementationType.GetTypeInfo()
@@ -26,31 +37,44 @@ namespace Jasily.DependencyInjection.Internal
                 .Where(constructor => constructor.IsPublic)
                 .ToArray();
 
-            if (constructors.Length == 0) throw new InvalidOperationException();
-
-            IServiceCallSite[] parameterCallSites = null;
+            if (constructors.Length == 0)
+                throw new InvalidOperationException($"type [{this.implementationType}] has no constructor.");
 
             if (constructors.Length == 1)
             {
-                var constructor = constructors[0];
-                var parameters = constructor.GetParameters();
-                if (parameters.Length == 0)
-                {
-                    return new CreateInstanceCallSite(this.implementationType);
-                }
-
-                parameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
-
-                if (parameterCallSites == null) throw new InvalidOperationException();
-
-                return new ConstructorCallSite(constructor, parameterCallSites);
+                var constructorCallSite = this.ResolveConstructorCallSite(provider, serviceChain, constructors[0]);
+                if (constructorCallSite == null)
+                    throw new InvalidOperationException(
+                        $"cannot resolve parameters for constructor of type [{this.implementationType}]");
             }
 
-            Array.Sort(constructors,
-                (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+            var entryPoints = constructors
+                .Where(z => z.GetCustomAttribute<EntryPointAttribute>() != null)
+                .ToArray();
+            if (entryPoints.Length > 1)
+            {
+                throw new InvalidOperationException(
+                    $"type [{this.implementationType}] has too many entry point.");
+            }
+            else if (entryPoints.Length == 1)
+            {
+                var constructorCallSite = this.ResolveConstructorCallSite(provider, serviceChain, constructors[0]);
+                if (constructorCallSite == null)
+                    throw new InvalidOperationException(
+                        $"cannot resolve parameters for entry point constructor of type [{this.implementationType}]");
+            }
+
+            return this.ResolveBestCallSite(provider, serviceChain, constructors);
+        }
+
+        private IServiceCallSite ResolveBestCallSite(ServiceProvider provider, ISet<Service> serviceChain,
+            ConstructorInfo[] constructors)
+        {
+            Array.Sort(constructors, (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
 
             ConstructorInfo bestConstructor = null;
             HashSet<Type> bestConstructorParameterTypes = null;
+            IServiceCallSite[] parameterCallSites = null;
             foreach (var constructor in constructors)
             {
                 var parameters = constructor.GetParameters();
@@ -85,13 +109,13 @@ namespace Jasily.DependencyInjection.Internal
 
             if (bestConstructor == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"cannot resolve any constructor from type [{this.implementationType}]");
             }
             else
             {
                 Debug.Assert(parameterCallSites != null);
                 return parameterCallSites.Length == 0
-                    ? (IServiceCallSite) new CreateInstanceCallSite(this.implementationType)
+                    ? (IServiceCallSite)new CreateInstanceCallSite(this.implementationType)
                     : new ConstructorCallSite(bestConstructor, parameterCallSites);
             }
         }
