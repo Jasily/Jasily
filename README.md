@@ -8,9 +8,9 @@ a library for C#.
 
 ### when use `throw new ArgumentNullException();`
 
-1. NEVER throw NullReferenceException.
-1. before create new object or complex value.
-1. all path safely.
+1. before raise any NullReferenceException.
+1. before create any object.
+1. for make all path safety.
 
 e.g.1:
 
@@ -29,7 +29,7 @@ public static void Write([NotNull] this Stream stream, [NotNull] byte[] buffer)
 {
     if (stream == null) throw new ArgumentNullException(nameof(stream));
     if (buffer == null) throw new ArgumentNullException(nameof(buffer));
-    stream.Write(buffer, 0, buffer.Length); // buffer.Length maybe throw NullReferenceException.
+    stream.Write(buffer, 0, buffer.Length); // buffer.Length maybe raise NullReferenceException.
 }
 ```
 
@@ -39,7 +39,6 @@ e.g.3
 public static IOrderedEnumerable<T> OrderBy<T>([NotNull] this IEnumerable<T> source, [NotNull] IComparer<T> comparer)
     => source.OrderBy(z => z, comparer);
     // source.OrderBy is extension method, so it will not throw NullReferenceException.
-    // AND, source.OrderBy should check comparer nullable.
     // SO, we do not need to throw ArgumentNullException.
 ```
 
