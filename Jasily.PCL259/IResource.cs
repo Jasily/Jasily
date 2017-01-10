@@ -1,4 +1,4 @@
-namespace Jasily.Threading
+namespace Jasily
 {
     public interface IResource
     {

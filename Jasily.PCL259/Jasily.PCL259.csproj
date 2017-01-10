@@ -139,7 +139,7 @@
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />
     <Compile Include="Threading\InterlockedBoolean.cs" />
-    <Compile Include="Threading\IResource.cs" />
+    <Compile Include="IResource.cs" />
     <Compile Include="Threading\LockFreeResource.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Threading\Resource.cs" />
@@ -148,6 +148,7 @@
     <Compile Include="Threading\Timeout.cs" />
     <Compile Include="TypedEventHandler.cs" />
     <Compile Include="TypedEventHandlerExtensions.cs" />
+    <Compile Include="ValueReleaser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations.PCL328, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
