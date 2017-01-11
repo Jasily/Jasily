@@ -47,7 +47,7 @@ namespace Jasily.DependencyInjection.Internal
                         return typedServiceEntry;
                     break;
                 case ResolveLevel.NameAndType:
-                    if (request.ServiceName != null)
+                    if (request.ServiceName != string.Empty)
                     {
                         NamedServiceEntry namedServiceEntry;
                         if (this.namedServices.TryGetValue(request.ServiceName, out namedServiceEntry))

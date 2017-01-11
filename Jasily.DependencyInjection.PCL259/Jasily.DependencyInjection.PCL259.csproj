@@ -48,6 +48,7 @@
     <Compile Include="Internal\IValueStore.cs" />
     <Compile Include="Internal\MethodCallSite.cs" />
     <Compile Include="Internal\NamedServiceEntry.cs" />
+    <Compile Include="Internal\ResolveRequest.cs" />
     <Compile Include="Internal\Service.cs" />
     <Compile Include="Internal\ServiceDescriptor.cs" />
     <Compile Include="Internal\ServiceEntry.cs" />
