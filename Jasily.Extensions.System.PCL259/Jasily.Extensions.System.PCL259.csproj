@@ -64,6 +64,7 @@
     <Compile Include="Net\HttpWebRequestExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomExtensions.cs" />
+    <Compile Include="Reflection\ConstructorInfoExtensions.cs" />
     <Compile Include="Reflection\FieldExtensions.cs" />
     <Compile Include="Reflection\MethodInfoExtensions.cs" />
     <Compile Include="Reflection\PropertyExtensions.cs" />

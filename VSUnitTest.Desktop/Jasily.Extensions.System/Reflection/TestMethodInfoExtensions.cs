@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VSUnitTest.Desktop.Jasily.Extensions.System.Reflection
 {
     [TestClass]
-    public class TestMethdoExtensions
+    public class TestMethodInfoExtensions
     {
         public bool IsNullOrWhiteSpace2(string test) => string.IsNullOrWhiteSpace(test);
 
@@ -22,11 +22,11 @@ namespace VSUnitTest.Desktop.Jasily.Extensions.System.Reflection
         [TestMethod]
         public void TestInstanceMethod()
         {
-            var func = typeof(TestMethdoExtensions)
+            var func = typeof(TestMethodInfoExtensions)
                 .GetMethod(nameof(this.IsNullOrWhiteSpace2))
-                .Compile<TestMethdoExtensions, Func<TestMethdoExtensions, string, bool>>();
-            Assert.AreEqual(true, func(new TestMethdoExtensions(), string.Empty));
-            Assert.AreEqual(false, func(new TestMethdoExtensions(), "_"));
+                .Compile<TestMethodInfoExtensions, Func<TestMethodInfoExtensions, string, bool>>();
+            Assert.AreEqual(true, func(new TestMethodInfoExtensions(), string.Empty));
+            Assert.AreEqual(false, func(new TestMethodInfoExtensions(), "_"));
         }
 
         [TestMethod]
@@ -42,11 +42,11 @@ namespace VSUnitTest.Desktop.Jasily.Extensions.System.Reflection
         [TestMethod]
         public void TestInstanceMethod2()
         {
-            var func = typeof(TestMethdoExtensions)
+            var func = typeof(TestMethodInfoExtensions)
                 .GetMethod(nameof(this.IsNullOrWhiteSpace2))
                 .CompileFunc();
-            Assert.AreEqual(true, (bool)func(new TestMethdoExtensions(), new object[] { string.Empty }));
-            Assert.AreEqual(false, (bool)func(new TestMethdoExtensions(), new object[] { "_" }));
+            Assert.AreEqual(true, (bool)func(new TestMethodInfoExtensions(), new object[] { string.Empty }));
+            Assert.AreEqual(false, (bool)func(new TestMethodInfoExtensions(), new object[] { "_" }));
         }
     }
 }

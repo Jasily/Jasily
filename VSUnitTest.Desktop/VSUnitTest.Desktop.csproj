@@ -55,7 +55,8 @@
     <Compile Include="CodeTimer.cs" />
     <Compile Include="CodeTimerResult.cs" />
     <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
-    <Compile Include="Jasily.Extensions.System\Reflection\TestMethdoExtensions.cs" />
+    <Compile Include="Jasily.Extensions.System\Reflection\TestConstructorInfoExtensions.cs" />
+    <Compile Include="Jasily.Extensions.System\Reflection\TestMethodInfoExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\TestStringExtensions.cs" />
     <Compile Include="Jasily\Collections\Generic\TestRange.cs" />
     <Compile Include="Jasily\Collections\Generic\TestRangeDictionary.cs" />
