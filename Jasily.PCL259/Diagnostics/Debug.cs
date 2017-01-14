@@ -12,7 +12,7 @@ namespace Jasily.Diagnostics
         #region assert
 
         [Conditional("DEBUG")]
-        public static void AssertForEach<T>(IEnumerable<T> items, [NotNull] Func<T, bool> tester)
+        public static void AssertForEach<T>([NotNull] IEnumerable<T> items, [NotNull] Func<T, bool> tester)
         {
             D.Assert(items != null && tester != null);
             foreach (var item in items)

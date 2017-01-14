@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using Jasily.Core;
 using JetBrains.Annotations;
 
 namespace System.Linq

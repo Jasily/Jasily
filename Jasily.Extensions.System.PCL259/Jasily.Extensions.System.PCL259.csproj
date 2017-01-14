@@ -72,7 +72,6 @@
     <Compile Include="Reflection\TypeInfoExtensions.cs" />
     <Compile Include="StringComparisonExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="Position.cs" />
     <Compile Include="Text\StringBuilderExtensions.cs" />
     <Compile Include="Threading\SynchronizationContextExtensions.cs" />
     <Compile Include="Threading\Tasks\TaskExtensions.cs" />
@@ -85,7 +84,12 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
+      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
+      <Name>Jasily.Core.PCL259</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
