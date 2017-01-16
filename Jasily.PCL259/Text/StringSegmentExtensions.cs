@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Jasily.Interfaces;
 using JetBrains.Annotations;
 
 namespace Jasily.Text
@@ -18,7 +17,7 @@ namespace Jasily.Text
         public static StringBuilder Append([NotNull] this StringBuilder builder, StringSegment segment)
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
-            segment.ThrowIfInvalid(nameof(segment));
+            segment.EnsureNotNull();
             builder.Append(segment.String, segment.StartIndex, segment.Count);
             return builder;
         }

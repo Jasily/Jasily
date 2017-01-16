@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Jasily.Interfaces;
 using JetBrains.Annotations;
 
 namespace Jasily.Text
 {
-    public struct StringSegment : IInitializedValueType, IEnumerable<char>, IEquatable<StringSegment>
+    public struct StringSegment : IEnumerable<char>, IEquatable<StringSegment>
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public StringSegment([NotNull] string str)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -17,6 +21,13 @@ namespace Jasily.Text
             this.Count = str.Length;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="startIndex"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public StringSegment([NotNull] string str, int startIndex)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -27,6 +38,14 @@ namespace Jasily.Text
             this.Count = str.Length - startIndex;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="count"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public StringSegment([NotNull] string str, int startIndex, int count)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
@@ -44,24 +63,14 @@ namespace Jasily.Text
 
         public int Count { get; }
 
-        public bool IsInitialized => this.String != null;
+        [CanBeNull]
+        public override string ToString() => this.String?.Substring(this.StartIndex, this.Count);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <exception cref="InvalidOperationException"></exception>
-        private void ThrowIfInvalid()
+        public Enumerator GetEnumerator()
         {
-            if (!this.IsInitialized) throw new InvalidOperationException($"{nameof(StringSegment)} is uninitialized.");
+            this.EnsureNotNull();
+            return new Enumerator(this);
         }
-
-        public override string ToString()
-        {
-            this.ThrowIfInvalid();
-            return this.String.Substring(this.StartIndex, this.Count);
-        }
-
-        public Enumerator GetEnumerator() => new Enumerator(this);
 
         IEnumerator<char> IEnumerable<char>.GetEnumerator() => this.GetEnumerator();
 
@@ -72,14 +81,17 @@ namespace Jasily.Text
             private readonly StringSegment segment;
             private int offset;
 
-            public Enumerator(StringSegment segment)
+            internal Enumerator(StringSegment segment)
             {
-                segment.ThrowIfInvalid(nameof(segment));
                 this.segment = segment;
                 this.offset = -1;
             }
 
-            public bool MoveNext() => this.segment.Count > ++this.offset;
+            public bool MoveNext()
+            {
+                this.segment.EnsureNotNull();
+                return this.segment.Count > ++this.offset;
+            }
 
             public void Reset() => this.offset = -1;
 
@@ -95,10 +107,23 @@ namespace Jasily.Text
         /// <summary>
         /// 
         /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        // ReSharper disable once PureAttributeOnVoidMethod
+        [Pure]
+        public void EnsureNotNull()
+        {
+            if (this.String == null) throw new InvalidOperationException($"string of {nameof(StringSegment)} is null.");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="startIndex"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void Check(int startIndex)
+        /// <exception cref="InvalidOperationException"></exception>
+        private void EnsureRange(int startIndex)
         {
+            this.EnsureNotNull();
             if (startIndex < 0 || startIndex > this.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
         }
 
@@ -108,11 +133,11 @@ namespace Jasily.Text
         /// <param name="startIndex"></param>
         /// <param name="count"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void Check(int startIndex, int count)
+        /// <exception cref="InvalidOperationException"></exception>
+        private void EnsureRange(int startIndex, int count)
         {
-            if (startIndex < 0 || startIndex > this.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (count < 0 || count > this.Count) throw new ArgumentOutOfRangeException(nameof(count));
-            if (startIndex + count > this.Count) throw new ArgumentOutOfRangeException();
+            this.EnsureRange(startIndex);
+            if (count < 0 || startIndex + count > this.Count) throw new ArgumentOutOfRangeException(nameof(count));
         }
 
         #endregion
@@ -128,8 +153,7 @@ namespace Jasily.Text
         [Pure]
         public StringSegment SubSegment(int startIndex)
         {
-            this.Check(startIndex);
-            this.ThrowIfInvalid();
+            this.EnsureRange(startIndex);
             return new StringSegment(this.String, this.StartIndex + startIndex, this.Count - startIndex);
         }
 
@@ -143,8 +167,7 @@ namespace Jasily.Text
         [Pure]
         public StringSegment SubSegment(int startIndex, int count)
         {
-            this.Check(startIndex, count);
-            this.ThrowIfInvalid();
+            this.EnsureRange(startIndex, count);
             return new StringSegment(this.String, this.StartIndex + startIndex, count);
         }
 
@@ -157,8 +180,8 @@ namespace Jasily.Text
         [Pure]
         public StringSegment Take(int count)
         {
+            this.EnsureNotNull();
             if (count < 0 || count > this.Count) throw new ArgumentOutOfRangeException(nameof(count));
-            this.ThrowIfInvalid();
             return new StringSegment(this.String, this.StartIndex, count);
         }
 
@@ -244,39 +267,88 @@ namespace Jasily.Text
         public int IndexOf([NotNull] string value, StringComparison comparison = StringComparison.Ordinal)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            this.ThrowIfInvalid();
+            this.EnsureNotNull();
             return this.InternalIndexOf(value, 0, this.Count, comparison);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         [Pure]
         public int IndexOf([NotNull] string value, int startIndex,
             StringComparison comparison = StringComparison.Ordinal)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            this.Check(startIndex);
-            this.ThrowIfInvalid();
+            this.EnsureRange(startIndex);
             return this.InternalIndexOf(value, startIndex, this.Count - startIndex, comparison);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="count"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         [Pure]
         public int IndexOf([NotNull] string value, int startIndex, int count,
             StringComparison comparison = StringComparison.Ordinal)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            this.Check(startIndex, count);
-            this.ThrowIfInvalid();
+            this.EnsureRange(startIndex, count);
             return this.InternalIndexOf(value, startIndex, count, comparison);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         [Pure]
         public bool Contains([NotNull] string value, StringComparison comparisonType = StringComparison.Ordinal)
             => this.IndexOf(value, comparisonType) > -1;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         [Pure]
         public bool Contains([NotNull] string value, int startIndex,
             StringComparison comparisonType = StringComparison.Ordinal)
             => this.IndexOf(value, startIndex, comparisonType) > -1;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="length"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         [Pure]
         public bool Contains([NotNull] string value, int startIndex, int length,
             StringComparison comparisonType = StringComparison.Ordinal)
