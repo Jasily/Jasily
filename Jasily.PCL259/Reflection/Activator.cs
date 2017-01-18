@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Jasily.Core;
 using Jasily.Reflection.Attributes;
 
 namespace Jasily.Reflection
@@ -25,7 +26,7 @@ namespace Jasily.Reflection
                 var parameters = entryCtor.GetParameters();
                 if (parameters.Length == 0)
                 {
-                    entryParams = Cache.Empty<object>.Array;
+                    entryParams = Empty<object>.Array;
                 }
                 else
                 {
@@ -61,7 +62,7 @@ namespace Jasily.Reflection
                     if (parameters.Length == 0)
                     {
                         entryCtor = ctor;
-                        entryParams = Cache.Empty<object>.Array;
+                        entryParams = Empty<object>.Array;
                     }
                     else
                     {

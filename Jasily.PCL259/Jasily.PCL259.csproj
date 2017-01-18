@@ -51,7 +51,6 @@
     <Compile Include="Reflection\Descriptors\TypeInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\Descriptor.cs" />
     <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
-    <Compile Include="Cache\Empty.cs" />
     <Compile Include="Cache\Enum.cs" />
     <Compile Include="Cache\Expression.cs" />
     <Compile Include="Cache\Funcs\ObjectFunc.cs" />
@@ -157,6 +156,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
+      <Project>{4FE68AB9-C412-4F5F-A5A8-5F55F932492F}</Project>
+      <Name>Jasily.Core.PCL259</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>

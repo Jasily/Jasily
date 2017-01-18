@@ -658,7 +658,7 @@ namespace System
         public static int[] ToUnicodeChars([NotNull] this string str)
         {
             var indexs = StringInfo.ParseCombiningCharacters(str);
-            if (indexs.Length == 0) return (int[])Enumerable.Empty<int>();
+            if (indexs.Length == 0) return Empty<int>.Array;
             var chars = new int[indexs.Length];
             for (var i = 0; i < indexs.Length; i++)
             {
