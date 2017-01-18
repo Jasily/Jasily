@@ -10,18 +10,7 @@ namespace Jasily
     {
         public static DayOfWeek ToJasilyDayOfWeek(this D dayOfWeek)
         {
-            switch (dayOfWeek)
-            {
-                case D.Sunday: return DayOfWeek.Sunday;
-                case D.Monday: return DayOfWeek.Monday;
-                case D.Tuesday: return DayOfWeek.Tuesday;
-                case D.Wednesday: return DayOfWeek.Wednesday;
-                case D.Thursday: return DayOfWeek.Thursday;
-                case D.Friday: return DayOfWeek.Friday;
-                case D.Saturday: return DayOfWeek.Saturday;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            return (DayOfWeek) (1 << (int) dayOfWeek);
         }
 
         public static DayOfWeek ToJasilyDayOfWeek([NotNull] this D[] dayOfWeeks)

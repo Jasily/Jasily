@@ -67,6 +67,7 @@
     <Compile Include="Jasily\Reflection\TestActivator.cs" />
     <Compile Include="Jasily\Text\TestStringSegment.cs" />
     <Compile Include="Jasily\Text\TestTextReplacer.cs" />
+    <Compile Include="Jasily\TestDayOfWeek.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
