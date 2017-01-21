@@ -2,25 +2,40 @@
 {
     public static class ArraySegmentExtensions
     {
-        public static bool IsValid<T>(this ArraySegment<T> segment) => segment.Array != null;
+        /// <summary>
+        /// return true if segment.Array is null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="segment"></param>
+        /// <returns></returns>
+        public static bool IsDefault<T>(this ArraySegment<T> segment) => segment.Array == null;
+
+        /// <summary>
+        /// raise InvalidOperationException if segment.Array is null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="segment"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static void ThrowIfDefault<T>(this ArraySegment<T> segment)
+        {
+            if (segment.Array == null)
+            {
+                throw new InvalidOperationException("Array of ArraySegment is null");
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="segment"></param>
-        /// <param name="paramName"></param>
-        public static void ThrowIfInvalid<T>(this ArraySegment<T> segment, string paramName)
-        {
-            if (!segment.IsValid())
-            {
-                throw new ArgumentException("ArraySegment is invalid", paramName ?? nameof(segment));
-            }
-        }
-
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static T Index<T>(this ArraySegment<T> segment, int index)
         {
-            segment.ThrowIfInvalid(nameof(segment));
+            segment.ThrowIfDefault();
             if (index < 0 || index >= segment.Count) throw new ArgumentOutOfRangeException(nameof(index));
             return segment.Array[segment.Offset + index];
         }

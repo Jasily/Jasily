@@ -141,14 +141,14 @@ namespace System.IO
         public static void Write([NotNull] this Stream stream, ArraySegment<byte> buffer)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
-            buffer.ThrowIfInvalid(nameof(buffer));
+            buffer.ThrowIfDefault();
             stream.Write(buffer.Array, buffer.Offset, buffer.Count);
         }
 
         public static Task WriteAsync([NotNull] this Stream stream, ArraySegment<byte> buffer)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
-            buffer.ThrowIfInvalid(nameof(buffer));
+            buffer.ThrowIfDefault();
             return stream.WriteAsync(buffer.Array, buffer.Offset, buffer.Count);
         }
 
