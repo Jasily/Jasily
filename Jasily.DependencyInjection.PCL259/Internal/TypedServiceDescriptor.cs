@@ -46,6 +46,7 @@ namespace Jasily.DependencyInjection.Internal
                 if (constructorCallSite == null)
                     throw new InvalidOperationException(
                         $"cannot resolve parameters for constructor of type [{this.implementationType}]");
+                return constructorCallSite;
             }
 
             var entryPoints = constructors
@@ -62,6 +63,7 @@ namespace Jasily.DependencyInjection.Internal
                 if (constructorCallSite == null)
                     throw new InvalidOperationException(
                         $"cannot resolve parameters for entry point constructor of type [{this.implementationType}]");
+                return constructorCallSite;
             }
 
             return this.ResolveBestCallSite(provider, serviceChain, constructors);
