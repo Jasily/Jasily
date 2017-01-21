@@ -90,7 +90,6 @@ namespace System.IO
                 destination.Write(buffer, 0, read);
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            cancellationToken.ThrowIfCancellationRequested();
         }
 
         public static Task CopyToAsync([NotNull] this Stream stream, Stream destination, CancellationToken cancellationToken)
