@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace System.IO
@@ -13,6 +14,7 @@ namespace System.IO
             return InternalReadBlock(reader, buffer);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int InternalReadBlock([NotNull] TextReader reader, [NotNull] char[] buffer)
             => reader.ReadBlock(buffer, 0, buffer.Length);
 
