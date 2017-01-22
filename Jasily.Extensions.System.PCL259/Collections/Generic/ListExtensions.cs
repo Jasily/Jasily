@@ -159,5 +159,43 @@ namespace System.Collections.Generic
                 }
             }
         }
+
+        /// <summary>
+        /// copy items from data source, make list equals to data source.
+        /// this method is helpful for some list which impl <see cref="Specialized.INotifyCollectionChanged"/> interface like <see cref="ObservableCollection&lt;"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="dataSource"></param>
+        public static void MakeEqualsTo<T>([NotNull] this IList<T> list, [NotNull] IList<T> dataSource)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (dataSource == null) throw new ArgumentNullException(nameof(dataSource));
+            if (ReferenceEquals(list, dataSource)) throw new InvalidOperationException();
+
+            var comparer = EqualityComparer<T>.Default;
+            var listCount = list.Count;
+            var dataSourceCount = dataSource.Count;
+            var count = Math.Min(listCount, dataSourceCount);
+            for (var i = 0; i < count; i++)
+            {
+                var item = dataSource[i];
+                if (!comparer.Equals(item, list[i])) list[i] = item;
+            }
+            if (listCount > dataSourceCount)
+            {
+                do
+                {
+                    list.RemoveAt(listCount - 1);
+                } while (--listCount > dataSourceCount);
+            }
+            else if (listCount < dataSourceCount)
+            {
+                do
+                {
+                    list.Add(dataSource[count]);
+                } while (++count < dataSourceCount);
+            }
+        }
     }
 }
