@@ -22,12 +22,6 @@ namespace System.Reflection
                 constructorArguments[i] = arg;
             }
             Expression invoker = Expression.New(constructor, constructorArguments);
-
-            if (constructor.DeclaringType != typeof(object))
-            {
-                invoker = Expression.Convert(invoker, typeof(object));
-            }
-
             return Expression.Lambda<Func<object[], object>>(invoker, lambdaArgument).Compile();
         }
 
