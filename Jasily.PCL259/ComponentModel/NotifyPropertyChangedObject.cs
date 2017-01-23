@@ -76,7 +76,7 @@ namespace Jasily.ComponentModel
         #region api 2
 
         private RefreshPropertiesMapper refreshPropertiesMapper;
-        private string[] refreshProperties;
+        private PropertyChangedEventArgs[] refreshProperties;
 
         /// <summary>
         /// the method will call PropertyChanged for each property which has [NotifyPropertyChanged]
@@ -89,8 +89,7 @@ namespace Jasily.ComponentModel
                 this.refreshProperties = properties =
                     RefreshPropertiesMapper.MapNotifyPropertyChangedAttribute(this.GetType());
             }
-
-            this.NotifyPropertyChanged(properties);
+            this.PropertyChanged?.Invoke(this, properties);
             this.PropertiesRefreshed?.Invoke(this, EventArgs.Empty);
         }
 

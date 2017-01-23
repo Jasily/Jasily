@@ -1,9 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace Jasily.ComponentModel.Editor
 {
+    internal class Property
+    {
+        [NotNull]
+        public static readonly PropertyChangedEventArgs ValuePropertyChangedEventArgs
+            = new PropertyChangedEventArgs(nameof(Property<int>.Value));
+    }
+
     public class Property<T> : IPropertyContainer, INotifyPropertyChanged
     {
         private T value;
@@ -42,7 +50,7 @@ namespace Jasily.ComponentModel.Editor
         /// <param name="value"></param>
         public void SetValue(T value) => this.value = value;
 
-        private void OnPropertyChanged() => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Value)));
+        private void OnPropertyChanged() => this.PropertyChanged?.Invoke(this, Property.ValuePropertyChangedEventArgs);
 
         public static implicit operator T(Property<T> p) => p.value;
     }

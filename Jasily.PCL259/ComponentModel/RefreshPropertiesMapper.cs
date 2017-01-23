@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Jasily.Interfaces;
@@ -9,7 +10,7 @@ namespace Jasily.ComponentModel
     public class RefreshPropertiesMapper
     {
         private readonly Type type;
-        private readonly string[] properties;
+        private readonly PropertyChangedEventArgs[] properties;
 
         private RefreshPropertiesMapper([NotNull] Type type)
         {
@@ -18,21 +19,21 @@ namespace Jasily.ComponentModel
             this.properties = MapNotifyPropertyChangedAttribute(type);
         }
 
-        internal string[] GetProperties(NotifyPropertyChangedObject obj)
+        internal PropertyChangedEventArgs[] GetProperties(NotifyPropertyChangedObject obj)
         {
             if (obj.GetType() != this.type) throw new InvalidOperationException();
 
             return this.properties;
         }
 
-        internal static string[] MapNotifyPropertyChangedAttribute(Type type)
+        internal static PropertyChangedEventArgs[] MapNotifyPropertyChangedAttribute(Type type)
         {
             return (
                 from property in type.GetRuntimeProperties()
                 let attr = property.GetCustomAttribute<NotifyPropertyChangedAttribute>()
                 where attr != null
                 orderby attr.AsOrderable().GetOrderCode()
-                select property.Name
+                select new PropertyChangedEventArgs(property.Name)
                 ).ToArray();
         }
 

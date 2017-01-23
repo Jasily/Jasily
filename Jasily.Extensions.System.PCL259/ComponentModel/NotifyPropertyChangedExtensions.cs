@@ -37,5 +37,23 @@ namespace System.ComponentModel
             foreach (var propertyName in propertyNames)
                 handler(sender, new PropertyChangedEventArgs(propertyName));
         }
+
+        public static void Invoke([NotNull] this PropertyChangedEventHandler handler, object sender,
+            [NotNull] params PropertyChangedEventArgs[] eventArgs)
+        {
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (eventArgs == null) throw new ArgumentNullException(nameof(eventArgs));
+            foreach (var property in eventArgs)
+                handler(sender, property);
+        }
+
+        public static void Invoke([NotNull] this PropertyChangedEventHandler handler, object sender,
+            [NotNull] IEnumerable<PropertyChangedEventArgs> eventArgs)
+        {
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (eventArgs == null) throw new ArgumentNullException(nameof(eventArgs));
+            foreach (var property in eventArgs)
+                handler(sender, property);
+        }
     }
 }
