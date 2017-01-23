@@ -10,6 +10,8 @@ namespace Jasily.ComponentModel.Editor
 {
     internal class MemberEditor : BaseEditor
     {
+        private ITwoWayConverter converter;
+
         public MemberEditor(string name, EditableMemberAttribute attribute)
             : base(name, attribute)
         {
@@ -54,6 +56,16 @@ namespace Jasily.ComponentModel.Editor
             }
         }
 
+        private ITwoWayConverter GetConverter(EditableMemberAttribute attr)
+        {
+            Debug.Assert(attr != null);
+            Debug.Assert(attr.Converter != null);
+
+            if (this.converter == null) this.converter = Activator.CreateInstance(attr.Converter) as ITwoWayConverter;
+            Debug.Assert(this.converter != null);
+            return this.converter;
+        }
+
         public override void WriteToObject(object vm, object obj)
         {
             Debug.Assert(vm != null && obj != null);
@@ -70,8 +82,7 @@ namespace Jasily.ComponentModel.Editor
             var attr = (EditableMemberAttribute)this.Attribute;
             if (attr.Converter != null)
             {
-                var converter = Activator.CreateInstance(attr.Converter) as ITwoWayConverter;
-                Debug.Assert(converter != null);
+                var converter = this.GetConverter(attr);
                 if (!converter.CanConvertBack(value)) return;
                 value = converter.ConvertBack(value);
             }
@@ -96,8 +107,7 @@ namespace Jasily.ComponentModel.Editor
             var attr = (EditableMemberAttribute)this.Attribute;
             if (attr.Converter != null)
             {
-                var converter = Activator.CreateInstance(attr.Converter) as IConverter;
-                Debug.Assert(converter != null);
+                var converter = this.GetConverter(attr);
                 if (!converter.CanConvert(value)) return;
                 value = converter.Convert(value);
             }
