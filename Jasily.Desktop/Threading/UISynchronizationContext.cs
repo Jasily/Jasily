@@ -27,9 +27,8 @@ namespace Jasily.Threading
         {
 #if WINDOWS_UWP || WINDOWS_DESKTOP
             SynchronizationContext sc = null;
+            var dispatcher = 0.GetDispatcher();
 #if WINDOWS_UWP
-            var dispatcher = (CoreApplication.GetCurrentView() ?? CoreApplication.MainView)?.Dispatcher;
-            if (dispatcher == null) throw new NotSupportedException();
             if (dispatcher.HasThreadAccess)
             {
                 sc = SynchronizationContext.Current;
@@ -39,7 +38,6 @@ namespace Jasily.Threading
                 await dispatcher.RunAsync(CoreDispatcherPriority.High, () => sc = SynchronizationContext.Current);
             }
 #elif WINDOWS_DESKTOP
-            var dispatcher = Application.Current.Dispatcher;
             if (dispatcher.CheckAccess())
             {
                 sc = SynchronizationContext.Current;

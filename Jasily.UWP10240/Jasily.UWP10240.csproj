@@ -138,6 +138,10 @@
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Jasily.Extensions.System.UWP10240\Jasily.Extensions.System.UWP10240.csproj">
+      <Project>{9fc18249-8402-4ba7-aac4-940e35277d07}</Project>
+      <Name>Jasily.Extensions.System.UWP10240</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

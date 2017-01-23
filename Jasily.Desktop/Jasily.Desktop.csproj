@@ -68,6 +68,10 @@
     <Compile Include="Windows\Interactivity\Behaviors\TextBlockHighLightBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.Extensions.System.Desktop\Jasily.Extensions.System.Desktop.csproj">
+      <Project>{33a2c8dd-bfbb-44d5-ab5d-8eec10dd2947}</Project>
+      <Name>Jasily.Extensions.System.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
