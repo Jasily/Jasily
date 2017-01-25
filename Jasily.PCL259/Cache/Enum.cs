@@ -54,6 +54,8 @@ namespace Jasily.Cache
 
         private static ulong ToUlong(T e) => e.ConvertUnchecked<T, ulong>();
 
+        private static T FromUlong(ulong e) => e.ConvertUnchecked<ulong, T>();
+
         static Enum()
         {
             var ti = typeof(T).GetTypeInfo();
@@ -160,5 +162,21 @@ namespace Jasily.Cache
 
         public static string ToFullString(T value, string spliter = ".")
             => string.Concat(Name, spliter ?? ".", value.ToString());
+
+        /// <summary>
+        /// and op for enum without boxing.
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        public static T And(T first, T second) => FromUlong(ToUlong(first) & ToUlong(second));
+
+        /// <summary>
+        /// or op for enum without boxing.
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        public static T Or(T first, T second) => FromUlong(ToUlong(first) | ToUlong(second));
     }
 }

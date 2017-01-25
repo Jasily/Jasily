@@ -31,11 +31,17 @@ namespace Jasily
         public static DayOfWeek Or(this D dayOfWeek, D other)
             => dayOfWeek.ToJasilyDayOfWeek().Or(other.ToJasilyDayOfWeek());
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public static DayOfWeek[] ToDayOfWeeks(this DayOfWeek dayOfWeek)
         {
             var flags = Enum<DayOfWeek>.SplitFlags(dayOfWeek);
             if (flags == null) throw new ArgumentException();
-            return flags.ToArray();
+            return flags;
         }
     }
 }
