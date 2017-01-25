@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Jasily.Core;
+using JetBrains.Annotations;
 
 namespace System.Collections.Generic
 {
@@ -84,5 +85,41 @@ namespace System.Collections.Generic
         // ReSharper disable once UnusedMethodReturnValue.Global
         public static ArraySegment<T> ToSegment<T>([NotNull] this T[] array, int offset, int count)
             => new ArraySegment<T>(array, offset, count);
+
+        public static TDest[] ToArray<TSource, TDest>([NotNull] this TSource[] array) where TSource : TDest
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array.Length == 0) return Empty<TDest>.Array;
+            var newArray = new TDest[array.Length];
+            Array.Copy(array, newArray, array.Length);
+            return newArray;
+        }
+
+        public static TDest[] CastToArray<TSource, TDest>([NotNull] this TSource[] array)
+            where TSource : class 
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array.Length == 0) return Empty<TDest>.Array;
+            var newArray = new TDest[array.Length];
+            for (var i = 0; i < array.Length; i++)
+            {
+                newArray[i] = (TDest)(object)array[i];
+            }
+            return newArray;
+        }
+
+        public static TOutput[] ConvertToArray<TInput, TOutput>([NotNull] this TInput[] array,
+            [NotNull] Func<TInput, TOutput> converter)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (converter == null) throw new ArgumentNullException(nameof(converter));
+            if (array.Length == 0) return Empty<TOutput>.Array;
+            var newArray = new TOutput[array.Length];
+            for (var i = 0; i < array.Length; i++)
+            {
+                newArray[i] = converter(array[i]);
+            }
+            return newArray;
+        }
     }
 }

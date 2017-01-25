@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Jasily.Core;
 using Jasily.Linq.Expressions.Cache;
 using JetBrains.Annotations;
 
@@ -14,6 +15,11 @@ namespace Jasily.Cache
         /// if count of enum items large then this count, then use Map to get item.
         /// </summary>
         private const int Threshold = 10;
+        /// <summary>
+        /// provide (z => z.Item) cache.
+        /// </summary>
+        private static readonly Func<EnumItem, T> ItemSelector = z => z.Item;
+        private static readonly Func<EnumItem, string> EnumNameSelector = z => z.EnumName;
         // ReSharper disable once StaticMemberInGenericType
         private static readonly string Name;
         // ReSharper disable once StaticMemberInGenericType
@@ -76,7 +82,7 @@ namespace Jasily.Cache
         /// <param name="e"></param>
         /// <param name="completeMatch">if set true, if not complete match, will return null.</param>
         /// <returns></returns>
-        private static IEnumerable<EnumItem> SplitFlagItems(T e, bool completeMatch)
+        private static EnumItem[] SplitFlagItems(T e, bool completeMatch)
         {
             if (!IsFlags) throw new InvalidOperationException();
 
@@ -90,7 +96,7 @@ namespace Jasily.Cache
                 }
                 else
                 {
-                    return completeMatch ? null : Enumerable.Empty<EnumItem>();
+                    return completeMatch ? null : Empty<EnumItem>.Array;
                 }
             }
 
@@ -105,7 +111,7 @@ namespace Jasily.Cache
                     matchs.Insert(0, item);
                 }
             }
-            return val != 0 && completeMatch ? null : matchs;
+            return val != 0 && completeMatch ? null : matchs.ToArray();
         }
 
         public static bool IsDefined(T e) => TryGetEnumItem(e) != null;
@@ -117,13 +123,13 @@ namespace Jasily.Cache
         /// <param name="completeMatch"></param>
         /// <returns></returns>
         [CanBeNull]
-        public static IEnumerable<T> SplitFlags(T e, bool completeMatch = true)
-            => SplitFlagItems(e, completeMatch)?.Select(z => z.Item);
+        public static T[] SplitFlags(T e, bool completeMatch = true)
+            => SplitFlagItems(e, completeMatch)?.ConvertToArray(ItemSelector);
 
         public static string ToString(T e)
         {
             var value = IsFlags
-                ? SplitFlagItems(e, true)?.Select(z => z.EnumName).JoinAsString(", ")
+                ? SplitFlagItems(e, true)?.Select(EnumNameSelector).JoinAsString(", ")
                 : TryGetEnumItem(e)?.EnumName;
             return value ?? e.ToString();
         }
@@ -132,7 +138,7 @@ namespace Jasily.Cache
         /// get all enum from T.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<T> All() => Items.Select(z => z.Item);
+        public static T[] All() => Items.ConvertToArray(ItemSelector);
 
         public static bool TryParse([NotNull] string value, bool ignoreCase, out T result)
         {
