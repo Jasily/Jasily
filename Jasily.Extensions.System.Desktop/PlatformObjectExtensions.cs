@@ -13,7 +13,7 @@ namespace System
         /// <param name="_"></param>
         /// <returns></returns>
         [NotNull]
-        public static Dispatcher GetDispatcher<T>([CanBeNull] this T _)
+        public static Dispatcher GetUIDispatcher<T>([CanBeNull] this T _)
             => Application.Current.Dispatcher;
     }
 }

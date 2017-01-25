@@ -27,7 +27,7 @@ namespace Jasily.Threading
         {
 #if WINDOWS_UWP || WINDOWS_DESKTOP
             SynchronizationContext sc = null;
-            var dispatcher = 0.GetDispatcher();
+            var dispatcher = 0.GetUIDispatcher();
 #if WINDOWS_UWP
             if (dispatcher.HasThreadAccess)
             {

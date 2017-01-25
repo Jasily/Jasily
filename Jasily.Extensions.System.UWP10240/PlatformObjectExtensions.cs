@@ -7,7 +7,7 @@ namespace System
     public static class PlatformObjectExtensions
     {
         [NotNull]
-        public static CoreDispatcher GetDispatcher<T>([CanBeNull] this T _)
+        public static CoreDispatcher GetUIDispatcher<T>([CanBeNull] this T _)
             => (CoreApplication.GetCurrentView() ?? CoreApplication.MainView).Dispatcher;
     }
 }
