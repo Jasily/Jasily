@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Jasily.Collections.Generic;
+using Jasily.ComponentModel;
 using JetBrains.Annotations;
 
 namespace Jasily
 {
-    public class KeySelector
+    public static class KeySelector
     {
         #region comparer
 
@@ -22,6 +24,18 @@ namespace Jasily
             {
             }
         }
+
+        #endregion
+
+        #region property
+
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
+            [NotNull] Expression<Func<T, TProperty>> selector)
+            => PropertySelector<T>.From(selector);
+
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
+            [NotNull] Expression<Func<T, TProperty>> selector)
+            => PropertySelector<T>.From(selector);
 
         #endregion
     }

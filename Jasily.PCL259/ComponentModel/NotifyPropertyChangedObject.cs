@@ -17,7 +17,7 @@ namespace Jasily.ComponentModel
         protected void NotifyPropertyChanged<T>([NotNull] Expression<Func<T, object>> propertySelector)
         {
             if (propertySelector == null) throw new ArgumentNullException(nameof(propertySelector));
-            var propertyName = PropertySelector.SelectProperty(propertySelector);
+            var propertyName = KeySelector.SelectProperty(propertySelector);
             this.PropertyChanged?.Invoke(this, propertyName);
         }
 
@@ -117,7 +117,7 @@ namespace Jasily.ComponentModel
 
         public void MarkPropertyForEndRefresh<T>(Expression<Func<T, object>> propertySelector)
         {
-            var propertyName = PropertySelector.SelectProperty(propertySelector);
+            var propertyName = KeySelector.SelectProperty(propertySelector);
             this.MarkPropertyForEndRefresh(propertyName);
         }
 

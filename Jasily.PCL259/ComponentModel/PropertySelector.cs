@@ -78,15 +78,4 @@ namespace Jasily.ComponentModel
 
         public override string ToString() => this.name ?? string.Empty;
     }
-
-    public static class PropertySelector
-    {
-        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
-            [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.From(selector);
-
-        public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
-            [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.From(selector);
-    }
 }
