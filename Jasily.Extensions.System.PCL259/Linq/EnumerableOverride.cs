@@ -105,7 +105,8 @@ namespace System.Linq
         public static bool Any([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.GetEnumerator().MoveNext();
+            var itor = source.GetEnumerator();
+            using (itor as IDisposable) return itor.MoveNext();
         }
 
         #endregion
@@ -118,7 +119,8 @@ namespace System.Linq
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        internal static int TryGetCount<T>([NotNull] this IEnumerable<T> source)
+        [PublicAPI]
+        public static int TryGetCount<T>([NotNull] this IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -132,12 +134,14 @@ namespace System.Linq
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        internal static int TryGetCount([NotNull] this IEnumerable source)
+        [PublicAPI]
+        public static int TryGetCount([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return (source as ICollection)?.Count ?? -1;
         }
 
+        [PublicAPI]
         public static int Count([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -147,11 +151,11 @@ namespace System.Linq
 
             var count = 0;
             var itor = source.GetEnumerator();
-            while (itor.MoveNext()) count++;
-            (itor as IDisposable)?.Dispose();
+            using (itor as IDisposable) while (itor.MoveNext()) count++;
             return count;
         }
 
+        [PublicAPI]
         public static long LongCount([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -161,8 +165,7 @@ namespace System.Linq
 
             var count = 0L;
             var itor = source.GetEnumerator();
-            while (itor.MoveNext()) count++;
-            (itor as IDisposable)?.Dispose();
+            using (itor as IDisposable) while (itor.MoveNext()) count++;
             return count;
         }
 
