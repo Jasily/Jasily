@@ -515,5 +515,42 @@ namespace System.Linq
             }
             return i - arrayIndex;
         }
+
+        public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count <= 0) return Empty<T>.Array;
+
+            var array = source as T[];
+            if (array != null)
+            {
+                return array.Length < count ? array.AsReadOnly() : array.Skip(count - array.Length);
+            }
+            var list = source as List<T>;
+            if (list != null)
+            {
+                return list.Count < count ? list.AsReadOnly() : list.Skip(count - list.Count);
+            }
+
+            var q = new Queue<T>(count);
+            foreach (var item in source)
+            {
+                if (q.Count == count)
+                    q.Dequeue();
+                q.Enqueue(item);
+            }
+            return q.AsReadOnly();
+        }
+
+        public static IEnumerable<T> Pipe<T>([NotNull] this IEnumerable<T> source, [NotNull]  Action<T> action)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            foreach (var element in source)
+            {
+                action(element);
+                yield return element;
+            }
+        }
     }
 }

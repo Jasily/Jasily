@@ -41,6 +41,7 @@
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Funcs\FuncTemplate.cs" />
     <Compile Include="Collections\Generic\KeySelectorComparer.cs" />
+    <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Net\WebResult.cs" />
     <Compile Include="Net\WebResultExtensions.cs" />
