@@ -69,12 +69,21 @@
     <Compile Include="Jasily\Text\TestStringSegment.cs" />
     <Compile Include="Jasily\Text\TestTextReplacer.cs" />
     <Compile Include="Jasily\TestDayOfWeek.cs" />
+    <Compile Include="Jasily\TestSystemCall.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jasily.DependencyInjection.PCL259\Jasily.DependencyInjection.PCL259.csproj">
       <Project>{5c6dcff1-1e53-4fda-9fb6-8239ab485eb1}</Project>
       <Name>Jasily.DependencyInjection.PCL259</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.Desktop\Jasily.Desktop.csproj">
+      <Project>{0a825a8a-522a-4a51-8301-fd903bb07968}</Project>
+      <Name>Jasily.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.Extensions.System.Desktop\Jasily.Extensions.System.Desktop.csproj">
+      <Project>{33a2c8dd-bfbb-44d5-ab5d-8eec10dd2947}</Project>
+      <Name>Jasily.Extensions.System.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</Project>
