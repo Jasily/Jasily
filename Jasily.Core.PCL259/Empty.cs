@@ -11,18 +11,19 @@ namespace Jasily.Core
         /// get a empty array.
         /// </summary>
         [NotNull]
-        public static T[] Array { get; } = (T[])E.Empty<T>();
+        public static T[] Array { get; }
 
         /// <summary>
         /// get a empty array.
         /// </summary>
         [NotNull]
-        public static IEnumerable<T> Enumerable { get; } = E.Empty<T>();
+        public static IEnumerable<T> Enumerable { get; }
 
         static Empty()
         {
+            Array = (T[])E.Empty<T>();
             Debug.Assert(Array != null);
-            Debug.Assert(Enumerable != null);
+            Enumerable = Array;
         }
     }
 }

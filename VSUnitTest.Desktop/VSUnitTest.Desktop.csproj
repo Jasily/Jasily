@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="CodeTimer.cs" />
     <Compile Include="CodeTimerResult.cs" />
+    <Compile Include="Jasily.Core\TestEmpty.cs" />
     <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
     <Compile Include="Jasily.Extensions.System\Collections\Generic\TestListExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Reflection\TestConstructorInfoExtensions.cs" />
@@ -73,6 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
+      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
+      <Name>Jasily.Core.PCL259</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.DependencyInjection.PCL259\Jasily.DependencyInjection.PCL259.csproj">
       <Project>{5c6dcff1-1e53-4fda-9fb6-8239ab485eb1}</Project>
       <Name>Jasily.DependencyInjection.PCL259</Name>
