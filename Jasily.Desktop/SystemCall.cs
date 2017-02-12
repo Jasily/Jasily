@@ -11,7 +11,7 @@ namespace Jasily
         private const string CMDFileName = "cmd.exe";
 
         [NotNull]
-        public static Process CreateProcess([NotNull] string command)
+        private static Process CreateProcess([NotNull] string command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             return new Process
@@ -21,8 +21,7 @@ namespace Jasily
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = CMDFileName,
                     Arguments = "/C " + command,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true
+                    UseShellExecute = false
                 }
             };
         }
@@ -50,6 +49,7 @@ namespace Jasily
         {
             using (var process = CreateProcess(command))
             {
+                process.StartInfo.RedirectStandardOutput = true;
                 var sb = new StringBuilder();
                 process.OutputDataReceived += (sender, args) =>
                 {
@@ -73,6 +73,8 @@ namespace Jasily
                 this.ExitCode = exitCode;
                 this.Output = output;
             }
+
+            public override string ToString() => this.Output;
         }
     }
 }

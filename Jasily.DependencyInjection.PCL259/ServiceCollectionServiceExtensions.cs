@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Jasily.DependencyInjection.Internal;
 using JetBrains.Annotations;
 
@@ -8,6 +9,18 @@ namespace Jasily.DependencyInjection
     public static class ServiceCollectionServiceExtensions
     {
         #region Transient
+
+        public static IList<IServiceDescriptor> AddTransientForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> services,
+            [CanBeNull] string serviceName, [NotNull] Type implementationType)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
+            foreach (var serviceType in implementationType.GetTypeInfo().ImplementedInterfaces)
+            {
+                Add(services, serviceType, serviceName, ServiceLifetime.Transient, implementationType);
+            }
+            return services;
+        }
 
         public static IList<IServiceDescriptor> AddTransient([NotNull] this IList<IServiceDescriptor> services,
             [NotNull] Type serviceType, [CanBeNull] string serviceName,
@@ -66,6 +79,18 @@ namespace Jasily.DependencyInjection
 
         #region Scoped
 
+        public static IList<IServiceDescriptor> AddScopedForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> services,
+            [CanBeNull] string serviceName, [NotNull] Type implementationType)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
+            foreach (var serviceType in implementationType.GetTypeInfo().ImplementedInterfaces)
+            {
+                Add(services, serviceType, serviceName, ServiceLifetime.Scoped, implementationType);
+            }
+            return services;
+        }
+
         public static IList<IServiceDescriptor> AddScoped([NotNull] this IList<IServiceDescriptor> services,
             [NotNull] Type serviceType, [CanBeNull] string serviceName,
             [NotNull] Type implementationType)
@@ -121,6 +146,18 @@ namespace Jasily.DependencyInjection
         #endregion
 
         #region Singleton
+
+        public static IList<IServiceDescriptor> AddSingletonForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> services,
+            [CanBeNull] string serviceName, [NotNull] Type implementationType)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
+            foreach (var serviceType in implementationType.GetTypeInfo().ImplementedInterfaces)
+            {
+                Add(services, serviceType, serviceName, ServiceLifetime.Singleton, implementationType);
+            }
+            return services;
+        }
 
         public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> services,
             [NotNull] Type serviceType, [CanBeNull] string serviceName, [NotNull] Type implementationType)
