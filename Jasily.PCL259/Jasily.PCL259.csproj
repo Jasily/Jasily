@@ -130,7 +130,6 @@
     <Compile Include="Net\Sockets\Port.cs" />
     <Compile Include="ObjectContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReachableException.cs" />
     <Compile Include="Reflection\Attributes\EntryAttribute.cs" />
     <Compile Include="Reflection\Activator.cs" />
     <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />

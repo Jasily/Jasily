@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jasily
+namespace Jasily.Core.Exceptions
 {
     /// <summary>
     /// current code path should never reachable
