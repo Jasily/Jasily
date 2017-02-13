@@ -101,6 +101,7 @@
     <Compile Include="Diagnostics\DataCheck.cs" />
     <Compile Include="KeySelector.cs" />
     <Compile Include="Text\IStringFinderSource.cs" />
+    <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringFinder.cs" />
     <Compile Include="Text\TextReplacer.cs" />
     <Compile Include="Utils\DateTimeHelper.cs" />

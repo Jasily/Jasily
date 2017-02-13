@@ -10,14 +10,15 @@ namespace Jasily
     public struct ValueReleaser<T> : IDisposable
     {
         public event TypedEventHandler<ValueReleaser<T>, T> ReleaseRaised;
-        private readonly T state;
 
-        public ValueReleaser(bool isAcquired, T state = default(T))
+        public ValueReleaser(bool isAcquired, T acquiredObject = default(T))
         {
             ReleaseRaised = null;
             this.IsAcquired = isAcquired;
-            this.state = state;
+            this.AcquiredObject = acquiredObject;
         }
+
+        public T AcquiredObject { get; }
 
         public bool IsAcquired { get; }
 
@@ -31,13 +32,13 @@ namespace Jasily
         public ValueReleaser<T> AcquiredCallback([NotNull] Action<T> action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
-            if (this.IsAcquired) action(this.state);
+            if (this.IsAcquired) action(this.AcquiredObject);
             return this;
         }
 
         public void Dispose()
         {
-            if (this.IsAcquired) this.ReleaseRaised?.Invoke(this, this.state);
+            if (this.IsAcquired) this.ReleaseRaised?.Invoke(this, this.AcquiredObject);
         }
     }
 }
