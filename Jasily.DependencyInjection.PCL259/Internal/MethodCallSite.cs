@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 
 namespace Jasily.DependencyInjection.Internal
 {
@@ -57,7 +56,7 @@ namespace Jasily.DependencyInjection.Internal
             }
             catch (Exception ex) when (ex.InnerException != null)
             {
-                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                ex.InnerException.ReThrow();
                 throw;
             }
         }

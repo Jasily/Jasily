@@ -22,7 +22,7 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Transient, new TypeDescriptor(implementationType));
+            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Transient, new TypeDescriptor(implementationType));
         }
 
         public static IList<IServiceDescriptor> AddTransient([NotNull] this IList<IServiceDescriptor> collection,
@@ -32,7 +32,7 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Transient, implementationFactory);
+            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Transient, implementationFactory);
         }
 
         public static IList<IServiceDescriptor> AddTransient<TService, TImplementation>(
@@ -65,7 +65,7 @@ namespace Jasily.DependencyInjection
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return AddTransient(collection, typeof(TService), serviceName, implementationFactory);
+            return collection.AddTransient(typeof(TService), serviceName, implementationFactory);
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Scoped, new TypeDescriptor(implementationType));
+            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Scoped, new TypeDescriptor(implementationType));
         }
 
         public static IList<IServiceDescriptor> AddScoped(
@@ -94,7 +94,7 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Scoped, implementationFactory);
+            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Scoped, implementationFactory);
         }
 
         public static IList<IServiceDescriptor> AddScoped<TService, TImplementation>(
@@ -142,7 +142,7 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Singleton, new TypeDescriptor(implementationType));
+            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Singleton, new TypeDescriptor(implementationType));
         }
 
         public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> collection,
@@ -151,7 +151,8 @@ namespace Jasily.DependencyInjection
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return Add(collection, serviceType, serviceName, ServiceLifetime.Singleton, implementationFactory);
+            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Singleton,
+                implementationFactory);
         }
 
         public static IList<IServiceDescriptor> AddSingleton<TService, TImplementation>(
@@ -165,25 +166,25 @@ namespace Jasily.DependencyInjection
 
         public static IList<IServiceDescriptor> AddSingleton<TService>(
             [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName)
-            => AddSingleton(collection, serviceName, typeof(TService));
+            => AddSingleton(collection, typeof(TService), serviceName);
 
         public static IList<IServiceDescriptor> AddSingleton<TService>(
             [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TService> implementationFactory)
+            [NotNull] Func<IServiceProvider, TService> implementationFactory) where TService : class
             => AddSingleton(collection, typeof(TService), serviceName, implementationFactory);
 
         public static IList<IServiceDescriptor> AddSingleton<TService, TImplementation>(
             [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
             [NotNull] Func<IServiceProvider, TImplementation> implementationFactory)
-            where TImplementation : TService
+            where TImplementation : class, TService
             => AddSingleton(collection, typeof(TService), serviceName, implementationFactory);
 
-        public static IList<IServiceDescriptor> AddSingleton<TService>(
+        public static IList<IServiceDescriptor> AddSingletonInstance<TService>(
             [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
             [CanBeNull] TService implementationInstance)
-            => AddSingleton(collection, typeof(TService), serviceName, implementationInstance);
+            => AddSingletonInstance(collection, typeof(TService), serviceName, implementationInstance);
 
-        public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> collection,
+        public static IList<IServiceDescriptor> AddSingletonInstance([NotNull] this IList<IServiceDescriptor> collection,
             [NotNull] Type serviceType, [CanBeNull] string serviceName, [CanBeNull] object implementationInstance)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
@@ -217,7 +218,7 @@ namespace Jasily.DependencyInjection
             return collection;
         }
 
-        private static IList<IServiceDescriptor> Add(
+        private static IList<IServiceDescriptor> InternalAddType(
             [NotNull] IList<IServiceDescriptor> collection,
             [NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
             [NotNull] TypeDescriptor implementationTypeDescriptor)
@@ -227,7 +228,7 @@ namespace Jasily.DependencyInjection
             return collection;
         }
 
-        private static IList<IServiceDescriptor> Add(
+        private static IList<IServiceDescriptor> InternalAddFactory(
             [NotNull] IList<IServiceDescriptor> collection,
             [NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
             [NotNull] Func<IServiceProvider, object> implementationFactory)

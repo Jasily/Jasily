@@ -12,18 +12,20 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection
         public void TestMethod1()
         {
             var list = ServiceProvider.CreateServiceCollection();
-            list.AddSingleton("key", "5");
-            list.AddSingleton("value", 8);
-            list.AddTransient<KeyValuePair<string, int>>(null);
+            var obj1 = "5";
+            var obj2 = new object();
+            list.AddSingletonInstance("key", obj1);
+            list.AddSingletonInstance("value", obj2);
+            list.AddTransient<KeyValuePair<string, object>>(null);
             var provider = ServiceProvider.Build(list, new ServiceProviderSettings { EnableDebug = true });
             foreach (var _ in Enumerable.Range(0, 10))
             {
-                var service = provider.GetService(typeof(KeyValuePair<string, int>));
+                var service = provider.GetService(typeof(KeyValuePair<string, object>));
                 Assert.IsNotNull(service);
-                Assert.IsInstanceOfType(service, typeof(KeyValuePair<string, int>));
-                var kvp = (KeyValuePair<string, int>)service;
-                Assert.AreEqual("5", kvp.Key);
-                Assert.AreEqual(8, kvp.Value);
+                Assert.IsInstanceOfType(service, typeof(KeyValuePair<string, object>));
+                var kvp = (KeyValuePair<string, object>)service;
+                Assert.AreEqual(obj1, kvp.Key);
+                Assert.AreEqual(obj2, kvp.Value);
             }
         }
     }
