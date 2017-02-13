@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CodeTimer.cs" />
+    <Compile Include="CodeTimerHelper.cs" />
     <Compile Include="CodeTimerResult.cs" />
     <Compile Include="Jasily.Core\TestEmpty.cs" />
     <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />

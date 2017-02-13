@@ -13,7 +13,7 @@ namespace Jasily.Reflection.Descriptors.Internal
     public abstract class MemberInfoDescriptor<T> : Descriptor<T> where T : MemberInfo
     {
         private Attribute[] inheritAttributes;
-        private Attribute[] notInheritAttributes;
+        private Attribute[] declaredAttributes;
 
         internal MemberInfoDescriptor([NotNull] T obj) : base(obj)
         {
@@ -29,11 +29,12 @@ namespace Jasily.Reflection.Descriptors.Internal
             }
             else
             {
-                return this.notInheritAttributes ?? (this.notInheritAttributes =
+                return this.declaredAttributes ?? (this.declaredAttributes =
                     this.DescriptedObject.GetCustomAttributes<Attribute>(false).ToArray());
             }
         }
 
-        public bool HasCustomAttribute<TA>() where TA : Attribute => this.CustomAttributes().OfType<TA>().Any();
+        public bool HasCustomAttribute<TA>(bool inherit = true) where TA : Attribute
+            => this.CustomAttributes(inherit).OfType<TA>().Any();
     }
 }

@@ -157,15 +157,7 @@ namespace VSUnitTest.Desktop.Jasily.Reflection.Descriptors
                     .First()
                     .HasCustomAttribute<DebuggerDisplayAttribute>();
             Action action2 = () => typeDescriptor.RuntimeMethods().First().HasCustomAttribute<DebuggerDisplayAttribute>();
-            action2();
-            using (var timer = new CodeTimer())
-            {
-                var r1 = timer.Test(1000000, action1);
-                var r2 = timer.Test(1000000, action2);
-                Assert.IsTrue(r2.UnitTimeByNS() * 10 < r1.UnitTimeByNS());
-                Console.WriteLine(r1);
-                Console.WriteLine(r2);
-            }
+            CodeTimerHelper.FastThen(action2, action1, 10, 1000 * 1000);
         }
     }
 }

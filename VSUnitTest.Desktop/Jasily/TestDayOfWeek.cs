@@ -62,12 +62,8 @@ namespace VSUnitTest.Desktop.Jasily
                 Assert.AreEqual(JDayOfWeek.Friday, DayOfWeek.Friday.ToJasilyDayOfWeek());
                 Assert.AreEqual(JDayOfWeek.Saturday, DayOfWeek.Saturday.ToJasilyDayOfWeek());
             };
-            using (var timer = new CodeTimer())
-            {
-                var r1 = timer.Test(10000000, action1);
-                var r2 = timer.Test(10000000, action2);
-                Assert.IsTrue(r2.CpuCycles < r1.CpuCycles); // should fast then switch-case.
-            }
+            // should fast then switch-case.
+            CodeTimerHelper.FastThen(action2, action1, 1000000);
         }
     }
 }
