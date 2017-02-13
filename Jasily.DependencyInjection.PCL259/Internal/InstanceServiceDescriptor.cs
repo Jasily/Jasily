@@ -17,7 +17,7 @@ namespace Jasily.DependencyInjection.Internal
 
         public Expression ResolveExpression(ParameterExpression provider)
             => this.ImplementationInstance == null
-                ? Cache.Expression.Null
+                ? Core.Cached.Expression.Null
                 : Expression.Constant(this.ImplementationInstance, this.ServiceType);
 
         public object ResolveValue(ServiceProvider provider) => this.ImplementationInstance;

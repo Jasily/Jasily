@@ -54,7 +54,6 @@
     <Compile Include="Reflection\Descriptors\Descriptor.cs" />
     <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
     <Compile Include="Cache\Enum.cs" />
-    <Compile Include="Cache\Expression.cs" />
     <Compile Include="Cache\Funcs\ObjectFunc.cs" />
     <Compile Include="Cache\Funcs\StringFunc.cs" />
     <Compile Include="Cache\Internal\Default.cs" />

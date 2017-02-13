@@ -38,6 +38,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cached\Expression.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="Exceptions\ReachableException.cs" />
     <Compile Include="Position.cs" />

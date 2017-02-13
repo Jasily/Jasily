@@ -8,16 +8,18 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class TypedServiceDescriptor : ServiceDescriptor, IServiceCallSiteProvider
+    internal class TypedServiceDescriptor : ServiceDescriptor, IServiceCallSiteProvider, IValueStore
     {
+        private readonly TypeDescriptor implementationTypeDescriptor;
         private readonly Type implementationType;
 
         public TypedServiceDescriptor([NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
-            [NotNull] Type implementationType)
+            [NotNull] TypeDescriptor implementationTypeDescriptor)
             : base(serviceType, serviceName, lifetime)
         {
-            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            this.implementationType = implementationType;
+            this.implementationTypeDescriptor = implementationTypeDescriptor;
+            if (implementationTypeDescriptor == null) throw new ArgumentNullException(nameof(implementationTypeDescriptor));
+            this.implementationType = implementationTypeDescriptor.ImplementationType;
         }
 
         private IServiceCallSite ResolveConstructorCallSite(ServiceProvider provider, ISet<Service> serviceChain,
@@ -121,5 +123,10 @@ namespace Jasily.DependencyInjection.Internal
                     : new ConstructorCallSite(bestConstructor, parameterCallSites);
             }
         }
+
+        public void Dispose() => this.implementationTypeDescriptor.Dispose();
+
+        public object GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
+            => this.implementationTypeDescriptor.GetValue(service, provider, creator);
     }
 }

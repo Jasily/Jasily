@@ -15,7 +15,7 @@ namespace Jasily.DependencyInjection.Internal
         }
 
         public string ServiceName { get; }
-
+        
         public Type ServiceType { get; }
 
         public ServiceLifetime Lifetime { get; }

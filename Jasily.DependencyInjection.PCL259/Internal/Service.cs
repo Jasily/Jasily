@@ -8,10 +8,9 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class Service : IValueStore
+    internal class Service : IDisposable
     {
-        private bool isValueCreated;
-        private object value;
+        private readonly ValueStore valueStore = new ValueStore();
         private Func<ServiceProvider, object> instanceAccessor;
         private TypeInfo serviceTypeInfo;
 
@@ -32,22 +31,6 @@ namespace Jasily.DependencyInjection.Internal
         public TypeInfo ServiceTypeInfo
             => this.serviceTypeInfo ?? (this.serviceTypeInfo = this.ServiceType.GetTypeInfo());
 
-        object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
-        {
-            if (this.isValueCreated) return this.value;
-
-            lock (this)
-            {
-                if (!this.isValueCreated)
-                {
-                    this.value = creator(provider);
-                    this.isValueCreated = true;
-                }
-            }
-
-            return this.value;
-        }
-
         public object GetValue(ServiceProvider provider)
         {
             if (this.instanceAccessor == null)
@@ -55,23 +38,21 @@ namespace Jasily.DependencyInjection.Internal
                 Interlocked.CompareExchange(ref this.instanceAccessor, this.CreateServiceAccessor(provider), null);
             }
 
-            if (this.Descriptor.Lifetime != ServiceLifetime.Transient)
-            {
-                var store = this.Descriptor.Lifetime == ServiceLifetime.Singleton
-                    ? this
-                    : (IValueStore) provider;
-
-                return store.GetValue(this, provider, this.instanceAccessor);
-            }
-            else
+            if (this.Descriptor.Lifetime == ServiceLifetime.Transient)
             {
                 return this.instanceAccessor(provider);
             }
+
+            var store = this.Descriptor.Lifetime == ServiceLifetime.Singleton
+                    ? (this.Descriptor as IValueStore ?? this.valueStore)
+                    : provider;
+
+            return store.GetValue(this, provider, this.instanceAccessor);
         }
 
         public IServiceCallSite GetCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
-            var callSite = (this.Descriptor as IServiceCallSite) ??
+            var callSite = this.Descriptor as IServiceCallSite ??
                            (this.Descriptor as IServiceCallSiteProvider)?.CreateServiceCallSite(provider, serviceChain);
             if (callSite != null) return callSite;
 
@@ -110,11 +91,6 @@ namespace Jasily.DependencyInjection.Internal
 
         public override string ToString() => $"{this.ServiceType.Name} {this.ServiceName}";
 
-        public void Dispose()
-        {
-            this.isValueCreated = false;
-            (this.value as IDisposable)?.Dispose();
-            this.value = null;
-        }
+        public void Dispose() => (this.Descriptor as IDisposable)?.Dispose();
     }
 }

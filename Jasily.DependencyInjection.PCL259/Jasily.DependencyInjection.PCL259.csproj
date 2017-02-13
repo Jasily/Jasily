@@ -53,8 +53,10 @@
     <Compile Include="Internal\ServiceDescriptor.cs" />
     <Compile Include="Internal\ServiceEntry.cs" />
     <Compile Include="Internal\ServiceResolver.cs" />
+    <Compile Include="Internal\TypeDescriptor.cs" />
     <Compile Include="Internal\TypedServiceDescriptor.cs" />
     <Compile Include="Internal\TypedServiceEntry.cs" />
+    <Compile Include="Internal\ValueStore.cs" />
     <Compile Include="IServiceDescriptor.cs" />
     <Compile Include="MethodInvoker.cs" />
     <Compile Include="ResolveLevel.cs" />
@@ -77,6 +79,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
+      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
+      <Name>Jasily.Core.PCL259</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
