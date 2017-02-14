@@ -53,7 +53,10 @@ namespace Jasily.DependencyInjection
 
             var service = this.ResolveService(serviceType, serviceName);
             if (service == null) return ResolveResult.None;
-            var value = service.GetValue(this);
+            var provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
+                ? this.RootProvider
+                : this;
+            var value = service.GetValue(provider);
             return new ResolveResult(value);
         }
 
@@ -66,7 +69,6 @@ namespace Jasily.DependencyInjection
                 var serviceEntry = this.RootProvider.ServiceResolver.ResolveServiceEntry(request, level);
                 var service = serviceEntry?.Resolve(request, level);
                 if (service != null) return service;
-
             }
             return null;
         }

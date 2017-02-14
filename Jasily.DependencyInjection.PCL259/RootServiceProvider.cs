@@ -22,7 +22,8 @@ namespace Jasily.DependencyInjection
             if (serviceDescriptors == null) throw new ArgumentNullException(nameof(serviceDescriptors));
             if (mode == null) throw new ArgumentNullException(nameof(mode));
 
-            if (setting.CompileAfterCallCount == null) setting.CompileAfterCallCount = 2;
+            if (setting.CompileAfterCallCount == null)
+                setting.CompileAfterCallCount = ServiceProviderSettings.DefaultCompileAfterCallCount;
             this.Setting = setting;
 
             this.ResolveMode = mode.OrderBy(z => (int)z).ToArray();
@@ -44,6 +45,4 @@ namespace Jasily.DependencyInjection
             this.ServiceResolver.Dispose();
         }
     }
-
-
 }
