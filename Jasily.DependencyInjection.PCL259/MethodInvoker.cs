@@ -1,6 +1,6 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection
@@ -28,7 +28,7 @@ namespace Jasily.DependencyInjection
             return (TResult) this.InternalInvoke(obj, methodInfo);
         }
 
-        public object InternalInvoke(object obj, [NotNull] MethodInfo methodInfo)
+        private object InternalInvoke(object obj, [NotNull] MethodInfo methodInfo)
         {
             var parameters = this.ResolveParameters(methodInfo);
             object value;
@@ -38,7 +38,8 @@ namespace Jasily.DependencyInjection
             }
             catch (TargetInvocationException e)
             {
-                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                Debug.Assert(e.InnerException != null);
+                e.InnerException.ReThrow();
                 throw;
             }
             return value;

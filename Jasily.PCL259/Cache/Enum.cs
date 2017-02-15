@@ -8,47 +8,64 @@ using JetBrains.Annotations;
 
 namespace Jasily.Cache
 {
-    public static class Enum<T>
-        where T : struct, IComparable, IFormattable
+    using E = System.Enum;
+
+    internal static class Enum
     {
         /// <summary>
         /// if count of enum items large then this count, then use Map to get item.
         /// </summary>
-        private const int Threshold = 10;
-        /// <summary>
-        /// provide (z => z.Item) cache.
-        /// </summary>
-        private static readonly Func<EnumItem, T> ItemSelector = z => z.Item;
-        private static readonly Func<EnumItem, string> EnumNameSelector = z => z.EnumName;
-        // ReSharper disable once StaticMemberInGenericType
-        private static readonly string Name;
-        // ReSharper disable once StaticMemberInGenericType
-        private static readonly bool IsFlags;
-        private static readonly EnumItem[] Items;
-        private static readonly Dictionary<ulong, EnumItem> ItemsMap;
+        internal const int Threshold = 10;
 
-        private class EnumItem
+        internal class EnumItem
         {
+            internal static readonly Func<EnumItem, string> EnumNameSelector = z => z.EnumName;
+
             /// <summary>
             /// the actual member value that enum define.
             /// </summary>
             internal readonly ulong EnumValue;
 
             /// <summary>
-            /// 
-            /// </summary>
-            internal readonly T Item;
-
-            /// <summary>
             /// cached name of enum.
             /// </summary>
             internal readonly string EnumName;
 
-            public EnumItem(ulong value, T item, string name)
+            protected EnumItem(ulong value, string name)
             {
                 this.EnumValue = value;
-                this.Item = item;
                 this.EnumName = name;
+            }
+        }
+    }
+
+    public static class Enum<T>
+        where T : struct, IComparable, IFormattable
+    {
+        // ReSharper disable once StaticMemberInGenericType
+        private static readonly string Name;
+        // ReSharper disable once StaticMemberInGenericType
+        private static readonly bool IsFlags;
+        private static readonly GenericEnumItem[] Items;
+        private static readonly Dictionary<ulong, GenericEnumItem> ItemsMap;
+
+        private class GenericEnumItem : Enum.EnumItem
+        {
+            /// <summary>
+            /// provide (z => z.Item) cache.
+            /// </summary>
+            // ReSharper disable once StaticMemberInGenericType
+            internal static readonly Func<GenericEnumItem, T> ItemSelector = z => z.Item;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            internal readonly T Item;
+
+            public GenericEnumItem(ulong value, T item, string name)
+                : base(value, name)
+            {
+                this.Item = item;
             }
         }
 
@@ -63,17 +80,17 @@ namespace Jasily.Cache
 
             Name = ti.Name;
             IsFlags = ti.GetCustomAttribute<FlagsAttribute>() != null;
-            Items = ((T[]) Enum.GetValues(typeof(T)))
-                .Select(z => new EnumItem(ToUlong(z), z, z.ToString()))
+            Items = ((T[]) E.GetValues(typeof(T)))
+                .Select(z => new GenericEnumItem(ToUlong(z), z, z.ToString()))
                 .OrderBy(z => z.EnumValue)
                 .ToArray();
             ItemsMap = Items.ToDictionary(z => z.EnumValue);
         }
 
-        private static EnumItem TryGetEnumItem(T e)
+        private static GenericEnumItem TryGetEnumItem(T e)
         {
             var val = ToUlong(e);
-            return Items.Length > Threshold
+            return Items.Length > Enum.Threshold
                 ? ItemsMap.GetValueOrDefault(val)
                 : Items.FirstOrDefault(z => z.EnumValue == val);
         }
@@ -84,7 +101,7 @@ namespace Jasily.Cache
         /// <param name="e"></param>
         /// <param name="completeMatch">if set true, if not complete match, will return null.</param>
         /// <returns></returns>
-        private static EnumItem[] SplitFlagItems(T e, bool completeMatch)
+        private static GenericEnumItem[] SplitFlagItems(T e, bool completeMatch)
         {
             if (!IsFlags) throw new InvalidOperationException();
 
@@ -98,11 +115,11 @@ namespace Jasily.Cache
                 }
                 else
                 {
-                    return completeMatch ? null : Empty<EnumItem>.Array;
+                    return completeMatch ? null : Empty<GenericEnumItem>.Array;
                 }
             }
 
-            var matchs = new List<EnumItem>();
+            var matchs = new List<GenericEnumItem>();
             foreach (var item in Items.Reverse())
             {
                 if (item.EnumValue == 0) break;
@@ -126,12 +143,12 @@ namespace Jasily.Cache
         /// <returns></returns>
         [CanBeNull]
         public static T[] SplitFlags(T e, bool completeMatch = true)
-            => SplitFlagItems(e, completeMatch)?.ConvertToArray(ItemSelector);
+            => SplitFlagItems(e, completeMatch)?.ConvertToArray(GenericEnumItem.ItemSelector);
 
         public static string ToString(T e)
         {
             var value = IsFlags
-                ? SplitFlagItems(e, true)?.Select(EnumNameSelector).JoinAsString(", ")
+                ? SplitFlagItems(e, true)?.Select(Enum.EnumItem.EnumNameSelector).JoinAsString(", ")
                 : TryGetEnumItem(e)?.EnumName;
             return value ?? e.ToString();
         }
@@ -140,7 +157,7 @@ namespace Jasily.Cache
         /// get all enum from T.
         /// </summary>
         /// <returns></returns>
-        public static T[] All() => Items.ConvertToArray(ItemSelector);
+        public static T[] All() => Items.ConvertToArray(GenericEnumItem.ItemSelector);
 
         public static bool TryParse([NotNull] string value, bool ignoreCase, out T result)
         {
