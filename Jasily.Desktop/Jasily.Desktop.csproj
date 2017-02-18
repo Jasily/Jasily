@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ConsoleEnvironment.cs" />
     <Compile Include="Diagnostics\ProcessTracker.cs" />
+    <Compile Include="IO\Directory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemCall.cs" />
     <Compile Include="Threading\UISynchronizationContext.cs" />
