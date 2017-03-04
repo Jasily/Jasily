@@ -44,6 +44,7 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\IGetKey.cs" />
     <Compile Include="Collections\Generic\IQueue.cs" />
+    <Compile Include="Collections\Generic\QueueExtensions.cs" />
     <Compile Include="IDisposable.cs" />
     <Compile Include="OrderableComparer.cs" />
     <Compile Include="TwoWayConverter.cs" />

@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using Jasily.Interfaces.Collections.Generic;
 
 namespace Jasily.Collections.Generic
 {
     public class Queue<T> : IQueue<T>, IReadOnlyCollection<T>
     {
+        private object syncRoot;
         private Node headNode;
         private Node tailNode;
 
@@ -17,7 +19,20 @@ namespace Jasily.Collections.Generic
             public T value;
         }
 
+        public void CopyTo(Array array, int index) => EnumerableExtensions.CopyTo(this, array, index);
+
         public int Count { get; private set; }
+
+        public bool IsSynchronized => false;
+
+        public object SyncRoot
+        {
+            get
+            {
+                if (this.syncRoot == null) Interlocked.CompareExchange(ref this.syncRoot, new object(), null);
+                return this.syncRoot;
+            }
+        }
 
         public void Enqueue(T item)
         {
