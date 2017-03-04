@@ -65,7 +65,6 @@
     <Compile Include="Collections\Generic\CriticalValue.cs" />
     <Compile Include="Collections\Generic\GroupedList.cs" />
     <Compile Include="Collections\Generic\IndexValuePair.cs" />
-    <Compile Include="Collections\Generic\Queue.cs" />
     <Compile Include="Collections\Generic\Range.cs" />
     <Compile Include="Collections\Generic\RangeDictionary.cs" />
     <Compile Include="Collections\Generic\RangeMode.cs" />
