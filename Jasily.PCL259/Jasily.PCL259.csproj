@@ -108,7 +108,6 @@
     <Compile Include="DayOfWeekExtensions.cs" />
     <Compile Include="Diagnostics\Debug.cs" />
     <Compile Include="GlobalEvent.cs" />
-    <Compile Include="IO\AsyncWriteStream.cs" />
     <Compile Include="IO\ByteSize.cs" />
     <Compile Include="IO\ExtensionsStream.cs" />
     <Compile Include="IO\IStreamHandler.cs" />
