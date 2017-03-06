@@ -78,6 +78,7 @@
     <Compile Include="Threading\Tasks\TaskExtensions.cs" />
     <Compile Include="Threading\Tasks\TaskFactoryExtensions.cs" />
     <Compile Include="Threading\Tasks\TaskFactoryHelper.cs" />
+    <Compile Include="UInt64Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations.PCL328, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
