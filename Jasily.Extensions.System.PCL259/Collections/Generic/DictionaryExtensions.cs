@@ -15,8 +15,7 @@ namespace System.Collections.Generic
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
 
-            TValue value;
-            return dict.TryGetValue(key, out value) ? value : defaultValue;
+            return dict.TryGetValue(key, out TValue value) ? value : defaultValue;
         }
 
         public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key,
@@ -25,8 +24,7 @@ namespace System.Collections.Generic
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (defaultValueFactory == null) throw new ArgumentNullException(nameof(defaultValueFactory));
 
-            TValue value;
-            return dict.TryGetValue(key, out value) ? value : defaultValueFactory();
+            return dict.TryGetValue(key, out TValue value) ? value : defaultValueFactory();
         }
 
         public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict,
@@ -35,8 +33,7 @@ namespace System.Collections.Generic
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (valueSelector == null) throw new ArgumentNullException(nameof(valueSelector));
 
-            TValue value;
-            return dict.TryGetValue(key, out value) ? valueSelector(value) : defaultValue;
+            return dict.TryGetValue(key, out TValue value) ? valueSelector(value) : defaultValue;
         }
 
         public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict,
@@ -46,8 +43,7 @@ namespace System.Collections.Generic
             if (valueSelector == null) throw new ArgumentNullException(nameof(valueSelector));
             if (defaultValueFactory == null) throw new ArgumentNullException(nameof(defaultValueFactory));
 
-            TValue value;
-            return dict.TryGetValue(key, out value) ? valueSelector(value) : defaultValueFactory();
+            return dict.TryGetValue(key, out TValue value) ? valueSelector(value) : defaultValueFactory();
         }
 
         public static TValue? GetValueOrNull<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key)
@@ -55,8 +51,7 @@ namespace System.Collections.Generic
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
 
-            TValue value;
-            return dict.TryGetValue(key, out value) ? (TValue?) value : null;
+            return dict.TryGetValue(key, out TValue value) ? (TValue?)value : null;
         }
 
         #endregion
@@ -86,8 +81,7 @@ namespace System.Collections.Generic
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
 
-            TValue ret;
-            if (!dict.TryGetValue(key, out ret)) dict.Add(key, ret = value);
+            if (!dict.TryGetValue(key, out TValue ret)) dict.Add(key, ret = value);
             return ret;
         }
 
@@ -97,8 +91,7 @@ namespace System.Collections.Generic
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
 
-            TValue ret;
-            if (!dict.TryGetValue(key, out ret)) dict.Add(key, ret = valueFactory());
+            if (!dict.TryGetValue(key, out TValue ret)) dict.Add(key, ret = valueFactory());
             return ret;
         }
 
@@ -113,9 +106,8 @@ namespace System.Collections.Generic
         public static TValue GetValueOrAddNewInstance<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key) where TValue : new()
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
-            
-            TValue ret;
-            if (!dict.TryGetValue(key, out ret)) dict.Add(key, ret = new TValue());
+
+            if (!dict.TryGetValue(key, out TValue ret)) dict.Add(key, ret = new TValue());
             return ret;
         }
 

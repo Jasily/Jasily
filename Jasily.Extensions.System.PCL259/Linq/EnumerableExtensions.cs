@@ -15,47 +15,26 @@ namespace System.Linq
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="token"></param>
-        /// <param name="checkCycle"></param>
         /// <returns></returns>
         [PublicAPI]
-        public static IEnumerable<T> EnumerateWithToken<T>([NotNull] this IEnumerable<T> source,
-            CancellationToken token, int checkCycle = 30)
+        public static IEnumerable<T> EnumerateWithToken<T>([NotNull] this IEnumerable<T> source, CancellationToken token)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (checkCycle <= 0) throw new ArgumentOutOfRangeException(nameof(checkCycle));
 
-            return EnumerateWithTokenIterator(source, token, checkCycle);
-        }
-
-        private static IEnumerable<T> EnumerateWithTokenIterator<T>([NotNull] this IEnumerable<T> source,
-            CancellationToken token, int checkCycle)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(checkCycle > 0);
-
-            using (var enumerator = source.GetEnumerator())
+            IEnumerable<T> Iterator()
             {
-                if (checkCycle == 1)
+                token.ThrowIfCancellationRequested();
+                using (var enumerator = source.GetEnumerator())
                 {
                     while (enumerator.MoveNext())
                     {
-                        token.ThrowIfCancellationRequested();
                         yield return enumerator.Current;
-                    }
-                }
-                else
-                {
-                    while (true)
-                    {
                         token.ThrowIfCancellationRequested();
-                        for (var i = 0u; i < checkCycle; i++)
-                        {
-                            if (enumerator.MoveNext()) yield return enumerator.Current;
-                            else yield break;
-                        }
                     }
                 }
             }
+
+            return Iterator();
         }
 
         #region edit enumerable
@@ -63,115 +42,129 @@ namespace System.Linq
         #region add
 
         [PublicAPI]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T value, Position position)
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T item, Position position = Position.End)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             switch (position)
             {
                 case Position.Start:
-                    return AppendToStartIterator(source, value);
+                    IEnumerable<T> StartIterator()
+                    {
+                        yield return item;
+                        foreach (var z in source) yield return z;
+                    }
+                    return StartIterator();
 
                 case Position.End:
-                    return AppendToEndIterator(source, value);
+                    IEnumerable<T> EndIterator()
+                    {
+                        foreach (var z in source) yield return z;
+                        yield return item;
+                    }
+                    return EndIterator();
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(position), position, null);
             }
         }
-
-        private static IEnumerable<T> AppendToStartIterator<T>([NotNull] IEnumerable<T> source, T value)
+        
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T item, int index)
         {
-            yield return value;
-            foreach (var item in source) yield return item;
-        }
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
-        private static IEnumerable<T> AppendToEndIterator<T>([NotNull] IEnumerable<T> source, T value)
-        {
-            foreach (var item in source) yield return item;
-            yield return value;
-        }
-
-        private static IEnumerable<T> AppendToIndexIterator<T>([NotNull] IEnumerable<T> source, T value, int index,
-            bool allowEnd)
-        {
-            using (var itor = source.GetEnumerator())
+            IEnumerable<T> Iterator()
             {
-                var i = 0;
-                while (i < index && itor.MoveNext())
+                using (var itor = source.GetEnumerator())
                 {
-                    yield return itor.Current;
-                    i++;
-                }
-
-                if (i == index)
-                {
-                    yield return value;
-                }
-                else if (!allowEnd)
-                {
-                    yield return value;
-                    yield break;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-
-                while (itor.MoveNext())
-                {
-                    yield return itor.Current;
+                    var i = 0;
+                    while (i < index && itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                        i++;
+                    }
+                    yield return item;
+                    while (itor.MoveNext()) yield return itor.Current;
                 }
             }
-        }
 
-        [PublicAPI]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T value, int index)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return index == 0 ? AppendToStartIterator(source, value) : AppendToIndexIterator(source, value, index, false);
-        }
-
-        [PublicAPI]
-        public static IEnumerable<T> AppendToIndexOrEnd<T>([NotNull] this IEnumerable<T> source, T value, int index)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return index == 0 ? AppendToStartIterator(source, value) : AppendToIndexIterator(source, value, index, true);
+            return Iterator();
         }
 
         #endregion
 
-        #region set
+        #region insert or set
 
-        [PublicAPI]
+        public static IEnumerable<T> Insert<T>([NotNull] this IEnumerable<T> source, int index, T item)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+
+            IEnumerable<T> Iterator()
+            {
+                var i = 0;
+                using (var itor = source.GetEnumerator())
+                {
+                    while (i < index && itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                        i++;
+                    }
+
+                    if (i == index)
+                    {
+                        yield return item;
+                    }
+                    else
+                    {
+                        throw new IndexOutOfRangeException(
+                            $"source only contains {i} element. cannot insert into index <{index}>.");
+                    }
+
+                    while (itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                    }
+                }
+            };
+
+            return Iterator();
+        }
+
         public static IEnumerable<T> Set<T>([NotNull] this IEnumerable<T> source, int index, T item)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
 
-            var i = 0;
-            using (var itor = source.GetEnumerator())
+            IEnumerable<T> Iterator()
             {
-                while (i < index && itor.MoveNext())
+                var i = 0;
+                using (var itor = source.GetEnumerator())
                 {
-                    yield return itor.Current;
-                    i++;
-                }
+                    while (i < index && itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                        i++;
+                    }
 
-                if (i == index && itor.MoveNext())
-                {
-                    yield return item;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
+                    if (i == index && itor.MoveNext())
+                    {
+                        yield return item;
+                    }
+                    else
+                    {
+                        throw new IndexOutOfRangeException(
+                            $"source only contains {i} element. cannot set index <{index}>.");
+                    }
 
-                while (itor.MoveNext())
-                {
-                    yield return itor.Current;
+                    while (itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                    }
                 }
-            }
+            };
+
+            return Iterator();
         }
 
         #endregion
@@ -229,18 +222,16 @@ namespace System.Linq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
 
-            var list = source as IList<T>;
-            if (list != null)
+            if (source is IList<T> list)
             {
                 if (list.Count <= index) throw new IndexOutOfRangeException();
                 return list[index];
             }
 
-            var rolist = source as IReadOnlyList<T>;
-            if (rolist != null)
+            if (source is IReadOnlyList<T> list2)
             {
-                if (rolist.Count <= index) throw new IndexOutOfRangeException();
-                return rolist[index];
+                if (list2.Count <= index) throw new IndexOutOfRangeException();
+                return list2[index];
             }
 
             using (var itor = source.Skip(index).GetEnumerator())
@@ -248,6 +239,12 @@ namespace System.Linq
                 if (!itor.MoveNext()) throw new IndexOutOfRangeException();
                 return itor.Current;
             }
+        }
+
+        private static IEnumerable<T> AppendToStartIterator<T>([NotNull] IEnumerable<T> source, T value)
+        {
+            yield return value;
+            foreach (var item in source) yield return item;
         }
 
         public static IEnumerable<IEnumerable<TSource>> SplitChunks<TSource>([NotNull] this IEnumerable<TSource> source, int chunkSize)
