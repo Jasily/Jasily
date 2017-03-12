@@ -9,6 +9,8 @@ namespace Jasily
 {
     public static class CurryingFunc
     {
+        internal const string NotInitializedMessage = "struct is not initialized";
+
         public static CurryingFunc<T1, TResult> Currying<T1, TResult>(
             [NotNull] Func<T1, TResult> func)
         {
@@ -33,7 +35,7 @@ namespace Jasily
         private readonly Func<T1, TResult> function;
 
         [NotNull]
-        public Func<T1, TResult> Function => this.function ?? throw new InvalidOperationException("struct is not initialized");
+        public Func<T1, TResult> Function => this.function ?? throw new InvalidOperationException(CurryingFunc.NotInitializedMessage);
 
         public CurryingFunc([NotNull] Func<T1, TResult> func)
         {
@@ -54,7 +56,7 @@ namespace Jasily
         private readonly Func<T1, T2, TResult> function;
 
         [NotNull]
-        public Func<T1, T2, TResult> Function => this.function ?? throw new InvalidOperationException("struct is not initialized");
+        public Func<T1, T2, TResult> Function => this.function ?? throw new InvalidOperationException(CurryingFunc.NotInitializedMessage);
 
         public CurryingFunc([NotNull] Func<T1, T2, TResult> func)
         {
@@ -81,7 +83,7 @@ namespace Jasily
         private readonly Func<T1, T2, T3, TResult> function;
 
         [NotNull]
-        public Func<T1, T2, T3, TResult> Function => this.function ?? throw new InvalidOperationException("struct is not initialized");
+        public Func<T1, T2, T3, TResult> Function => this.function ?? throw new InvalidOperationException(CurryingFunc.NotInitializedMessage);
 
         public CurryingFunc([NotNull] Func<T1, T2, T3, TResult> func)
         {
