@@ -35,7 +35,7 @@ namespace Jasily.Threading
             if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(millisecondsTimeout)
                 ? CreateReleaser(semaphore)
-                : new Releaser<SemaphoreSlim>();
+                : Releaser<SemaphoreSlim>.Default;
         }
 
         public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
@@ -44,7 +44,7 @@ namespace Jasily.Threading
             if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(millisecondsTimeout, cancellationToken)
                 ? CreateReleaser(semaphore)
-                : new Releaser<SemaphoreSlim>();
+                : Releaser<SemaphoreSlim>.Default;
         }
 
         public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
@@ -53,7 +53,7 @@ namespace Jasily.Threading
             if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(timeout)
                 ? CreateReleaser(semaphore)
-                : new Releaser<SemaphoreSlim>();
+                : Releaser<SemaphoreSlim>.Default;
         }
 
         public static async Task<Releaser<SemaphoreSlim>> LockAsync([NotNull] this SemaphoreSlim semaphore,
@@ -62,7 +62,7 @@ namespace Jasily.Threading
             if (semaphore == null) throw new ArgumentNullException(nameof(semaphore));
             return await semaphore.WaitAsync(timeout, cancellationToken)
                 ? CreateReleaser(semaphore)
-                : new Releaser<SemaphoreSlim>();
+                : Releaser<SemaphoreSlim>.Default;
         }
     }
 }

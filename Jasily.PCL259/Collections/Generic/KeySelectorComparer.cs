@@ -18,8 +18,7 @@ namespace Jasily.Collections.Generic
         protected KeySelectorComparer([NotNull] Func<TItem, TKey> keySelector,
             [CanBeNull] IComparer<TKey> comparer, [CanBeNull] IEqualityComparer<TKey> equalityComparer)
         {
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            this.keySelector = keySelector;
+            this.keySelector = keySelector ?? throw new ArgumentNullException(nameof(keySelector));
             this.comparer = comparer ?? Comparer<TKey>.Default;
             this.equalityComparer = equalityComparer ?? EqualityComparer<TKey>.Default;
         }

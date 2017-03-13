@@ -46,7 +46,7 @@ namespace Jasily.Threading
             while (true)
             {
                 var current = this.currentCount;
-                if (count > current) return new Releaser<int>();
+                if (count > current) return Releaser<int>.Default;
                 if (Interlocked.CompareExchange(ref this.currentCount, current - count, current) == current)
                 {
                     var locker = new Releaser<int>(true, count);

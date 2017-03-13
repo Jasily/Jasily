@@ -7,55 +7,55 @@ namespace Jasily.Threading
 {
     public static class ReaderWriterLockSlimExtensions
     {
-        public static Releaser<ReaderWriterLockSlim> Read([NotNull] this ReaderWriterLockSlim locker)
+        public static Releaser<ReaderWriterLockSlim> AcquireReadLock([NotNull] this ReaderWriterLockSlim locker)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             locker.EnterReadLock();
-            return GetReleaserForRead(locker);
+            return GetReadReleaser(locker);
         }
 
-        public static Releaser<ReaderWriterLockSlim> Write([NotNull] this ReaderWriterLockSlim locker)
-        {
-            if (locker == null) throw new ArgumentNullException(nameof(locker));
-            locker.EnterWriteLock();
-            return GetReleaserForWrite(locker);
-        }
-
-        public static Releaser<ReaderWriterLockSlim> TryRead([NotNull] this ReaderWriterLockSlim locker,
+        public static Releaser<ReaderWriterLockSlim> TryAcquireReadLock([NotNull] this ReaderWriterLockSlim locker,
             int millisecondsTimeout)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterReadLock(millisecondsTimeout)
-                ? GetReleaserForRead(locker)
-                : new Releaser<ReaderWriterLockSlim>();
+                ? GetReadReleaser(locker)
+                : Releaser<ReaderWriterLockSlim>.Default;
         }
 
-        public static Releaser<ReaderWriterLockSlim> TryRead([NotNull] this ReaderWriterLockSlim locker,
+        public static Releaser<ReaderWriterLockSlim> TryAcquireReadLock([NotNull] this ReaderWriterLockSlim locker,
             TimeSpan timeout)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
-            return locker.TryEnterReadLock(timeout) ? GetReleaserForRead(locker) : new Releaser<ReaderWriterLockSlim>();
+            return locker.TryEnterReadLock(timeout) ? GetReadReleaser(locker) : Releaser<ReaderWriterLockSlim>.Default;
         }
 
-        public static Releaser<ReaderWriterLockSlim> TryWrite([NotNull] this ReaderWriterLockSlim locker,
+        public static Releaser<ReaderWriterLockSlim> AcquireWriteLock([NotNull] this ReaderWriterLockSlim locker)
+        {
+            if (locker == null) throw new ArgumentNullException(nameof(locker));
+            locker.EnterWriteLock();
+            return GetWriteReleaser(locker);
+        }
+
+        public static Releaser<ReaderWriterLockSlim> TryAcquireWriteLock([NotNull] this ReaderWriterLockSlim locker,
             int millisecondsTimeout)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterWriteLock(millisecondsTimeout)
-                ? GetReleaserForWrite(locker)
-                : new Releaser<ReaderWriterLockSlim>();
+                ? GetWriteReleaser(locker)
+                : Releaser<ReaderWriterLockSlim>.Default;
         }
 
-        public static Releaser<ReaderWriterLockSlim> TryWrite([NotNull] this ReaderWriterLockSlim locker,
+        public static Releaser<ReaderWriterLockSlim> TryAcquireWriteLock([NotNull] this ReaderWriterLockSlim locker,
             TimeSpan timeout)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterWriteLock(timeout)
-                ? GetReleaserForWrite(locker)
-                : new Releaser<ReaderWriterLockSlim>();
+                ? GetWriteReleaser(locker)
+                : Releaser<ReaderWriterLockSlim>.Default;
         }
 
-        private static Releaser<ReaderWriterLockSlim> GetReleaserForRead(ReaderWriterLockSlim locker)
+        private static Releaser<ReaderWriterLockSlim> GetReadReleaser(ReaderWriterLockSlim locker)
         {
             Debug.Assert(locker != null);
             var releaser = new Releaser<ReaderWriterLockSlim>(true, locker);
@@ -63,7 +63,7 @@ namespace Jasily.Threading
             return releaser;
         }
 
-        private static Releaser<ReaderWriterLockSlim> GetReleaserForWrite(ReaderWriterLockSlim locker)
+        private static Releaser<ReaderWriterLockSlim> GetWriteReleaser(ReaderWriterLockSlim locker)
         {
             Debug.Assert(locker != null);
             var releaser = new Releaser<ReaderWriterLockSlim>(true, locker);
