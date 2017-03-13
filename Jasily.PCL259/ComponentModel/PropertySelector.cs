@@ -5,38 +5,36 @@ using JetBrains.Annotations;
 
 namespace Jasily.ComponentModel
 {
-    public struct PropertySelector<T>
+    public class PropertySelector<T>
     {
-        private readonly string name;
+        private readonly string propertyName;
+
+        public static PropertySelector<T> First { get; } = new PropertySelector<T>();
+
+        private PropertySelector()
+            : this(null)
+        {
+        }
 
         private PropertySelector(string name)
         {
-            this.name = name;
+            this.propertyName = name;
         }
-
-        public static PropertySelector<TProperty> From<TProperty>([NotNull] Expression<Func<T, TProperty>> selector)
-        {
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-            return new PropertySelector<T>(null).Select(selector);
-        }
-
-        public static PropertySelector<T> From() => From(z => z);
 
         public PropertySelector<TProperty> Select<TProperty>([NotNull] Expression<Func<T, TProperty>> selector)
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            var expression = selector.Body;
-            var name = this.Visit(expression);
-            return new PropertySelector<TProperty>(this.name == null ? name : this.name + "." + name);
+            var body = selector.Body;
+            var name = this.Visit(body);
+            return new PropertySelector<TProperty>(this.propertyName == null ? name : this.propertyName + "." + name);
         }
 
-        public PropertySelector<TProperty> SelectMany<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selectExpression)
+        public PropertySelector<TProperty> SelectMany<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
         {
-            if (selectExpression == null) throw new ArgumentNullException(nameof(selectExpression));
-            var expression = selectExpression.Body;
-            var name = this.Visit(expression);
-            return new PropertySelector<TProperty>(Concat(this.name, name));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+            var body = selector.Body;
+            var name = this.Visit(body);
+            return new PropertySelector<TProperty>(Concat(this.propertyName, name));
         }
 
         private string Visit([NotNull] Expression expression)
@@ -48,6 +46,7 @@ namespace Jasily.ComponentModel
 
                 case ExpressionType.TypeAs:
                 case ExpressionType.Convert:
+                case ExpressionType.ConvertChecked:
                     return this.Visit((UnaryExpression)expression);
 
                 case ExpressionType.ArrayLength:
@@ -62,7 +61,9 @@ namespace Jasily.ComponentModel
         }
 
         private static string Concat(string left, string right)
-            => left == null ? right : (right == null ? left : left + "." + right);
+        {
+            return left == null ? right : (right == null ? left : left + "." + right);
+        }
 
         private string Visit([NotNull] UnaryExpression expression) => this.Visit(expression.Operand);
 
@@ -76,6 +77,6 @@ namespace Jasily.ComponentModel
         public static implicit operator string(PropertySelector<T> selector)
             => selector.ToString();
 
-        public override string ToString() => this.name ?? string.Empty;
+        public override string ToString() => this.propertyName ?? string.Empty;
     }
 }

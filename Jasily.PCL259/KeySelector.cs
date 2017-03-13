@@ -6,6 +6,9 @@ using JetBrains.Annotations;
 
 namespace Jasily
 {
+    /// <summary>
+    /// provide static methods.
+    /// </summary>
     public static class KeySelector
     {
         #region comparer
@@ -31,11 +34,11 @@ namespace Jasily
 
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
             [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.From(selector);
+            => PropertySelector<T>.First.Select(selector);
 
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
             [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.From(selector);
+            => PropertySelector<T>.First.Select(selector);
 
         #endregion
     }
