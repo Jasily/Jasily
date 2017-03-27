@@ -20,14 +20,22 @@ namespace System.Net
                 request.EndGetRequestStream, null);
         }
 
-        public static Task<Stream> GetRequestStreamAsync([NotNull] this HttpWebRequest request,
+        public static async Task<Stream> GetRequestStreamAsync([NotNull] this HttpWebRequest request,
             CancellationToken cancellationToken)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            return Task<Stream>.Factory.FromAsync(
-                request.BeginGetRequestStream,
-                request.EndGetRequestStream,
-                cancellationToken, request.Abort);
+            try
+            {
+                return await Task<Stream>.Factory.FromAsync(
+                    request.BeginGetRequestStream,
+                    request.EndGetRequestStream,
+                    cancellationToken, request.Abort);
+            }
+            catch (WebException)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                throw;
+            }
         }
 
         /// <summary>
@@ -43,14 +51,22 @@ namespace System.Net
                 request.EndGetResponse, null);
         }
 
-        public static Task<WebResponse> GetResponseAsync([NotNull] this HttpWebRequest request,
+        public static async Task<WebResponse> GetResponseAsync([NotNull] this HttpWebRequest request,
             CancellationToken cancellationToken)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            return Task<WebResponse>.Factory.FromAsync(
-                request.BeginGetResponse,
-                request.EndGetResponse,
-                cancellationToken, request.Abort);
+            try
+            {
+                return await Task<WebResponse>.Factory.FromAsync(
+                    request.BeginGetResponse,
+                    request.EndGetResponse,
+                    cancellationToken, request.Abort);
+            }
+            catch (WebException)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                throw;
+            }
         }
 
         public static async Task SendAsync([NotNull] this HttpWebRequest request, [NotNull] Stream input)
