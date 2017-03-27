@@ -29,7 +29,7 @@ namespace System.Net
                 return await Task<Stream>.Factory.FromAsync(
                     request.BeginGetRequestStream,
                     request.EndGetRequestStream,
-                    cancellationToken, request.Abort);
+                    cancellationToken, request.Abort).ConfigureAwait(false);
             }
             catch (WebException)
             {
@@ -60,7 +60,7 @@ namespace System.Net
                 return await Task<WebResponse>.Factory.FromAsync(
                     request.BeginGetResponse,
                     request.EndGetResponse,
-                    cancellationToken, request.Abort);
+                    cancellationToken, request.Abort).ConfigureAwait(false);
             }
             catch (WebException)
             {
