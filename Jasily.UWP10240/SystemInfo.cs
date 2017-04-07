@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.System.Profile;
 
 namespace Jasily
