@@ -60,7 +60,6 @@
     <Compile Include="Linq\EnumerableAsyncExtensions.cs" />
     <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="Linq\EnumerableOverride.cs" />
-    <Compile Include="Linq\Generater.cs" />
     <Compile Include="Net\HttpWebRequestExtensions.cs" />
     <Compile Include="NumberExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

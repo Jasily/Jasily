@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace System.Linq
+namespace Jasily.Linq
 {
     public static class Generater
     {

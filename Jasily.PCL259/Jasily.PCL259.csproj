@@ -44,6 +44,7 @@
     <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="CurryingFunc.cs" />
     <Compile Include="EventArgs.cs" />
+    <Compile Include="Linq\Generater.cs" />
     <Compile Include="Net\WebResult.cs" />
     <Compile Include="Net\WebResultExtensions.cs" />
     <Compile Include="Reflection\Descriptors\FieldInfoDescriptor.cs" />
