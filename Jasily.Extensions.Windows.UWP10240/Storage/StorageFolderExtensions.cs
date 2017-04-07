@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace Windows.Storage
 {
     public static class StorageFolderExtensions
     {
-        [Conditional("DEBUG")]
-        public static async void Print(this IStorageFolder folder)
+        public static async Task<string> TreeToStringAsync([NotNull] this IStorageFolder folder)
         {
             if (folder == null) throw new ArgumentNullException(nameof(folder));
-            await Print(folder, 0);
-        }
 
-        private static async Task Print(this IStorageFolder folder, int deep)
-        {
-            Debug.Assert(folder != null);
-            foreach (var item in await folder.GetItemsAsync())
+            var sb = new StringBuilder();
+            async Task WriteAsync(IStorageFolder currentFolder, int deepLevel)
             {
-                var subFolder = item as IStorageFolder;
-                if (subFolder != null)
+                var indent = deepLevel * 2;
+                foreach (var item in await currentFolder.GetItemsAsync())
                 {
-                    Debug.WriteLine($"{' '.Repeat(deep)}[FOLDER] {subFolder.Name}");
-                    await Print(subFolder, deep + 1);
-                }
-                else
-                {
-                    Debug.WriteLine($"{' '.Repeat(deep)}[FILE] {item.Name}");
+                    if (item is IStorageFolder f)
+                    {
+                        sb.AppendLine($"{' '.Repeat(indent)}[FOLDER] {f.Name}");
+                        await WriteAsync(f, deepLevel + 1);
+                    }
+                    else
+                    {
+                        sb.AppendLine($"{' '.Repeat(indent)}[FILE] {item.Name}");
+                    }
                 }
             }
+
+            await WriteAsync(folder, 0);
+            return sb.ToString();
         }
     }
 }
