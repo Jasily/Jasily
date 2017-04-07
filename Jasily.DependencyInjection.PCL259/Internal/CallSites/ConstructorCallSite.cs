@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-namespace Jasily.DependencyInjection.Internal
+namespace Jasily.DependencyInjection.Internal.CallSites
 {
     internal class ConstructorCallSite : IServiceCallSite
     {

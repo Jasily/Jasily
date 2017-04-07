@@ -5,15 +5,16 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class ResolveRequest
+    internal struct ResolveRequest
     {
         private TypeInfo serviceTypeInfo;
 
-        public ResolveRequest([NotNull] Type serviceType, string serviceName)
+        internal ResolveRequest([NotNull] Type serviceType, [CanBeNull] string serviceName)
         {
             Debug.Assert(serviceType != null);
             this.ServiceType = serviceType;
             this.ServiceName = serviceName ?? string.Empty;
+            this.serviceTypeInfo = null;
         }
 
         [NotNull]

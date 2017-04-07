@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 
-namespace Jasily.DependencyInjection.Internal
+namespace Jasily.DependencyInjection.Internal.CallSites
 {
     internal class CreateInstanceCallSite : IServiceCallSite
     {

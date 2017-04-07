@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Jasily.DependencyInjection.Internal
+namespace Jasily.DependencyInjection.Internal.CallSites
 {
     internal interface IServiceCallSite
     {

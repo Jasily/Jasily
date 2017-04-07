@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Jasily.DependencyInjection.Attributes;
+using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
@@ -28,7 +29,7 @@ namespace Jasily.DependencyInjection.Internal
             var parameters = constructor.GetParameters();
             if (parameters.Length == 0) return new CreateInstanceCallSite(this.implementationType);
 
-            var parameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
+            var parameterCallSites = provider.ResolveParametersCallSites(parameters, serviceChain);
             return parameterCallSites == null ? null : new ConstructorCallSite(constructor, parameterCallSites);
         }
 
@@ -83,7 +84,7 @@ namespace Jasily.DependencyInjection.Internal
             {
                 var parameters = constructor.GetParameters();
 
-                var currentParameterCallSites = provider.ResolveCallSites(parameters, serviceChain);
+                var currentParameterCallSites = provider.ResolveParametersCallSites(parameters, serviceChain);
 
                 if (currentParameterCallSites != null)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Jasily.DependencyInjection.Internal;
+using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection
@@ -46,13 +47,12 @@ namespace Jasily.DependencyInjection
         /// <param name="serviceName"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        [NotNull]
         public ResolveResult GetService([NotNull] Type serviceType, [CanBeNull] string serviceName)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
-            var service = this.ResolveService(serviceType, serviceName);
-            if (service == null) return ResolveResult.None;
+            var service = this.ResolveService(new ResolveRequest(serviceType, serviceName));
+            if (service == null) return default(ResolveResult);
             var provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
                 ? this.RootProvider
                 : this;
@@ -60,9 +60,8 @@ namespace Jasily.DependencyInjection
             return new ResolveResult(value);
         }
 
-        internal Service ResolveService([NotNull] Type serviceType, [CanBeNull] string serviceName)
+        private Service ResolveService(ResolveRequest request)
         {
-            var request = new ResolveRequest(serviceType, serviceName);
             for (var i = 0; i < this.RootProvider.ResolveMode.Length; i++)
             {
                 var level = this.RootProvider.ResolveMode[i];
@@ -73,10 +72,9 @@ namespace Jasily.DependencyInjection
             return null;
         }
 
-        internal IServiceCallSite ResolveCallSite([NotNull] Type serviceType, [CanBeNull] string serviceName,
-            ISet<Service> serviceChain)
+        private IServiceCallSite ResolveCallSite(ResolveRequest request, ISet<Service> serviceChain)
         {
-            var service = this.ResolveService(serviceType, serviceName);
+            var service = this.ResolveService(request);
             if (service == null) return null;
 
             try
@@ -96,21 +94,24 @@ namespace Jasily.DependencyInjection
         /// <param name="parameters"></param>
         /// <param name="serviceChain"></param>
         /// <returns></returns>
-        internal IServiceCallSite[] ResolveCallSites(ParameterInfo[] parameters, ISet<Service> serviceChain)
+        internal IServiceCallSite[] ResolveParametersCallSites([NotNull] ParameterInfo[] parameters, [NotNull] ISet<Service> serviceChain)
         {
-            var parameterCallSites = new IServiceCallSite[parameters.Length];
+            Debug.Assert(parameters != null);
+            Debug.Assert(serviceChain != null);
+
+            var callSites = new IServiceCallSite[parameters.Length];
             for (var index = 0; index < parameters.Length; index++)
             {
                 var parameter = parameters[index];
-                var callSite = this.ResolveCallSite(parameter.ParameterType, parameter.Name, serviceChain);
+                var callSite = this.ResolveCallSite(new ResolveRequest(parameter.ParameterType, parameter.Name), serviceChain);
                 if (callSite == null && parameter.HasDefaultValue)
                 {
                     callSite = new ConstantCallSite(parameter.DefaultValue);
                 }
                 if (callSite == null) return null;
-                parameterCallSites[index] = callSite;
+                callSites[index] = callSite;
             }
-            return parameterCallSites;
+            return callSites;
         }
 
         public virtual void Dispose()

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
@@ -52,10 +53,10 @@ namespace Jasily.DependencyInjection.Internal
 
         public IServiceCallSite GetCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
-            var callSite = this.Descriptor as IServiceCallSite ??
-                           (this.Descriptor as IServiceCallSiteProvider)?.CreateServiceCallSite(provider, serviceChain);
-            if (callSite != null) return callSite;
-
+            if (this.Descriptor is IServiceCallSite cs)
+                return cs;
+            if (this.Descriptor is IServiceCallSiteProvider csp)
+                return csp.CreateServiceCallSite(provider, serviceChain) ?? throw new NotImplementedException();
             throw new NotImplementedException();
         }
 

@@ -2,14 +2,8 @@
 
 namespace Jasily.DependencyInjection
 {
-    public class ResolveResult
+    public struct ResolveResult
     {
-        public static readonly ResolveResult None = new ResolveResult();
-
-        private ResolveResult()
-        {
-        }
-
         public ResolveResult(object value)
         {
             this.HasValue = true;
