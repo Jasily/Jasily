@@ -36,22 +36,22 @@ namespace Jasily.DependencyInjection.Internal
             }
         }
 
-        public ServiceEntry ResolveServiceEntry([NotNull] ResolveRequest request, ResolveLevel level)
+        [CanBeNull]
+        public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
         {
             switch (level)
             {
                 case ResolveLevel.TypeAndName:
                 case ResolveLevel.Type:
-                    TypedServiceEntry typedServiceEntry;
-                    if (this.typedServices.TryGetValue(request.ServiceType, out typedServiceEntry))
-                        return typedServiceEntry;
+                    if (this.typedServices.TryGetValue(request.ServiceType, out var o))
+                        return o;
                     break;
+
                 case ResolveLevel.NameAndType:
                     if (request.ServiceName != string.Empty)
                     {
-                        NamedServiceEntry namedServiceEntry;
-                        if (this.namedServices.TryGetValue(request.ServiceName, out namedServiceEntry))
-                            return namedServiceEntry;
+                        if (this.namedServices.TryGetValue(request.ServiceName, out var e))
+                            return e;
                     }
                     break;
 

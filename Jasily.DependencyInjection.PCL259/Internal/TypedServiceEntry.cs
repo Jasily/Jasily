@@ -10,8 +10,7 @@ namespace Jasily.DependencyInjection.Internal
 
         public override void Add(Service service)
         {
-            List<Service> list;
-            if (!this.entriesMap.TryGetValue(service.ServiceName, out list))
+            if (!this.entriesMap.TryGetValue(service.ServiceName, out var list))
             {
                 list = new List<Service>(1);
                 this.entriesMap.Add(service.ServiceName, list);
@@ -25,14 +24,13 @@ namespace Jasily.DependencyInjection.Internal
             switch (level)
             {
                 case ResolveLevel.TypeAndName:
-                    if (resolveRequest.ServiceName == null)
+                    if (resolveRequest.ServiceName == string.Empty)
                     {
                         return this.Last;
                     }
                     else
                     {
-                        List<Service> list;
-                        if (this.entriesMap.TryGetValue(resolveRequest.ServiceName, out list))
+                        if (this.entriesMap.TryGetValue(resolveRequest.ServiceName, out var list))
                         {
                             return list[list.Count - 1];
                         }
