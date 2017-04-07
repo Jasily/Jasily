@@ -13,8 +13,7 @@ namespace Jasily.DependencyInjection.Internal
             [NotNull] Func<IServiceProvider, object> factory)
             : base(serviceType, serviceName, lifetime)
         {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            this.factory = factory;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public Expression ResolveExpression(ParameterExpression provider)

@@ -4,205 +4,42 @@ using System.Linq;
 using System.Reflection;
 using Jasily.DependencyInjection.Internal;
 using JetBrains.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Jasily.DependencyInjection
 {
     public static class ServiceCollectionServiceExtensions
     {
-        #region Transient
+        #region common
 
-        public static IList<IServiceDescriptor> AddTransientForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, [NotNull] Type implementationType)
-            => AddForImplementedInterfaces(collection, serviceName, ServiceLifetime.Transient, implementationType);
+        public static IList<IServiceDescriptor> AddType<TService, TImplementation>([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [CanBeNull] string serviceName)
+            where TImplementation : TService
+            => AddType(collection, lifetime, typeof(TService), serviceName, typeof(TImplementation));
 
-        public static IList<IServiceDescriptor> AddTransient([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName,
-            [NotNull] Type implementationType)
+        public static IList<IServiceDescriptor> AddType([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [CanBeNull] string serviceName, [NotNull] Type serviceType)
+            => AddType(collection, lifetime, serviceType, serviceName, serviceType);
+
+        public static IList<IServiceDescriptor> AddType<TService>([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [CanBeNull] string serviceName)
+            => AddType(collection, lifetime, typeof(TService), serviceName, typeof(TService));
+
+        public static IList<IServiceDescriptor> AddType([NotNull] IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [NotNull] Type serviceType, [CanBeNull] string serviceName, [NotNull] Type implementationType)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Transient, new TypeDescriptor(implementationType));
-        }
 
-        public static IList<IServiceDescriptor> AddTransient([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, object> implementationFactory)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Transient, implementationFactory);
-        }
-
-        public static IList<IServiceDescriptor> AddTransient<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName)
-            where TImplementation : TService
-            => AddTransient(collection, typeof(TService), serviceName, typeof(TImplementation));
-
-        public static IList<IServiceDescriptor> AddTransient([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, [NotNull] Type serviceType)
-            => AddTransient(collection, serviceType, serviceName, serviceType);
-
-        public static IList<IServiceDescriptor> AddTransient<TService>([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName)
-            => AddTransient(collection, typeof(TService), serviceName, typeof(TService));
-
-        public static IList<IServiceDescriptor> AddTransient<TService>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TService> implementationFactory)
-            where TService : class
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return collection.AddTransient(typeof(TService), serviceName, implementationFactory);
-        }
-
-        public static IList<IServiceDescriptor> AddTransient<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TImplementation> implementationFactory)
-            where TImplementation : class, TService
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return collection.AddTransient(typeof(TService), serviceName, implementationFactory);
-        }
-
-        #endregion
-
-        #region Scoped
-
-        public static IList<IServiceDescriptor> AddScopedForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, [NotNull] Type implementationType)
-            => AddForImplementedInterfaces(collection, serviceName, ServiceLifetime.Scoped, implementationType);
-
-        public static IList<IServiceDescriptor> AddScoped([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName,
-            [NotNull] Type implementationType)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Scoped, new TypeDescriptor(implementationType));
-        }
-
-        public static IList<IServiceDescriptor> AddScoped(
-            [NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, object> implementationFactory)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Scoped, implementationFactory);
-        }
-
-        public static IList<IServiceDescriptor> AddScoped<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName)
-            where TImplementation : TService
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            return AddScoped(collection, typeof(TService), serviceName, typeof(TImplementation));
-        }
-
-        public static IList<IServiceDescriptor> AddScoped([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName)
-            => AddScoped(collection, serviceType, serviceName, serviceType);
-
-        public static IList<IServiceDescriptor> AddScoped<TService>([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName)
-            => AddScoped(collection, typeof(TService), serviceName);
-
-        public static IList<IServiceDescriptor> AddScoped<TService>([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, [NotNull] Func<IServiceProvider, TService> implementationFactory)
-            where TService : class
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return collection.AddScoped(typeof(TService), serviceName, implementationFactory);
-        }
-
-        public static IList<IServiceDescriptor> AddScoped<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TImplementation> implementationFactory)
-            where TImplementation : class, TService
-            => AddScoped(collection, typeof(TService), serviceName, implementationFactory);
-
-        #endregion
-
-        #region Singleton
-
-        public static IList<IServiceDescriptor> AddSingletonForImplementedInterfaces([NotNull] this IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, [NotNull] Type implementationType)
-            => AddForImplementedInterfaces(collection, serviceName, ServiceLifetime.Singleton, implementationType);
-
-        public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName, [NotNull] Type implementationType)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            return InternalAddType(collection, serviceType, serviceName, ServiceLifetime.Singleton, new TypeDescriptor(implementationType));
-        }
-
-        public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName, [NotNull] Func<IServiceProvider, object> implementationFactory)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
-            return InternalAddFactory(collection, serviceType, serviceName, ServiceLifetime.Singleton,
-                implementationFactory);
-        }
-
-        public static IList<IServiceDescriptor> AddSingleton<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName)
-            where TImplementation : TService
-            => AddSingleton(collection, typeof(TService), serviceName, typeof(TImplementation));
-
-        public static IList<IServiceDescriptor> AddSingleton([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName)
-            => AddSingleton(collection, serviceType, serviceName, serviceType);
-
-        public static IList<IServiceDescriptor> AddSingleton<TService>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName)
-            => AddSingleton(collection, typeof(TService), serviceName);
-
-        public static IList<IServiceDescriptor> AddSingleton<TService>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TService> implementationFactory) where TService : class
-            => AddSingleton(collection, typeof(TService), serviceName, implementationFactory);
-
-        public static IList<IServiceDescriptor> AddSingleton<TService, TImplementation>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [NotNull] Func<IServiceProvider, TImplementation> implementationFactory)
-            where TImplementation : class, TService
-            => AddSingleton(collection, typeof(TService), serviceName, implementationFactory);
-
-        public static IList<IServiceDescriptor> AddSingletonInstance<TService>(
-            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
-            [CanBeNull] TService implementationInstance)
-            => AddSingletonInstance(collection, typeof(TService), serviceName, implementationInstance);
-
-        public static IList<IServiceDescriptor> AddSingletonInstance([NotNull] this IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName, [CanBeNull] object implementationInstance)
-        {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-
-            var serviceDescriptor = new InstanceServiceDescriptor(serviceType, serviceName, implementationInstance);
-            collection.Add(serviceDescriptor);
+            var descriptor = new TypedServiceDescriptor(serviceType, serviceName, lifetime, new TypeDescriptor(implementationType));
+            collection.Add(descriptor);
             return collection;
         }
 
-        #endregion
-
-        #region base
-
-        private static IList<IServiceDescriptor> AddForImplementedInterfaces(
-            [NotNull] IList<IServiceDescriptor> collection,
-            [CanBeNull] string serviceName, ServiceLifetime lifetime,
-            [NotNull] Type implementationType)
+        public static IList<IServiceDescriptor> AddTypeForImplementedInterfaces([NotNull] IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime,
+            [CanBeNull] string serviceName, [NotNull] Type implementationType)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
@@ -218,23 +55,55 @@ namespace Jasily.DependencyInjection
             return collection;
         }
 
-        private static IList<IServiceDescriptor> InternalAddType(
-            [NotNull] IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
-            [NotNull] TypeDescriptor implementationTypeDescriptor)
+        public static IList<IServiceDescriptor> AddFactory([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [NotNull] Type serviceType, [CanBeNull] string serviceName,
+            [NotNull] Func<IServiceProvider, object> implementationFactory)
         {
-            var descriptor = new TypedServiceDescriptor(serviceType, serviceName, lifetime, implementationTypeDescriptor);
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
+
+            var descriptor = new FactoryServiceDescriptor(serviceType, serviceName, lifetime, implementationFactory);
             collection.Add(descriptor);
             return collection;
         }
 
-        private static IList<IServiceDescriptor> InternalAddFactory(
-            [NotNull] IList<IServiceDescriptor> collection,
-            [NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
-            [NotNull] Func<IServiceProvider, object> implementationFactory)
+        public static IList<IServiceDescriptor> AddFactory<TService>([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [CanBeNull] string serviceName,
+            [NotNull] Func<IServiceProvider, TService> implementationFactory)
         {
-            var descriptor = new FactoryServiceDescriptor(serviceType, serviceName, lifetime, implementationFactory);
-            collection.Add(descriptor);
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
+            return collection.AddFactory(lifetime, typeof(TService), serviceName, p => implementationFactory(p));
+        }
+
+        public static IList<IServiceDescriptor> AddFactory<TService, TImplementation>([NotNull] this IList<IServiceDescriptor> collection,
+            ServiceLifetime lifetime, [CanBeNull] string serviceName,
+            [NotNull] Func<IServiceProvider, TImplementation> implementationFactory)
+            where TImplementation : TService
+        {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (implementationFactory == null) throw new ArgumentNullException(nameof(implementationFactory));
+            return collection.AddFactory(lifetime, typeof(TService), serviceName, p => implementationFactory(p));
+        }
+
+        #endregion
+
+        #region Singleton
+
+        public static IList<IServiceDescriptor> AddSingletonInstance<TService>(
+            [NotNull] this IList<IServiceDescriptor> collection, [CanBeNull] string serviceName,
+            [CanBeNull] TService implementationInstance)
+            => AddSingletonInstance(collection, typeof(TService), serviceName, implementationInstance);
+
+        public static IList<IServiceDescriptor> AddSingletonInstance([NotNull] this IList<IServiceDescriptor> collection,
+            [NotNull] Type serviceType, [CanBeNull] string serviceName, [CanBeNull] object implementationInstance)
+        {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+
+            var serviceDescriptor = new InstanceServiceDescriptor(serviceType, serviceName, implementationInstance);
+            collection.Add(serviceDescriptor);
             return collection;
         }
 

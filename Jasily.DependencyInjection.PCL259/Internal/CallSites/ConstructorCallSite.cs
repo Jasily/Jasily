@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal.CallSites
 {
@@ -12,7 +13,7 @@ namespace Jasily.DependencyInjection.Internal.CallSites
         private readonly ConstructorInfo constructorInfo;
         private readonly IServiceCallSite[] parameterCallSites;
 
-        public ConstructorCallSite(ConstructorInfo constructorInfo, IServiceCallSite[] parameterCallSites)
+        public ConstructorCallSite([NotNull] ConstructorInfo constructorInfo, [NotNull] IServiceCallSite[] parameterCallSites)
         {
             Debug.Assert(constructorInfo != null && parameterCallSites != null);
             this.constructorInfo = constructorInfo;
@@ -41,7 +42,7 @@ namespace Jasily.DependencyInjection.Internal.CallSites
             }
             catch (Exception ex) when (ex.InnerException != null)
             {
-                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                ex.InnerException.ReThrow();
                 throw;
             }
         }

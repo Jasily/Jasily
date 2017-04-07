@@ -16,7 +16,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection
             var obj2 = new object();
             list.AddSingletonInstance("key", obj1);
             list.AddSingletonInstance("value", obj2);
-            list.AddTransient<KeyValuePair<string, object>>(null);
+            list.AddType<KeyValuePair<string, object>>(ServiceLifetime.Scoped, null);
             var provider = ServiceProvider.Build(list, new ServiceProviderSettings { EnableDebug = true });
             foreach (var _ in Enumerable.Range(0, 10))
             {
