@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using Jasily.Core;
 using Jasily.Interfaces;
 using JetBrains.Annotations;
 
@@ -7,18 +9,18 @@ namespace Windows.ApplicationModel
     public static class SuspendingDeferralExtensions
     {
         public static IDisposable<T> AsDisposable<T>([NotNull] this T deferral)
-           where T : ISuspendingDeferral
+           where T : class, ISuspendingDeferral
         {
             if (deferral == null) throw new ArgumentNullException(nameof(deferral));
             return new SuspendingDeferralDisposable<T>(deferral);
         }
 
         private sealed class SuspendingDeferralDisposable<T> : IDisposable<T>
-            where T : ISuspendingDeferral
+            where T : class, ISuspendingDeferral
         {
             public SuspendingDeferralDisposable([NotNull] T deferral)
             {
-                if (deferral == null) throw new ArgumentNullException(nameof(deferral));
+                Debug.Assert(deferral != null);
                 this.DisposeObject = deferral;
             }
 

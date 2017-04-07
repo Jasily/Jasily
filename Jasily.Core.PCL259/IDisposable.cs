@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jasily.Interfaces
+namespace Jasily.Core
 {
     public interface IDisposable<out T> : IDisposable
     {
