@@ -7,10 +7,8 @@ namespace Jasily.DependencyInjection.Internal
     {
         protected ServiceDescriptor([NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime)
         {
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-
-            this.ServiceName = serviceName;
-            this.ServiceType = serviceType;
+            this.ServiceName = serviceName ?? string.Empty;
+            this.ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             this.Lifetime = lifetime;
         }
 

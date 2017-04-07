@@ -23,7 +23,7 @@ namespace Jasily.DependencyInjection.Internal
         public IServiceDescriptor Descriptor { get; }
 
         [NotNull]
-        public string ServiceName => this.Descriptor.ServiceName ?? string.Empty;
+        public string ServiceName => this.Descriptor.ServiceName;
 
         [NotNull]
         public Type ServiceType => this.Descriptor.ServiceType;

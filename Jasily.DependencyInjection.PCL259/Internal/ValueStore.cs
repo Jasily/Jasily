@@ -1,33 +1,28 @@
 using System;
+using System.Threading;
+using Jasily.Core;
 
 namespace Jasily.DependencyInjection.Internal
 {
     internal class ValueStore : IValueStore
     {
-        private bool isValueCreated;
-        private object value;
+        private ValueContainer<object> value;
 
         public void Dispose()
         {
-            this.isValueCreated = false;
-            (this.value as IDisposable)?.Dispose();
+            (this.value?.Value as IDisposable)?.Dispose();
             this.value = null;
         }
 
         public object GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
-            if (this.isValueCreated) return this.value;
-
-            lock (this)
+            var vc = this.value;
+            if (vc == null)
             {
-                if (!this.isValueCreated)
-                {
-                    this.value = creator(provider);
-                    this.isValueCreated = true;
-                }
+                Interlocked.CompareExchange(ref this.value, new ValueContainer<object>(creator(provider)), null);
+                vc = this.value;
             }
-
-            return this.value;
+            return vc.Value;
         }
     }
 }

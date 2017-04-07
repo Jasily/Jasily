@@ -5,7 +5,7 @@ namespace Jasily.DependencyInjection
 {
     public interface IServiceDescriptor
     {
-        [CanBeNull]
+        [NotNull]
         string ServiceName { get; }
 
         [NotNull]
