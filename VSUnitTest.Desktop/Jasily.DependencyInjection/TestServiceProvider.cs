@@ -2,6 +2,7 @@
 using System.Linq;
 using Jasily.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace VSUnitTest.Desktop.Jasily.DependencyInjection
 {
@@ -11,18 +12,18 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection
         [TestMethod]
         public void TestMethod1()
         {
-            var list = ServiceProvider.CreateServiceCollection();
+            var sc = new ServiceCollection();
             var obj1 = "5";
             var obj2 = new object();
-            list.AddSingletonInstance("key", obj1);
-            list.AddSingletonInstance("value", obj2);
-            list.AddType<KeyValuePair<string, object>>(ServiceLifetime.Scoped, null);
-            var provider = ServiceProvider.Build(list, new ServiceProviderSettings { EnableDebug = true });
+            sc.AddSingleton(obj1).AssignNameToLast("key");
+            sc.AddSingleton(obj2).AssignNameToLast("value");
+            sc.AddScopedValue<KeyValuePair<string, object>?>(new KeyValuePair<string, object>(obj1, obj2));
+            var provider = sc.BuildServiceProvider(new ServiceProviderSettings { EnableDebug = true });
             foreach (var _ in Enumerable.Range(0, 10))
             {
-                var service = provider.GetService(typeof(KeyValuePair<string, object>));
+                var service = provider.GetService(typeof(KeyValuePair<string, object>?));
                 Assert.IsNotNull(service);
-                Assert.IsInstanceOfType(service, typeof(KeyValuePair<string, object>));
+                Assert.IsInstanceOfType(service, typeof(KeyValuePair<string, object>?));
                 var kvp = (KeyValuePair<string, object>)service;
                 Assert.AreEqual(obj1, kvp.Key);
                 Assert.AreEqual(obj2, kvp.Value);

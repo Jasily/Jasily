@@ -5,25 +5,32 @@ using System.Reflection;
 using Jasily.DependencyInjection.Internal;
 using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Jasily.DependencyInjection
 {
     public class ServiceProvider : IServiceProvider, IValueStore
     {
-        private readonly Dictionary<Service, object> valueStore
-            = new Dictionary<Service, object>();
-
-        protected ServiceProvider()
+        internal ServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors)
         {
+            if (serviceDescriptors == null) throw new ArgumentNullException(nameof(serviceDescriptors));
+
             this.RootProvider = (RootServiceProvider)this;
+            this.Lifetime = ServiceLifetime.Singleton;
+            this.serviceResolver = new ServiceResolver().AddRange(serviceDescriptors);
         }
 
         // This constructor is called exclusively to create a child scope from the parent
-        internal ServiceProvider(ServiceProvider parent)
+        internal ServiceProvider([NotNull] ServiceProvider parent, ServiceLifetime lifetime)
         {
             Debug.Assert(parent != null);
+            Debug.Assert(lifetime == ServiceLifetime.Scoped || lifetime == ServiceLifetime.Transient);
+
             this.RootProvider = parent.RootProvider;
             this.ParentProvider = parent;
+            this.Lifetime = lifetime;
         }
 
         [NotNull]
@@ -31,6 +38,21 @@ namespace Jasily.DependencyInjection
 
         [CanBeNull]
         internal ServiceProvider ParentProvider { get; }
+
+        [CanBeNull]
+        private IServiceResolver serviceResolver;
+
+        [NotNull]
+        internal IServiceResolver ServiceResolver
+        {
+            get
+            {
+                if (this.serviceResolver == null) Interlocked.CompareExchange(ref this.serviceResolver, new ServiceResolver(), null);
+                return this.serviceResolver;
+            }
+        }
+
+        public ServiceLifetime Lifetime { get; }
 
         /// <summary>
         /// </summary>
@@ -114,45 +136,82 @@ namespace Jasily.DependencyInjection
             return callSites;
         }
 
-        public virtual void Dispose()
-        {
-            foreach (var kvp in this.valueStore)
-            {
-                (kvp.Value as IDisposable)?.Dispose();
-            }
-            this.valueStore.Clear();
-        }
+        #region IValueStore for Transient or Scoped
+
+        private Dictionary<Service, object> store1;
+        private ConcurrentDictionary<Service, object> store2;
 
         object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
-            object value;
-            if (!this.valueStore.TryGetValue(service, out value))
+            if (this.Lifetime == ServiceLifetime.Transient)
             {
-                value = creator(provider);
-                this.valueStore.Add(service, value);
+                // don't need thread-saftly
+                if (this.store1 == null) this.store1 = new Dictionary<Service, object>();
+
+                if (!this.store1.TryGetValue(service, out var value))
+                {
+                    value = creator(provider);
+                    this.store1.Add(service, value);
+                }
+                return value;
             }
-            return value;
+            else
+            {
+                Debug.Assert(this.Lifetime == ServiceLifetime.Scoped);
+
+                if (this.store2 == null) Interlocked.CompareExchange(ref this.store2, new ConcurrentDictionary<Service, object>(), null);
+                if (this.store2.TryGetValue(service, out var r)) return r;
+                return this.store2.GetOrAdd(service, s => creator(this));
+            }
         }
 
-        public ServiceProvider CreateScope() => new ServiceProvider(this);
+        #endregion
 
-        #region static helper
+        public ServiceProvider CreateScope() => new ServiceProvider(this, ServiceLifetime.Scoped);
 
-        public static IList<IServiceDescriptor> CreateServiceCollection() => new List<IServiceDescriptor>();
+        public ServiceProvider CreateTransient() => new ServiceProvider(this, ServiceLifetime.Transient);
 
-        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors)
-            => Build(serviceDescriptors, RootServiceProvider.DefaultResolveMode);
+        #region IDisposable Support
 
-        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
-            [NotNull] IEnumerable<ResolveLevel> mode)
-            => new RootServiceProvider(serviceDescriptors, mode, new ServiceProviderSettings());
+        private bool disposedValue = false;
 
-        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors, ServiceProviderSettings settings)
-            => new RootServiceProvider(serviceDescriptors, RootServiceProvider.DefaultResolveMode, settings);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: 释放托管状态(托管对象)。
+                }
 
-        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
-            [NotNull] IEnumerable<ResolveLevel> mode, ServiceProviderSettings settings)
-            => new RootServiceProvider(serviceDescriptors, mode, settings);
+                this.ServiceResolver.Dispose();
+                foreach (var kvp in this.store1)
+                {
+                    (kvp.Value as IDisposable)?.Dispose();
+                }
+                this.store1.Clear();
+
+                // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
+                // TODO: 将大型字段设置为 null。
+
+                this.disposedValue = true;
+            }
+        }
+
+        // TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
+        // ~ServiceProvider() {
+        //   // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+        //   Dispose(false);
+        // }
+
+        // 添加此代码以正确实现可处置模式。
+        public void Dispose()
+        {
+            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+            Dispose(true);
+            // TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
+            // GC.SuppressFinalize(this);
+        }
 
         #endregion
     }

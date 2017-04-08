@@ -6,21 +6,18 @@ using System.Reflection;
 using Jasily.DependencyInjection.Attributes;
 using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Jasily.DependencyInjection.Internal
+namespace Jasily.DependencyInjection.Internal.CallSites
 {
-    internal class TypedServiceDescriptor : ServiceDescriptor, IServiceCallSiteProvider, IValueStore
+    internal struct ConstructorCallSiteFactory
     {
-        private readonly TypeDescriptor implementationTypeDescriptor;
         private readonly Type implementationType;
 
-        public TypedServiceDescriptor([NotNull] Type serviceType, [CanBeNull] string serviceName, ServiceLifetime lifetime,
-            [NotNull] TypeDescriptor implementationTypeDescriptor)
-            : base(serviceType, serviceName, lifetime)
+        public ConstructorCallSiteFactory([NotNull] NamedServiceDescriptor descriptor)
         {
-            this.implementationTypeDescriptor = implementationTypeDescriptor;
-            if (implementationTypeDescriptor == null) throw new ArgumentNullException(nameof(implementationTypeDescriptor));
-            this.implementationType = implementationTypeDescriptor.ImplementationType;
+            Debug.Assert(descriptor.ImplementationType != null);
+            this.implementationType = descriptor.ImplementationType;
         }
 
         private IServiceCallSite ResolveConstructorCallSite(ServiceProvider provider, ISet<Service> serviceChain,
@@ -120,10 +117,5 @@ namespace Jasily.DependencyInjection.Internal
                     : new ConstructorCallSite(bestConstructor, parameterCallSites);
             }
         }
-
-        public void Dispose() => this.implementationTypeDescriptor.Dispose();
-
-        public object GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
-            => this.implementationTypeDescriptor.GetValue(service, provider, creator);
     }
 }

@@ -3,29 +3,31 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Concurrent;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class ServiceResolver : IDisposable
+    internal interface IServiceResolver : IDisposable
     {
-        private static readonly Type EnumerableType = typeof(IEnumerable<>);
-        private readonly List<Service> services
-            = new List<Service>();
+        ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level);
+    }
+
+    internal class ServiceResolver : IServiceResolver
+    {
+        private readonly List<Service> services = new List<Service>();
         private readonly Dictionary<Type, TypedServiceEntry> typedServices
             = new Dictionary<Type, TypedServiceEntry>();
         private readonly Dictionary<string, NamedServiceEntry> namedServices
             = new Dictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<Type, TypedServiceEntry> enumerableServices
-            = new Dictionary<Type, TypedServiceEntry>();
 
-        public ServiceResolver([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors)
+        public ServiceResolver()
         {
-            Debug.Assert(serviceDescriptors != null);
-            this.Init(serviceDescriptors);
         }
 
-        private void Init(IEnumerable<IServiceDescriptor> serviceDescriptors)
+        public ServiceResolver AddRange(IEnumerable<NamedServiceDescriptor> serviceDescriptors)
         {
+            Debug.Assert(serviceDescriptors != null);
             var descriptors = serviceDescriptors.ToArray();
             foreach (var descriptor in descriptors)
             {
@@ -34,6 +36,8 @@ namespace Jasily.DependencyInjection.Internal
                 GetServiceEntry(this.typedServices, service.ServiceType).Add(service);
                 GetServiceEntry(this.namedServices, service.ServiceName).Add(service);
             }
+
+            return this;
         }
 
         [CanBeNull]
@@ -93,6 +97,24 @@ namespace Jasily.DependencyInjection.Internal
                 namedServices.Add(serviceName, named);
             }
             return named;
+        }
+    }
+
+    internal class ConcurrentServiceResolver : IServiceResolver
+    {
+        private readonly ConcurrentDictionary<Type, TypedServiceEntry> typedServices
+            = new ConcurrentDictionary<Type, TypedServiceEntry>();
+        private readonly ConcurrentDictionary<string, NamedServiceEntry> namedServices
+            = new ConcurrentDictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
+        {
+            throw new NotImplementedException();
         }
     }
 }

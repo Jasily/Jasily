@@ -2,16 +2,19 @@
 using System.Linq.Expressions;
 using Jasily.DependencyInjection.Internal.CallSites;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Jasily.DependencyInjection.Internal
+namespace Jasily.DependencyInjection.Internal.CallSites
 {
-    internal class InstanceServiceDescriptor : ServiceDescriptor, IImmutableCallSite
+    internal sealed class InstanceCallSite : IImmutableCallSite
     {
-        public InstanceServiceDescriptor([NotNull] Type serviceType, [CanBeNull] string serviceName, [CanBeNull] object instance)
-            : base(serviceType, serviceName, ServiceLifetime.Singleton)
+        public InstanceCallSite(NamedServiceDescriptor descriptor)
         {
-            this.ImplementationInstance = instance;
+            this.ServiceType = descriptor.ServiceType;
+            this.ImplementationInstance = descriptor.Instance;
         }
+
+        public Type ServiceType { get; }
 
         [CanBeNull]
         public object ImplementationInstance { get; }

@@ -15,11 +15,11 @@ namespace Jasily.DependencyInjection
             ResolveLevel.NameAndType,
         };
 
-        public RootServiceProvider([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,
+        public RootServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors,
             [NotNull] IEnumerable<ResolveLevel> mode,
             ServiceProviderSettings setting)
+            : base(serviceDescriptors)
         {
-            if (serviceDescriptors == null) throw new ArgumentNullException(nameof(serviceDescriptors));
             if (mode == null) throw new ArgumentNullException(nameof(mode));
 
             if (setting.CompileAfterCallCount == null)
@@ -27,7 +27,6 @@ namespace Jasily.DependencyInjection
             this.Setting = setting;
 
             this.ResolveMode = mode.OrderBy(z => (int)z).ToArray();
-            this.ServiceResolver = new ServiceResolver(serviceDescriptors);
         }
 
         internal ResolveLevel[] ResolveMode { get; }
@@ -36,13 +35,5 @@ namespace Jasily.DependencyInjection
 
         [Conditional("DEBUG")]
         public void Log(string message) => Debug.WriteLineIf(this.Setting.EnableDebug, message);
-
-        internal ServiceResolver ServiceResolver { get; }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            this.ServiceResolver.Dispose();
-        }
     }
 }
