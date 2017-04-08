@@ -11,11 +11,11 @@ namespace Jasily.DependencyInjection
     public class ServiceProvider : IServiceProvider, IValueStore
     {
         private readonly Dictionary<Service, object> valueStore
-            = new Dictionary<Service, object>(); 
+            = new Dictionary<Service, object>();
 
         protected ServiceProvider()
         {
-            this.RootProvider = (RootServiceProvider) this;
+            this.RootProvider = (RootServiceProvider)this;
         }
 
         // This constructor is called exclusively to create a child scope from the parent
@@ -140,7 +140,7 @@ namespace Jasily.DependencyInjection
 
         public static IList<IServiceDescriptor> CreateServiceCollection() => new List<IServiceDescriptor>();
 
-        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors) 
+        public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors)
             => Build(serviceDescriptors, RootServiceProvider.DefaultResolveMode);
 
         public static ServiceProvider Build([NotNull] IEnumerable<IServiceDescriptor> serviceDescriptors,

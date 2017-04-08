@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Jasily.DependencyInjection.PCL259")]
+[assembly: AssemblyTitle("Jasily.DependencyInjection.PCL7")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Jasily.DependencyInjection.PCL259")]
-[assembly: AssemblyCopyright("版权所有(C)  2016")]
+[assembly: AssemblyProduct("Jasily.DependencyInjection.PCL7")]
+[assembly: AssemblyCopyright("版权所有(C)  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("zh-Hans")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-//可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
+// 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]

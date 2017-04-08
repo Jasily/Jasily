@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5C6DCFF1-1E53-4FDA-9FB6-8239AB485EB1}</ProjectGuid>
+    <ProjectGuid>{911BB276-AB02-4188-A924-A63D7794EBEC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Jasily.DependencyInjection</RootNamespace>
-    <AssemblyName>Jasily.DependencyInjection.PCL259</AssemblyName>
+    <AssemblyName>Jasily.DependencyInjection.PCL7</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,19 +33,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Attributes\EntryPoint.cs" />
     <Compile Include="Internal\CallSiteExpressionBuilder.cs" />
     <Compile Include="Internal\CallSites\ConstantCallSite.cs" />
     <Compile Include="Internal\CallSites\ConstructorCallSite.cs" />
     <Compile Include="Internal\CallSites\CreateInstanceCallSite.cs" />
-    <Compile Include="Internal\FactoryServiceDescriptor.cs" />
     <Compile Include="Internal\CallSites\IImmutableCallSite.cs" />
     <Compile Include="Internal\CallSites\IInstanceCallSite.cs" />
-    <Compile Include="Internal\InstanceServiceDescriptor.cs" />
     <Compile Include="Internal\CallSites\IServiceCallSite.cs" />
+    <Compile Include="Internal\CallSites\MethodCallSite.cs" />
+    <Compile Include="Internal\FactoryServiceDescriptor.cs" />
+    <Compile Include="Internal\InstanceServiceDescriptor.cs" />
     <Compile Include="Internal\IServiceCallSiteProvider.cs" />
     <Compile Include="Internal\IValueStore.cs" />
-    <Compile Include="Internal\CallSites\MethodCallSite.cs" />
     <Compile Include="Internal\NamedServiceEntry.cs" />
     <Compile Include="Internal\ResolveRequest.cs" />
     <Compile Include="Internal\Service.cs" />
@@ -58,19 +61,27 @@
     <Compile Include="Internal\TypedServiceEntry.cs" />
     <Compile Include="Internal\ValueStore.cs" />
     <Compile Include="IServiceDescriptor.cs" />
+    <Compile Include="IServiceProvider.cs" />
     <Compile Include="MethodInvoker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveLevel.cs" />
     <Compile Include="ResolveResult.cs" />
     <Compile Include="RootServiceProvider.cs" />
     <Compile Include="ServiceCollectionServiceExtensions.cs" />
     <Compile Include="ServiceLifetime.cs" />
     <Compile Include="ServiceProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceProviderSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="README.md" />
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
@@ -86,17 +97,5 @@
       <Name>Jasily.PCL259</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
