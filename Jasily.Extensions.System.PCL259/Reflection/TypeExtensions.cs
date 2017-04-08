@@ -82,5 +82,31 @@ namespace System.Reflection
             var property = type.GetRuntimeProperty(memberName);
             return property?.CompileSetter();
         }
+
+        public static bool IsValueWriteAtomic([NotNull] this Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            //
+            // this is a copied from:
+            // mscorlib/system/Collections/Concurrent/ConcurrentDictionary.cs
+            //
+            var isAtomic = type.GetTypeInfo().IsClass
+                || type == typeof(bool)
+                || type == typeof(char)
+                || type == typeof(byte)
+                || type == typeof(sbyte)
+                || type == typeof(short)
+                || type == typeof(ushort)
+                || type == typeof(int)
+                || type == typeof(uint)
+                || type == typeof(float);
+
+            if (!isAtomic && IntPtr.Size == 8)
+            {
+                isAtomic |= type == typeof(double) || type == typeof(long);
+            }
+
+            return isAtomic;
+        }
     }
 }
