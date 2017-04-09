@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal struct ResolveRequest
+    internal struct ResolveRequest : IEquatable<ResolveRequest>
     {
         private TypeInfo serviceTypeInfo;
 
@@ -26,5 +26,23 @@ namespace Jasily.DependencyInjection.Internal
         [NotNull]
         public TypeInfo ServiceTypeInfo
             => this.serviceTypeInfo ?? (this.serviceTypeInfo = this.ServiceType.GetTypeInfo());
+
+        public override int GetHashCode()
+        {
+            return this.ServiceType.GetHashCode() ^ this.ServiceName.GetHashCode();
+        }
+
+        public bool Equals(ResolveRequest other)
+        {
+            return
+                this.ServiceType.Equals(other.ServiceType) &&
+                this.ServiceName.Equals(other.ServiceName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ResolveRequest rr) return this.Equals(rr);
+            return base.Equals(obj);
+        }
     }
 }

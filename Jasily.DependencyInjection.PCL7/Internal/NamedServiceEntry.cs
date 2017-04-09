@@ -7,6 +7,13 @@ namespace Jasily.DependencyInjection.Internal
     {
         private readonly List<Service> entries = new List<Service>();
 
+        public NamedServiceEntry(string name)
+        {
+            this.ServiceName = name.ToLower();
+        }
+
+        public string ServiceName { get; }
+
         public override void Add(Service service) => this.entries.Add(service);
 
         public override Service Resolve(ResolveRequest resolveRequest, ResolveLevel level)

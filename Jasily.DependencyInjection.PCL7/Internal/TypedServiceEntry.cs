@@ -1,10 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Jasily.DependencyInjection.Internal
 {
     internal class TypedServiceEntry : ServiceEntry
     {
         private readonly Dictionary<string, List<Service>> entriesMap = new Dictionary<string, List<Service>>();
+
+        public TypedServiceEntry(Type type, StringComparer comparer)
+        {
+            this.entriesMap = new Dictionary<string, List<Service>>(comparer);
+            this.ServiceType = type;
+        }
+
+        public Type ServiceType { get; }
 
         public Service Last { get; private set; }
 

@@ -11,19 +11,19 @@ namespace Jasily.DependencyInjection.Internal.CallSites
         public InstanceCallSite(NamedServiceDescriptor descriptor)
         {
             this.ServiceType = descriptor.ServiceType;
-            this.ImplementationInstance = descriptor.Instance;
+            this.Instance = descriptor.Instance;
         }
 
         public Type ServiceType { get; }
 
         [CanBeNull]
-        public object ImplementationInstance { get; }
+        public object Instance { get; }
 
         public Expression ResolveExpression(ParameterExpression provider)
-            => this.ImplementationInstance == null
+            => this.Instance == null
                 ? Core.Cached.Expression.Null
-                : Expression.Constant(this.ImplementationInstance, this.ServiceType);
+                : Expression.Constant(this.Instance, this.ServiceType);
 
-        public object ResolveValue(ServiceProvider provider) => this.ImplementationInstance;
+        public object ResolveValue(ServiceProvider provider) => this.Instance;
     }
 }

@@ -19,7 +19,7 @@ namespace Jasily.DependencyInjection
 
             this.RootProvider = (RootServiceProvider)this;
             this.Lifetime = ServiceLifetime.Singleton;
-            this.serviceResolver = new ServiceResolver().AddRange(serviceDescriptors);
+            this.serviceResolver = new ServiceResolver(this, this.RootProvider.Settings, serviceDescriptors);
         }
 
         // This constructor is called exclusively to create a child scope from the parent
@@ -47,7 +47,9 @@ namespace Jasily.DependencyInjection
         {
             get
             {
-                if (this.serviceResolver == null) Interlocked.CompareExchange(ref this.serviceResolver, new ServiceResolver(), null);
+                if (this.serviceResolver == null)
+                    Interlocked.CompareExchange(ref this.serviceResolver,
+                        new ServiceResolver(this, this.RootProvider.Settings), null);
                 return this.serviceResolver;
             }
         }
@@ -62,6 +64,13 @@ namespace Jasily.DependencyInjection
         [CanBeNull]
         public object GetService([NotNull] Type serviceType) => this.GetService(serviceType, null).Value;
 
+        public object GetRequiredService([NotNull] Type serviceType)
+        {
+            var r = this.GetService(serviceType, null);
+            if (r.HasValue) throw new InvalidOperationException();
+            return r.Value;
+        }
+
         /// <summary>
         /// return a <see cref="ResolveResult"/> object.
         /// </summary>
@@ -73,13 +82,17 @@ namespace Jasily.DependencyInjection
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
-            var service = this.ResolveService(new ResolveRequest(serviceType, serviceName));
-            if (service == null) return default(ResolveResult);
-            var provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
-                ? this.RootProvider
-                : this;
-            var value = service.GetValue(provider);
-            return new ResolveResult(value);
+            return this.GetServiceInternal(new ResolveRequest(serviceType, serviceName));
+        }
+
+        private ResolveResult GetServiceInternal(ResolveRequest request)
+        {
+            var result = this.ServiceResolver.ResolveValue(this, request);
+            if (!result.HasValue && this.ParentProvider != null)
+            {
+                return this.ParentProvider.GetServiceInternal(request);
+            }
+            return result;
         }
 
         private Service ResolveService(ResolveRequest request)
@@ -138,20 +151,26 @@ namespace Jasily.DependencyInjection
 
         #region IValueStore for Transient or Scoped
 
-        private Dictionary<Service, object> store1;
-        private ConcurrentDictionary<Service, object> store2;
+        private Dictionary<ServiceBuilder, object> store1;
+        private ConcurrentDictionary<ServiceBuilder, object> store2;
 
         object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
+        object IValueStore.GetValue(ServiceBuilder builder, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
             if (this.Lifetime == ServiceLifetime.Transient)
             {
                 // don't need thread-saftly
-                if (this.store1 == null) this.store1 = new Dictionary<Service, object>();
+                if (this.store1 == null) this.store1 = new Dictionary<ServiceBuilder, object>();
 
-                if (!this.store1.TryGetValue(service, out var value))
+                if (!this.store1.TryGetValue(builder, out var value))
                 {
                     value = creator(provider);
-                    this.store1.Add(service, value);
+                    this.store1.Add(builder, value);
                 }
                 return value;
             }
@@ -159,9 +178,10 @@ namespace Jasily.DependencyInjection
             {
                 Debug.Assert(this.Lifetime == ServiceLifetime.Scoped);
 
-                if (this.store2 == null) Interlocked.CompareExchange(ref this.store2, new ConcurrentDictionary<Service, object>(), null);
-                if (this.store2.TryGetValue(service, out var r)) return r;
-                return this.store2.GetOrAdd(service, s => creator(this));
+                if (this.store2 == null) Interlocked.CompareExchange(ref this.store2,
+                    new ConcurrentDictionary<ServiceBuilder, object>(), null);
+                if (this.store2.TryGetValue(builder, out var r)) return r;
+                return this.store2.GetOrAdd(builder, s => creator(this));
             }
         }
 

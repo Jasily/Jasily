@@ -5,39 +5,47 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
+using Jasily.DependencyInjection.Internal.CallSites;
 
 namespace Jasily.DependencyInjection.Internal
 {
     internal interface IServiceResolver : IDisposable
     {
+        ServiceProvider ServiceProvider { get; }
+
         ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level);
+
+        ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request);
     }
 
     internal class ServiceResolver : IServiceResolver
     {
         private readonly List<Service> services = new List<Service>();
-        private readonly Dictionary<Type, TypedServiceEntry> typedServices
-            = new Dictionary<Type, TypedServiceEntry>();
-        private readonly Dictionary<string, NamedServiceEntry> namedServices
-            = new Dictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<Type, TypedServiceEntry> typedServices;
+        private readonly Dictionary<string, NamedServiceEntry> namedServices;
+        private readonly ConcurrentDictionary<ResolveRequest, ServiceBuilder> builders;
 
-        public ServiceResolver()
-        {
-        }
+        /// <summary>
+        /// The ServiceResolver owner.
+        /// </summary>
+        public ServiceProvider ServiceProvider { get; }
 
-        public ServiceResolver AddRange(IEnumerable<NamedServiceDescriptor> serviceDescriptors)
+        public ServiceResolver(ServiceProvider provider, ServiceProviderSettings settings,
+            IEnumerable<NamedServiceDescriptor> serviceDescriptors = null)
         {
-            Debug.Assert(serviceDescriptors != null);
-            var descriptors = serviceDescriptors.ToArray();
-            foreach (var descriptor in descriptors)
+            this.ServiceProvider = provider;
+
+            if (serviceDescriptors == null)
             {
-                var service = new Service(descriptor);
-                this.services.Add(service);
-                GetServiceEntry(this.typedServices, service.ServiceType).Add(service);
-                GetServiceEntry(this.namedServices, service.ServiceName).Add(service);
+                this.typedServices = new Dictionary<Type, TypedServiceEntry>();
+                this.namedServices = new Dictionary<string, NamedServiceEntry>(settings.NameComparer);
             }
-
-            return this;
+            else
+            {
+                var services = serviceDescriptors.Select(z => new Service(this, z)).ToArray();
+                this.typedServices = this.CreateTypedServiceDictionary(services, settings.NameComparer);
+                this.namedServices = this.CreateNamedServiceDictionary(services, settings.NameComparer);
+            }
         }
 
         [CanBeNull]
@@ -66,6 +74,41 @@ namespace Jasily.DependencyInjection.Internal
             return null;
         }
 
+        private Service ResolveService(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
+        {
+            var serviceEntry = this.ResolveServiceEntry(request, level);
+            return serviceEntry?.Resolve(request, level);
+        }
+
+        private IServiceCallSite ResolveCallSite(ServiceProvider provider, ResolveLevel level, ResolveRequest request,
+            ISet<Service> serviceChain)
+        {
+            var service = this.ResolveService(provider, level, request);
+            if (service == null) return null;
+
+            try
+            {
+                if (!serviceChain.Add(service)) throw new InvalidOperationException();
+                return service.GetCallSite(provider, serviceChain);
+            }
+            finally
+            {
+                serviceChain.Remove(service);
+            }
+        }
+
+        public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
+        {
+            var serviceEntry = this.ResolveServiceEntry(request, level);
+            var service = serviceEntry?.Resolve(request, level);
+            if (service == null) return default(ResolveResult);
+            provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
+                ? provider.RootProvider
+                : provider;
+            var value = service.GetValue(provider);
+            return new ResolveResult(value);
+        }
+
         public void Dispose()
         {
             foreach (var service in this.services)
@@ -76,36 +119,38 @@ namespace Jasily.DependencyInjection.Internal
             this.typedServices.Clear();
             this.namedServices.Clear();
         }
-
-        private static TypedServiceEntry GetServiceEntry(Dictionary<Type, TypedServiceEntry> typedServices, Type serviceType)
-        {
-            TypedServiceEntry typed;
-            if (!typedServices.TryGetValue(serviceType, out typed))
-            {
-                typed = new TypedServiceEntry();
-                typedServices.Add(serviceType, typed);
-            }
-            return typed;
-        }
-
-        private static NamedServiceEntry GetServiceEntry(Dictionary<string, NamedServiceEntry> namedServices, string serviceName)
-        {
-            NamedServiceEntry named;
-            if (!namedServices.TryGetValue(serviceName, out named))
-            {
-                named = new NamedServiceEntry();
-                namedServices.Add(serviceName, named);
-            }
-            return named;
-        }
     }
 
     internal class ConcurrentServiceResolver : IServiceResolver
     {
-        private readonly ConcurrentDictionary<Type, TypedServiceEntry> typedServices
-            = new ConcurrentDictionary<Type, TypedServiceEntry>();
-        private readonly ConcurrentDictionary<string, NamedServiceEntry> namedServices
-            = new ConcurrentDictionary<string, NamedServiceEntry>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<Type, TypedServiceEntry> typedServices;
+        private readonly ConcurrentDictionary<string, NamedServiceEntry> namedServices;
+        private readonly ConcurrentDictionary<ResolveRequest, ServiceBuilder> builders;
+
+        /// <summary>
+        /// The ServiceResolver owner.
+        /// </summary>
+        public ServiceProvider ServiceProvider { get; }
+
+        public ConcurrentServiceResolver(ServiceProvider provider, ServiceProviderSettings settings,
+            [NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors)
+        {
+            this.ServiceProvider = provider;
+
+            if (serviceDescriptors == null)
+            {
+                this.typedServices = new ConcurrentDictionary<Type, TypedServiceEntry>();
+                this.namedServices = new ConcurrentDictionary<string, NamedServiceEntry>(settings.NameComparer);
+            }
+            else
+            {
+                var services = serviceDescriptors.Select(z => new Service(this, z)).ToArray();
+                this.typedServices = new ConcurrentDictionary<Type, TypedServiceEntry>(
+                    this.CreateTypedServiceDictionary(services, settings.NameComparer));
+                this.namedServices = new ConcurrentDictionary<string, NamedServiceEntry>(
+                    this.CreateNamedServiceDictionary(services, settings.NameComparer), settings.NameComparer);
+            }
+        }
 
         public void Dispose()
         {
@@ -115,6 +160,51 @@ namespace Jasily.DependencyInjection.Internal
         public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
         {
             throw new NotImplementedException();
+        }
+
+        public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
+        {
+            var serviceEntry = this.ResolveServiceEntry(request, level);
+            var service = serviceEntry?.Resolve(request, level);
+            if (service == null) return default(ResolveResult);
+            provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
+                ? provider.RootProvider
+                : provider;
+            var value = service.GetValue(provider);
+            return new ResolveResult(value);
+        }
+    }
+
+    internal static class ServiceResolverHelper
+    {
+        public static Dictionary<Type, TypedServiceEntry> CreateTypedServiceDictionary(
+            this IServiceResolver resolver, [NotNull] Service[] services, [NotNull] StringComparer comparer)
+        {
+            Debug.Assert(services != null && comparer != null);
+            return services.GroupBy(z => z.ServiceType)
+                .Select(li => li.Aggregate(new TypedServiceEntry(li.Key, comparer),(e, i) => { e.Add(i); return e; }))
+                .ToDictionary(z => z.ServiceType, z => z);
+        }
+
+        public static Dictionary<string, NamedServiceEntry> CreateNamedServiceDictionary(
+            this IServiceResolver resolver, [NotNull] Service[] services, [NotNull] StringComparer comparer)
+        {
+            Debug.Assert(services != null && comparer != null);
+            return services.GroupBy(z => z.ServiceName, comparer)
+                .Select(li => li.Aggregate(new NamedServiceEntry(li.Key), (e, i) => { e.Add(i); return e; }))
+                .ToDictionary(z => z.ServiceName, z => z, comparer);
+        }
+
+        public static ResolveResult ResolveValue(this IServiceResolver resolver,
+            ServiceProvider provider, ResolveRequest request)
+        {
+            for (var i = 0; i < provider.RootProvider.ResolveMode.Length; i++)
+            {
+                var level = provider.RootProvider.ResolveMode[i];
+                var result = resolver.ResolveValue(provider, request);
+                if (result.HasValue) return result;
+            }
+            return default(ResolveResult);
         }
     }
 }

@@ -17,13 +17,18 @@ namespace Jasily.DependencyInjection.Internal
         private TypeInfo serviceTypeInfo;
         private IServiceCallSite callSite;
 
-        public Service(NamedServiceDescriptor descriptor)
+        public Service(IServiceResolver resolver, NamedServiceDescriptor descriptor)
         {
             if (descriptor.Lifetime == ServiceLifetime.Singleton)
                 this.valueStore = new ValueStore();
 
             this.Descriptor = descriptor;
         }
+
+        /// <summary>
+        /// The resolver where this service defined.
+        /// </summary>
+        public IServiceResolver Resolver { get; }
 
         public NamedServiceDescriptor Descriptor { get; }
 
@@ -62,21 +67,18 @@ namespace Jasily.DependencyInjection.Internal
 
         private IServiceCallSite GetCallSiteInternal(ServiceProvider provider, ISet<Service> serviceChain)
         {
-            if (this.Descriptor.ImplementationFactory != null)
+            switch (this.Descriptor.Mode)
             {
-                throw new NotImplementedException();
+                case NamedServiceDescriptor.ImplementationMode.Typed:
+                    return new ConstructorCallSiteFactory(this.Descriptor)
+                        .CreateServiceCallSite(provider, serviceChain);
+                case NamedServiceDescriptor.ImplementationMode.Instance:
+                    return new InstanceCallSite(this.Descriptor);
+                case NamedServiceDescriptor.ImplementationMode.Factory:
+                    return new FactoryCallSite(this.Descriptor);
+                default:
+                    throw new NotImplementedException();
             }
-            else if (this.Descriptor.ImplementationType != null)
-            {
-                return new ConstructorCallSiteFactory(this.Descriptor)
-                    .CreateServiceCallSite(provider, serviceChain);
-            }
-            else
-            {
-                return new InstanceCallSite(this.Descriptor);
-            }
-
-            throw new NotImplementedException();
         }
 
         private Func<ServiceProvider, object> CreateServiceAccessor(ServiceProvider provider)
@@ -90,8 +92,8 @@ namespace Jasily.DependencyInjection.Internal
         private static Func<ServiceProvider, object> RealizeServiceAccessor(RootServiceProvider serviceProvider,
             Service service, IServiceCallSite callSite)
         {
-            Debug.Assert(serviceProvider.Setting.CompileAfterCallCount != null);
-            var compileAfter = serviceProvider.Setting.CompileAfterCallCount.Value;
+            Debug.Assert(serviceProvider.Settings.CompileAfterCallCount != null);
+            var compileAfter = serviceProvider.Settings.CompileAfterCallCount.Value;
 
             var callCount = 0;
             return provider =>
@@ -100,7 +102,6 @@ namespace Jasily.DependencyInjection.Internal
                 {
                     Task.Run(() =>
                     {
-                        serviceProvider.Log($"begin compile {service}");
                         var func = new CallSiteExpressionBuilder().Build(callSite);
                         Interlocked.Exchange(ref service.instanceAccessor, func);
                     });
@@ -112,5 +113,92 @@ namespace Jasily.DependencyInjection.Internal
         public override string ToString() => $"{this.ServiceType.Name} {this.ServiceName}";
 
         public void Dispose() => (this.valueStore)?.Dispose();
+    }
+
+    internal sealed class ServiceBuilder
+    {
+        private readonly IValueStore valueStore;
+        private Func<ServiceProvider, object> instanceAccessor;
+
+        public ServiceBuilder([NotNull] IServiceResolver resolver, [NotNull] IServiceCallSite callsite, [NotNull] Service service)
+        {
+            Debug.Assert(resolver != null);
+            Debug.Assert(callsite != null);
+            Debug.Assert(service != null);
+
+            this.Resolver = resolver;
+            this.Lifetime = service.Descriptor.Lifetime;
+            this.CallSite = callsite;
+
+            if (this.Lifetime == ServiceLifetime.Singleton)
+                this.valueStore = new ValueStore();
+        }
+
+        /// <summary>
+        /// The ServiceBuilder's owner.
+        /// </summary>
+        public IServiceResolver Resolver { get; }
+
+        public ServiceLifetime Lifetime { get; }
+        
+        public IServiceCallSite CallSite { get; }
+
+        public object GetValue(ServiceProvider provider)
+        {
+            if (this.instanceAccessor == null)
+            {
+                Interlocked.CompareExchange(ref this.instanceAccessor, this.CreateServiceAccessor(), null);
+            }
+
+            IValueStore store;
+            switch (this.Lifetime)
+            {
+                case ServiceLifetime.Singleton:
+                    store = this.valueStore;
+                    break;
+
+                case ServiceLifetime.Scoped:
+                    store = provider;
+                    break;
+
+                case ServiceLifetime.Transient:
+                    // TODO
+                    throw new NotImplementedException();
+
+                default:
+                    throw new NotImplementedException();
+            }
+            return store.GetValue(this, provider, this.instanceAccessor);
+        }
+
+        private static Func<ServiceProvider, object> ReturnDefault = _ => null;
+
+        private Func<ServiceProvider, object> CreateServiceAccessor()
+        {
+            var callSite = this.CallSite;
+            if (callSite == null) return ReturnDefault;
+            if (callSite is IImmutableCallSite) return callSite.ResolveValue;
+
+            // RealizeServiceAccessor
+            var settings = this.Resolver.ServiceProvider.RootProvider.Settings;
+            Debug.Assert(settings.CompileAfterCallCount.HasValue);
+            var compileAfter = settings.CompileAfterCallCount.Value;
+            var db = settings.EnableDebug;
+
+            var callCount = 0;
+            return provider =>
+            {
+                if (Interlocked.Increment(ref callCount) == compileAfter)
+                {
+                    Task.Run(() =>
+                    {
+                        Debug.WriteLineIf(db, $"begin compile {this}");
+                        var func = new CallSiteExpressionBuilder().Build(callSite);
+                        Interlocked.Exchange(ref this.instanceAccessor, func);
+                    });
+                }
+                return callSite.ResolveValue(provider);
+            };
+        }
     }
 }

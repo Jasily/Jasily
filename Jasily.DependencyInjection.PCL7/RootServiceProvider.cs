@@ -24,16 +24,20 @@ namespace Jasily.DependencyInjection
 
             if (setting.CompileAfterCallCount == null)
                 setting.CompileAfterCallCount = ServiceProviderSettings.DefaultCompileAfterCallCount;
-            this.Setting = setting;
+
+            if (setting.NameComparer == null)
+                setting.NameComparer = StringComparer.OrdinalIgnoreCase;
+
+            this.Settings = setting;
 
             this.ResolveMode = mode.OrderBy(z => (int)z).ToArray();
         }
 
         internal ResolveLevel[] ResolveMode { get; }
 
-        public ServiceProviderSettings Setting { get; }
+        public ServiceProviderSettings Settings { get; }
 
         [Conditional("DEBUG")]
-        public void Log(string message) => Debug.WriteLineIf(this.Setting.EnableDebug, message);
+        public void Log(string message) => Debug.WriteLineIf(this.Settings.EnableDebug, message);
     }
 }

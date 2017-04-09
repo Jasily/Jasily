@@ -1,4 +1,6 @@
-﻿namespace Jasily.DependencyInjection
+﻿using System;
+
+namespace Jasily.DependencyInjection
 {
     public struct ServiceProviderSettings
     {
@@ -8,8 +10,10 @@
         /// after this call count, will compile the Expression.
         /// default value is 2.
         /// </summary>
-        public int? CompileAfterCallCount;
+        public int? CompileAfterCallCount { get; set; }
 
-        public bool EnableDebug;
+        public bool EnableDebug { get; set; }
+
+        public StringComparer NameComparer { get; set; }
     }
 }

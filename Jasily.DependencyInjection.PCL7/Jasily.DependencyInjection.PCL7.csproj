@@ -42,6 +42,7 @@
     <Compile Include="Internal\CallSites\ConstantCallSite.cs" />
     <Compile Include="Internal\CallSites\ConstructorCallSite.cs" />
     <Compile Include="Internal\CallSites\CreateInstanceCallSite.cs" />
+    <Compile Include="Internal\CallSites\FactoryCallSite.cs" />
     <Compile Include="Internal\CallSites\IImmutableCallSite.cs" />
     <Compile Include="Internal\CallSites\IInstanceCallSite.cs" />
     <Compile Include="Internal\CallSites\InstanceCallSite.cs" />
