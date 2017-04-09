@@ -32,28 +32,6 @@ namespace System.Linq
 
         #endregion
 
-        #region to
-
-        public static T[] ToArray<T>([NotNull] this T[] source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            var array = new T[source.Length];
-            source.CopyTo(array, 0);
-            return array;
-        }
-
-        public static List<T> ToList<T>([NotNull] this IEnumerable<T> source, int capacity)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            
-            var list = new List<T>(capacity);
-            list.AddRange(source);
-            return list;
-        }
-
-        #endregion
-
         #region orderby
 
         private static class C<T>

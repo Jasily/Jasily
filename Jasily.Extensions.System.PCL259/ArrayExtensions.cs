@@ -1,11 +1,21 @@
 ﻿using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace System
 {
     public static class ArrayExtensions
     {
-        public static void ForEach<T>([NotNull] this T[] source, [NotNull] Action<T> action)
+        public static T[] ToArray<T>([NotNull] this T[] source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var array = new T[source.Length];
+            source.CopyTo(array, 0);
+            return array;
+        }
+
+        [NotNull]
+        public static T[] ForEach<T>([NotNull] this T[] source, [NotNull] Action<T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
@@ -14,9 +24,11 @@ namespace System.Collections.Generic
             {
                 action(source[i]);
             }
+            return source;
         }
 
-        public static void ForEach<T>([NotNull] this T[] source, [NotNull] Action<int, T> action)
+        [NotNull]
+        public static T[] ForEach<T>([NotNull] this T[] source, [NotNull] Action<int, T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
@@ -25,6 +37,7 @@ namespace System.Collections.Generic
             {
                 action(i, source[i]);
             }
+            return source;
         }
 
         /// <summary>
