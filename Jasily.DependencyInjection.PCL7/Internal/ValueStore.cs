@@ -14,17 +14,6 @@ namespace Jasily.DependencyInjection.Internal
             this.value = null;
         }
 
-        public object GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
-        {
-            var vc = this.value;
-            if (vc == null)
-            {
-                Interlocked.CompareExchange(ref this.value, new ValueContainer<object>(creator(provider)), null);
-                vc = this.value;
-            }
-            return vc.Value;
-        }
-
         public object GetValue(ServiceBuilder builder, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
             var vc = this.value;

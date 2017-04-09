@@ -56,7 +56,6 @@
     <Compile Include="Internal\Service.cs" />
     <Compile Include="Internal\ServiceEntry.cs" />
     <Compile Include="Internal\ServiceResolver.cs" />
-    <Compile Include="Internal\TypeDescriptor.cs" />
     <Compile Include="Internal\TypedServiceEntry.cs" />
     <Compile Include="Internal\ValueStore.cs" />
     <Compile Include="IServiceProvider.cs" />

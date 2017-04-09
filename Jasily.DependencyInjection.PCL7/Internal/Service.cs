@@ -10,18 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Jasily.DependencyInjection.Internal
 {
-    internal class Service : IDisposable
+    internal class Service
     {
-        private readonly ValueStore valueStore;
-        private Func<ServiceProvider, object> instanceAccessor;
         private TypeInfo serviceTypeInfo;
         private IServiceCallSite callSite;
+        
 
         public Service(IServiceResolver resolver, NamedServiceDescriptor descriptor)
         {
-            if (descriptor.Lifetime == ServiceLifetime.Singleton)
-                this.valueStore = new ValueStore();
-
             this.Descriptor = descriptor;
         }
 
@@ -41,19 +37,20 @@ namespace Jasily.DependencyInjection.Internal
         [NotNull]
         public TypeInfo ServiceTypeInfo => this.serviceTypeInfo ?? (this.serviceTypeInfo = this.ServiceType.GetTypeInfo());
 
-        public object GetValue(ServiceProvider provider)
+        #region builder
+
+        private ServiceBuilder builder;
+
+        public ServiceBuilder GetServiceBuilder()
         {
-            if (this.instanceAccessor == null)
-            {
-                Interlocked.CompareExchange(ref this.instanceAccessor, this.CreateServiceAccessor(provider), null);
-            }
-
-            var store = this.Descriptor.Lifetime == ServiceLifetime.Singleton
-                    ? this.valueStore
-                    : provider as IValueStore;
-
-            return store.GetValue(this, provider, this.instanceAccessor);
+            if (this.builder != null) return this.builder;
+            if (this.callSite == null) throw new InvalidOperationException();
+            var b = new ServiceBuilder(this.Resolver, this.callSite, this);
+            Interlocked.CompareExchange(ref this.builder, b, null);
+            return this.builder;
         }
+
+        #endregion
 
         public IServiceCallSite GetCallSite(ServiceProvider provider, ISet<Service> serviceChain)
         {
@@ -81,41 +78,10 @@ namespace Jasily.DependencyInjection.Internal
             }
         }
 
-        private Func<ServiceProvider, object> CreateServiceAccessor(ServiceProvider provider)
-        {
-            var callSite = this.GetCallSite(provider, new HashSet<Service>());
-            if (callSite == null) return Cache.Funcs.ObjectFunc.ReturnDefault<ServiceProvider, object>();
-            if (callSite is IImmutableCallSite) return callSite.ResolveValue;
-            return RealizeServiceAccessor(provider.RootProvider, this, callSite);
-        }
-
-        private static Func<ServiceProvider, object> RealizeServiceAccessor(RootServiceProvider serviceProvider,
-            Service service, IServiceCallSite callSite)
-        {
-            Debug.Assert(serviceProvider.Settings.CompileAfterCallCount != null);
-            var compileAfter = serviceProvider.Settings.CompileAfterCallCount.Value;
-
-            var callCount = 0;
-            return provider =>
-            {
-                if (Interlocked.Increment(ref callCount) == compileAfter)
-                {
-                    Task.Run(() =>
-                    {
-                        var func = new CallSiteExpressionBuilder().Build(callSite);
-                        Interlocked.Exchange(ref service.instanceAccessor, func);
-                    });
-                }
-                return callSite.ResolveValue(provider);
-            };
-        }
-
         public override string ToString() => $"{this.ServiceType.Name} {this.ServiceName}";
-
-        public void Dispose() => (this.valueStore)?.Dispose();
     }
 
-    internal sealed class ServiceBuilder
+    internal sealed class ServiceBuilder : IDisposable
     {
         private readonly IValueStore valueStore;
         private Func<ServiceProvider, object> instanceAccessor;
@@ -158,12 +124,9 @@ namespace Jasily.DependencyInjection.Internal
                     break;
 
                 case ServiceLifetime.Scoped:
+                case ServiceLifetime.Transient:
                     store = provider;
                     break;
-
-                case ServiceLifetime.Transient:
-                    // TODO
-                    throw new NotImplementedException();
 
                 default:
                     throw new NotImplementedException();
@@ -200,5 +163,7 @@ namespace Jasily.DependencyInjection.Internal
                 return callSite.ResolveValue(provider);
             };
         }
+
+        public void Dispose() => (this.valueStore)?.Dispose();
     }
 }

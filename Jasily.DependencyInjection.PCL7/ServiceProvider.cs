@@ -154,12 +154,6 @@ namespace Jasily.DependencyInjection
         private Dictionary<ServiceBuilder, object> store1;
         private ConcurrentDictionary<ServiceBuilder, object> store2;
 
-        object IValueStore.GetValue(Service service, ServiceProvider provider, Func<ServiceProvider, object> creator)
-        {
-            // TODO
-            throw new NotImplementedException();
-        }
-
         object IValueStore.GetValue(ServiceBuilder builder, ServiceProvider provider, Func<ServiceProvider, object> creator)
         {
             if (this.Lifetime == ServiceLifetime.Transient)

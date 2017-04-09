@@ -20,10 +20,9 @@ namespace Jasily.DependencyInjection.Internal
 
     internal class ServiceResolver : IServiceResolver
     {
-        private readonly List<Service> services = new List<Service>();
         private readonly Dictionary<Type, TypedServiceEntry> typedServices;
         private readonly Dictionary<string, NamedServiceEntry> namedServices;
-        private readonly ConcurrentDictionary<ResolveRequest, ServiceBuilder> builders;
+        private readonly Dictionary<ResolveRequest, ServiceBuilder> builders;
 
         /// <summary>
         /// The ServiceResolver owner.
@@ -34,6 +33,7 @@ namespace Jasily.DependencyInjection.Internal
             IEnumerable<NamedServiceDescriptor> serviceDescriptors = null)
         {
             this.ServiceProvider = provider;
+            this.builders = new Dictionary<ResolveRequest, ServiceBuilder>();
 
             if (serviceDescriptors == null)
             {
@@ -99,23 +99,23 @@ namespace Jasily.DependencyInjection.Internal
 
         public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
         {
-            var serviceEntry = this.ResolveServiceEntry(request, level);
-            var service = serviceEntry?.Resolve(request, level);
-            if (service == null) return default(ResolveResult);
-            provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
-                ? provider.RootProvider
-                : provider;
-            var value = service.GetValue(provider);
+            if (!this.builders.TryGetValue(request, out var builder))
+            {
+                var serviceEntry = this.ResolveServiceEntry(request, level);
+                var service = serviceEntry?.Resolve(request, level);
+                if (service == null) return default(ResolveResult);
+                this.builders[request] = builder = service.GetServiceBuilder();
+            }
+            var value = builder.GetValue(provider);
             return new ResolveResult(value);
         }
 
         public void Dispose()
         {
-            foreach (var service in this.services)
+            foreach (var builder in this.builders.Values)
             {
-                service.Dispose();
+                builder.Dispose();
             }
-            this.services.Clear();
             this.typedServices.Clear();
             this.namedServices.Clear();
         }
@@ -136,6 +136,7 @@ namespace Jasily.DependencyInjection.Internal
             [NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors)
         {
             this.ServiceProvider = provider;
+            this.builders = new ConcurrentDictionary<ResolveRequest, ServiceBuilder>();
 
             if (serviceDescriptors == null)
             {
@@ -154,7 +155,13 @@ namespace Jasily.DependencyInjection.Internal
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            foreach (var builder in this.builders.Values)
+            {
+                builder.Dispose();
+            }
+            this.builders.Clear();
+            this.typedServices.Clear();
+            this.namedServices.Clear();
         }
 
         public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
@@ -164,13 +171,14 @@ namespace Jasily.DependencyInjection.Internal
 
         public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
         {
-            var serviceEntry = this.ResolveServiceEntry(request, level);
-            var service = serviceEntry?.Resolve(request, level);
-            if (service == null) return default(ResolveResult);
-            provider = service.Descriptor.Lifetime == ServiceLifetime.Singleton
-                ? provider.RootProvider
-                : provider;
-            var value = service.GetValue(provider);
+            if (!this.builders.TryGetValue(request, out var builder))
+            {
+                var serviceEntry = this.ResolveServiceEntry(request, level);
+                var service = serviceEntry?.Resolve(request, level);
+                if (service == null) return default(ResolveResult);
+                builder = this.builders.GetOrAdd(request, service.GetServiceBuilder());
+            }
+            var value = builder.GetValue(provider);
             return new ResolveResult(value);
         }
     }
