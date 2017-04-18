@@ -13,7 +13,7 @@ namespace Jasily.DependencyInjection.Internal
     {
         ServiceProvider ServiceProvider { get; }
 
-        ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level);
+        Service ResolveService(ResolveRequest request, ResolveLevel level);
 
         ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request);
     }
@@ -49,7 +49,7 @@ namespace Jasily.DependencyInjection.Internal
         }
 
         [CanBeNull]
-        public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
+        private ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
         {
             switch (level)
             {
@@ -74,27 +74,10 @@ namespace Jasily.DependencyInjection.Internal
             return null;
         }
 
-        private Service ResolveService(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
+        [CanBeNull]
+        public Service ResolveService(ResolveRequest request, ResolveLevel level)
         {
-            var serviceEntry = this.ResolveServiceEntry(request, level);
-            return serviceEntry?.Resolve(request, level);
-        }
-
-        private IServiceCallSite ResolveCallSite(ServiceProvider provider, ResolveLevel level, ResolveRequest request,
-            ISet<Service> serviceChain)
-        {
-            var service = this.ResolveService(provider, level, request);
-            if (service == null) return null;
-
-            try
-            {
-                if (!serviceChain.Add(service)) throw new InvalidOperationException();
-                return service.GetCallSite(provider, serviceChain);
-            }
-            finally
-            {
-                serviceChain.Remove(service);
-            }
+            return this.ResolveServiceEntry(request, level)?.Resolve(request, level);
         }
 
         public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
@@ -164,9 +147,36 @@ namespace Jasily.DependencyInjection.Internal
             this.namedServices.Clear();
         }
 
+        [CanBeNull]
         public ServiceEntry ResolveServiceEntry(ResolveRequest request, ResolveLevel level)
         {
-            throw new NotImplementedException();
+            switch (level)
+            {
+                case ResolveLevel.TypeAndName:
+                case ResolveLevel.Type:
+                    if (this.typedServices.TryGetValue(request.ServiceType, out var o))
+                        return o;
+                    break;
+
+                case ResolveLevel.NameAndType:
+                    if (request.ServiceName != string.Empty)
+                    {
+                        if (this.namedServices.TryGetValue(request.ServiceName, out var e))
+                            return e;
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return null;
+        }
+
+        [CanBeNull]
+        public Service ResolveService(ResolveRequest request, ResolveLevel level)
+        {
+            return this.ResolveServiceEntry(request, level)?.Resolve(request, level);
         }
 
         public ResolveResult ResolveValue(ServiceProvider provider, ResolveLevel level, ResolveRequest request)
@@ -206,9 +216,10 @@ namespace Jasily.DependencyInjection.Internal
         public static ResolveResult ResolveValue(this IServiceResolver resolver,
             ServiceProvider provider, ResolveRequest request)
         {
-            for (var i = 0; i < provider.RootProvider.ResolveMode.Length; i++)
+            var settings = provider.RootProvider.Settings;
+            for (var i = 0; i < settings.ResolveMode.Count; i++)
             {
-                var level = provider.RootProvider.ResolveMode[i];
+                var level = settings.ResolveMode[i];
                 var result = resolver.ResolveValue(provider, request);
                 if (result.HasValue) return result;
             }

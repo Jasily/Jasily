@@ -15,25 +15,28 @@ namespace Jasily.DependencyInjection
             ResolveLevel.NameAndType,
         };
 
-        public RootServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors,
-            [NotNull] IEnumerable<ResolveLevel> mode,
-            ServiceProviderSettings setting)
-            : base(serviceDescriptors)
+        private static ServiceProviderSettings CloneSettings(ServiceProviderSettings setting)
         {
-            if (mode == null) throw new ArgumentNullException(nameof(mode));
+            var s = setting;
 
-            if (setting.CompileAfterCallCount == null)
-                setting.CompileAfterCallCount = ServiceProviderSettings.DefaultCompileAfterCallCount;
+            if (s.CompileAfterCallCount == null)
+                s.CompileAfterCallCount = ServiceProviderSettings.DefaultCompileAfterCallCount;
 
-            if (setting.NameComparer == null)
-                setting.NameComparer = StringComparer.OrdinalIgnoreCase;
+            if (s.NameComparer == null)
+                s.NameComparer = StringComparer.OrdinalIgnoreCase;
 
-            this.Settings = setting;
+            s.ResolveMode = ((IEnumerable<ResolveLevel>) setting.ResolveMode ?? DefaultResolveMode)
+                .ToList();
 
-            this.ResolveMode = mode.OrderBy(z => (int)z).ToArray();
+            return s;
         }
 
-        internal ResolveLevel[] ResolveMode { get; }
+        public RootServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors,
+            ServiceProviderSettings setting)
+            : base(serviceDescriptors, CloneSettings(setting))
+        {
+            this.Settings = setting;
+        }
 
         public ServiceProviderSettings Settings { get; }
 

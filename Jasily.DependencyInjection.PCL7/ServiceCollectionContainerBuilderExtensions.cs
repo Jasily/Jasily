@@ -18,7 +18,7 @@ namespace Jasily.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
             var nsd = services.Select(z => NamedServiceDescriptor.TryAssignName(z, null)).ToArray();
             Debug.Assert(services.Count == nsd.Length);
-            return new RootServiceProvider(nsd, RootServiceProvider.DefaultResolveMode, settings);
+            return new RootServiceProvider(nsd, settings);
         }
     }
 }

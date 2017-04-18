@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 
 namespace Jasily.DependencyInjection
 {
@@ -15,5 +17,7 @@ namespace Jasily.DependencyInjection
         public bool EnableDebug { get; set; }
 
         public StringComparer NameComparer { get; set; }
+
+        public List<ResolveLevel> ResolveMode { get; set; }
     }
 }

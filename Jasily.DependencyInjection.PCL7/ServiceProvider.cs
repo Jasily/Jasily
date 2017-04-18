@@ -13,13 +13,14 @@ namespace Jasily.DependencyInjection
 {
     public class ServiceProvider : IServiceProvider, IValueStore
     {
-        internal ServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors)
+        internal ServiceProvider([NotNull] IEnumerable<NamedServiceDescriptor> serviceDescriptors,
+            ServiceProviderSettings setting)
         {
             if (serviceDescriptors == null) throw new ArgumentNullException(nameof(serviceDescriptors));
 
             this.RootProvider = (RootServiceProvider)this;
             this.Lifetime = ServiceLifetime.Singleton;
-            this.serviceResolver = new ServiceResolver(this, this.RootProvider.Settings, serviceDescriptors);
+            this.serviceResolver = new ServiceResolver(this, setting, serviceDescriptors);
         }
 
         // This constructor is called exclusively to create a child scope from the parent
@@ -97,11 +98,11 @@ namespace Jasily.DependencyInjection
 
         private Service ResolveService(ResolveRequest request)
         {
-            for (var i = 0; i < this.RootProvider.ResolveMode.Length; i++)
+            var mode = this.RootProvider.Settings.ResolveMode;
+            for (var i = 0; i < mode.Count; i++)
             {
-                var level = this.RootProvider.ResolveMode[i];
-                var serviceEntry = this.RootProvider.ServiceResolver.ResolveServiceEntry(request, level);
-                var service = serviceEntry?.Resolve(request, level);
+                var level = mode[i];
+                var service = this.ServiceResolver.ResolveService(request, level);
                 if (service != null) return service;
             }
             return null;

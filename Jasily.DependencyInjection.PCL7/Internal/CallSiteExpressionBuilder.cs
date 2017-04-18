@@ -7,7 +7,7 @@ namespace Jasily.DependencyInjection.Internal
     internal struct CallSiteExpressionBuilder
     {
         private static readonly ParameterExpression ObjectParameter = Expression.Parameter(typeof(object));
-        private static readonly ParameterExpression ProviderParameter = Expression.Parameter(typeof(ServiceProvider));
+        private static readonly ParameterExpression ProviderParameter = Expression.Parameter(typeof(IServiceProvider));
 
         public Func<ServiceProvider, object> Build(IServiceCallSite callSite)
         {
