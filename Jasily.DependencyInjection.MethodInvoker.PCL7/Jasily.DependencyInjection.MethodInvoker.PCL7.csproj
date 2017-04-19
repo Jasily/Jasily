@@ -5,10 +5,10 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{911BB276-AB02-4188-A924-A63D7794EBEC}</ProjectGuid>
+    <ProjectGuid>{0E11699A-3C58-4DED-93EF-18DB8F716E9B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Jasily.DependencyInjection</RootNamespace>
-    <AssemblyName>Jasily.DependencyInjection.PCL7</AssemblyName>
+    <RootNamespace>Jasily.DependencyInjection.MethodInvoker</RootNamespace>
+    <AssemblyName>Jasily.DependencyInjection.MethodInvoker.PCL7</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,39 +37,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\EntryPoint.cs" />
-    <Compile Include="Internal\CallSiteExpressionBuilder.cs" />
-    <Compile Include="Internal\CallSites\ConstantCallSite.cs" />
-    <Compile Include="Internal\CallSites\ConstructorCallSite.cs" />
-    <Compile Include="Internal\CallSites\CreateInstanceCallSite.cs" />
-    <Compile Include="Internal\CallSites\FactoryCallSite.cs" />
-    <Compile Include="Internal\CallSites\IImmutableCallSite.cs" />
-    <Compile Include="Internal\CallSites\IInstanceCallSite.cs" />
-    <Compile Include="Internal\CallSites\InstanceCallSite.cs" />
-    <Compile Include="Internal\CallSites\IServiceCallSite.cs" />
-    <Compile Include="Internal\CallSites\MethodCallSite.cs" />
-    <Compile Include="Internal\CallSites\ConstructorCallSiteFactory.cs" />
-    <Compile Include="Internal\IValueStore.cs" />
-    <Compile Include="Internal\NamedServiceDescriptor.cs" />
-    <Compile Include="Internal\NamedServiceEntry.cs" />
-    <Compile Include="Internal\ResolveRequest.cs" />
-    <Compile Include="Internal\Service.cs" />
-    <Compile Include="Internal\ServiceEntry.cs" />
-    <Compile Include="Internal\ServiceResolver.cs" />
-    <Compile Include="Internal\TypedServiceEntry.cs" />
-    <Compile Include="Internal\ValueStore.cs" />
-    <Compile Include="IServiceProvider.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IArguments.cs" />
+    <Compile Include="IMethodInvoker.cs" />
+    <Compile Include="InstanceMethodInvoker.cs" />
+    <Compile Include="IScopedArguments.cs" />
+    <Compile Include="ISingletonArguments.cs" />
+    <Compile Include="ITransientArguments.cs" />
     <Compile Include="MethodInvoker.cs" />
+    <Compile Include="OverrideArguments.cs" />
+    <Compile Include="ParameterInfoDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResolveLevel.cs" />
-    <Compile Include="ResolveResult.cs" />
-    <Compile Include="RootServiceProvider.cs" />
-    <Compile Include="ServiceCollection.cs" />
-    <Compile Include="ServiceCollectionContainerBuilderExtensions.cs" />
-    <Compile Include="ServiceCollectionExtensions.cs" />
-    <Compile Include="ServiceCollectionServiceExtensions.cs" />
-    <Compile Include="ServiceProvider.cs" />
-    <Compile Include="ServiceProviderSettings.cs" />
+    <Compile Include="StaticMethodInvoker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
@@ -81,20 +60,6 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
-      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
-      <Name>Jasily.Core.PCL259</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
-      <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
-      <Name>Jasily.Extensions.System.PCL259</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
-      <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
-      <Name>Jasily.PCL259</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

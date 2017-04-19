@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
@@ -143,7 +146,7 @@
     <Compile Include="CodeTimerHelper.cs" />
     <Compile Include="CodeTimerResult.cs" />
     <Compile Include="Jasily.Core\TestEmpty.cs" />
-    <Compile Include="Jasily.DependencyInjection\TestServiceProvider.cs" />
+    <Compile Include="Jasily.DependencyInjection.MethodInvoker\TestMethodInvoker.cs" />
     <Compile Include="Jasily.Extensions.System\Collections\Generic\TestListExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Linq\TestEnumerableExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Reflection\TestConstructorInfoExtensions.cs" />
@@ -167,9 +170,9 @@
       <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
       <Name>Jasily.Core.PCL259</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.PCL7\Jasily.DependencyInjection.PCL7.csproj">
-      <Project>{911bb276-ab02-4188-a924-a63d7794ebec}</Project>
-      <Name>Jasily.DependencyInjection.PCL7</Name>
+    <ProjectReference Include="..\Jasily.DependencyInjection.MethodInvoker.PCL7\Jasily.DependencyInjection.MethodInvoker.PCL7.csproj">
+      <Project>{0e11699a-3c58-4ded-93ef-18db8f716e9b}</Project>
+      <Name>Jasily.DependencyInjection.MethodInvoker.PCL7</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.Desktop\Jasily.Desktop.csproj">
       <Project>{0a825a8a-522a-4a51-8301-fd903bb07968}</Project>
