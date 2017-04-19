@@ -21,6 +21,36 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MethodInvoker
             {
                 return 2;
             }
+
+            public void Method3()
+            {
+                
+            }
+
+            public static void Method4()
+            {
+                
+            }
+
+            public int Method5(int key)
+            {
+                return 1;
+            }
+
+            public static int Method6(int key)
+            {
+                return 2;
+            }
+
+            public void Method7(int key)
+            {
+
+            }
+
+            public static void Method8(int key)
+            {
+
+            }
         }
 
         [TestMethod]
@@ -31,10 +61,27 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MethodInvoker
             var provider = sc.BuildServiceProvider();
             var invoker = provider.GetService<IMethodInvoker<Class1>>();
             Assert.IsNotNull(invoker);
+
             var method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method1));
             Assert.AreEqual(1, invoker.Invoke(method, new Class1()));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method2));
             Assert.AreEqual(2, invoker.Invoke(method, new Class1()));
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method3));
+            Assert.AreEqual(null, invoker.Invoke(method, new Class1()));
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method4));
+            Assert.AreEqual(null, invoker.Invoke(method, new Class1()));
+
+            var args = new OverrideArguments();
+            args.AddArgument("key", 1);
+
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method5));
+            Assert.AreEqual(1, invoker.Invoke(method, new Class1(), args));
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method6));
+            Assert.AreEqual(2, invoker.Invoke(method, new Class1(), args));
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method7));
+            Assert.AreEqual(null, invoker.Invoke(method, new Class1(), args));
+            method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method8));
+            Assert.AreEqual(null, invoker.Invoke(method, new Class1(), args));
         }
     }
 }
