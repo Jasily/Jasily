@@ -43,7 +43,6 @@
     <Compile Include="InstanceMethodInvoker.cs" />
     <Compile Include="IScopedArguments.cs" />
     <Compile Include="ISingletonArguments.cs" />
-    <Compile Include="ITransientArguments.cs" />
     <Compile Include="MethodInvoker.cs" />
     <Compile Include="OverrideArguments.cs" />
     <Compile Include="ParameterInfoDescriptor.cs" />

@@ -3,27 +3,37 @@ using System.Reflection;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    internal class ParameterInfoDescriptor
+    internal abstract class ParameterInfoDescriptor
     {
+        public static ParameterInfoDescriptor Build(ParameterInfo parameter)
+        {
+            var type = typeof(ParameterInfoDescriptor<>).MakeGenericType(parameter.ParameterType);
+            return (ParameterInfoDescriptor) Activator.CreateInstance(type, parameter);
+        }
+
         public ParameterInfoDescriptor(ParameterInfo parameter)
         {
             this.Parameter = parameter;
-
-            this.TransientArgumentType = typeof(ITransientArguments<>).MakeGenericType(parameter.ParameterType);
-            this.ScopedArgumentsType = typeof(IScopedArguments<>).MakeGenericType(parameter.ParameterType);
-            this.SingletonArgumentsType = typeof(ISingletonArguments<>).MakeGenericType(parameter.ParameterType);
-
-            this.ArgumentsTypes = new[]
-            {
-                this.TransientArgumentType,
-                this.ScopedArgumentsType,
-                this.SingletonArgumentsType
-            };
         }
 
         public ParameterInfo Parameter { get; }
 
-        public Type TransientArgumentType { get; }
+        public abstract object ResolveArgument(IServiceProvider provider, OverrideArguments arguments);
+    }
+
+    internal class ParameterInfoDescriptor<T> : ParameterInfoDescriptor
+    {
+        public ParameterInfoDescriptor(ParameterInfo parameter) : base(parameter)
+        {
+            this.ScopedArgumentsType = typeof(IScopedArguments<T>);
+            this.SingletonArgumentsType = typeof(ISingletonArguments<T>);
+
+            this.ArgumentsTypes = new[]
+            {
+                this.ScopedArgumentsType,
+                this.SingletonArgumentsType
+            };
+        }
 
         public Type ScopedArgumentsType { get; }
 
@@ -31,12 +41,19 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
         public Type[] ArgumentsTypes { get; }
 
-        public object ResolveArgument(IServiceProvider provider, OverrideArguments arguments)
+        public override object ResolveArgument(IServiceProvider provider, OverrideArguments arguments)
         {
             var p = this;
             if (arguments.TryGetValue(this.Parameter.Name, out var value))
             {
-                return value;
+                try
+                {
+                    return (T)value;
+                }
+                catch (InvalidCastException)
+                {
+                    throw new InvalidOperationException();
+                }
             }
 
             for (var i = 0; i < this.ArgumentsTypes.Length; i++)

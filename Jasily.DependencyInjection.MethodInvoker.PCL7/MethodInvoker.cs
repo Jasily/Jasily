@@ -43,7 +43,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         {
             this.Method = method;
             this.Parameters = this.Method.GetParameters()
-                .Select(z => new ParameterInfoDescriptor(z))
+                .Select(z => ParameterInfoDescriptor.Build(z))
                 .ToArray();
         }
 
