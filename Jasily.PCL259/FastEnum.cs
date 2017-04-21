@@ -6,17 +6,10 @@ using Jasily.Core;
 using Jasily.Linq.Expressions.Cache;
 using JetBrains.Annotations;
 
-namespace Jasily.Cache
+namespace Jasily
 {
-    using E = System.Enum;
-
-    internal static class Enum
+    internal static class FastEnum
     {
-        /// <summary>
-        /// if count of enum items large then this count, then use Map to get item.
-        /// </summary>
-        internal const int Threshold = 10;
-
         internal class EnumItem
         {
             internal static readonly Func<EnumItem, string> EnumNameSelector = z => z.EnumName;
@@ -39,7 +32,7 @@ namespace Jasily.Cache
         }
     }
 
-    public static class Enum<T>
+    public static class FastEnum<T>
         where T : struct, IComparable, IFormattable
     {
         // ReSharper disable once StaticMemberInGenericType
@@ -49,7 +42,7 @@ namespace Jasily.Cache
         private static readonly GenericEnumItem[] Items;
         private static readonly Dictionary<ulong, GenericEnumItem> ItemsMap;
 
-        private class GenericEnumItem : Enum.EnumItem
+        private class GenericEnumItem : FastEnum.EnumItem
         {
             /// <summary>
             /// provide (z => z.Item) cache.
@@ -73,14 +66,14 @@ namespace Jasily.Cache
 
         private static T FromUlong(ulong e) => e.ConvertUnchecked<ulong, T>();
 
-        static Enum()
+        static FastEnum()
         {
             var ti = typeof(T).GetTypeInfo();
             if (!ti.IsEnum) throw new InvalidOperationException($"{ti.Name} is NOT enum type.");
 
             Name = ti.Name;
             IsFlags = ti.GetCustomAttribute<FlagsAttribute>() != null;
-            Items = ((T[]) E.GetValues(typeof(T)))
+            Items = ((T[]) Enum.GetValues(typeof(T)))
                 .Select(z => new GenericEnumItem(ToUlong(z), z, z.ToString()))
                 .OrderBy(z => z.EnumValue)
                 .ToArray();
@@ -89,10 +82,7 @@ namespace Jasily.Cache
 
         private static GenericEnumItem TryGetEnumItem(T e)
         {
-            var val = ToUlong(e);
-            return Items.Length > Enum.Threshold
-                ? ItemsMap.GetValueOrDefault(val)
-                : Items.FirstOrDefault(z => z.EnumValue == val);
+            return ItemsMap.GetValueOrDefault(ToUlong(e));
         }
 
         /// <summary>
@@ -119,7 +109,7 @@ namespace Jasily.Cache
                 }
             }
 
-            var matchs = new List<GenericEnumItem>();
+            var matchs = new List<GenericEnumItem>(Items.Length);
             foreach (var item in Items.Reverse())
             {
                 if (item.EnumValue == 0) break;
@@ -127,10 +117,12 @@ namespace Jasily.Cache
                 if ((item.EnumValue & val) == item.EnumValue)
                 {
                     val -= item.EnumValue;
-                    matchs.Insert(0, item);
+                    matchs.Add(item);
                 }
             }
-            return val != 0 && completeMatch ? null : matchs.ToArray();
+            if (val != 0 && completeMatch) return null;
+            matchs.Reverse();
+            return matchs.ToArray();
         }
 
         public static bool IsDefined(T e) => TryGetEnumItem(e) != null;
@@ -148,9 +140,14 @@ namespace Jasily.Cache
         public static string ToString(T e)
         {
             var value = IsFlags
-                ? SplitFlagItems(e, true)?.Select(Enum.EnumItem.EnumNameSelector).JoinAsString(", ")
+                ? SplitFlagItems(e, true)?.Select(FastEnum.EnumItem.EnumNameSelector).JoinAsString(", ")
                 : TryGetEnumItem(e)?.EnumName;
             return value ?? e.ToString();
+        }
+
+        public static string ToFullString(T value, string spliter = ".")
+        {
+            return string.Concat(Name, spliter ?? ".", ToString(value));
         }
 
         /// <summary>
@@ -176,9 +173,6 @@ namespace Jasily.Cache
                 return false;
             }
         }
-
-        public static string ToFullString(T value, string spliter = ".")
-            => string.Concat(Name, spliter ?? ".", value.ToString());
 
         /// <summary>
         /// and op for enum without boxing.

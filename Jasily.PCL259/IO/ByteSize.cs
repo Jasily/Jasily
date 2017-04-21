@@ -35,7 +35,7 @@ namespace Jasily.IO
 
         public double Format(UnitType unit)
         {
-            if (!Enum<UnitType>.IsDefined(unit)) throw new ArgumentOutOfRangeException(nameof(unit));
+            if (!FastEnum<UnitType>.IsDefined(unit)) throw new ArgumentOutOfRangeException(nameof(unit));
 
             var l = Convert.ToDouble(this.Value);
             var level = (int)unit - (int)UnitType.Byte;

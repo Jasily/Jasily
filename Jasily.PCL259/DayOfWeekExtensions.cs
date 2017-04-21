@@ -39,7 +39,7 @@ namespace Jasily
         /// <exception cref="ArgumentException"></exception>
         public static DayOfWeek[] ToDayOfWeeks(this DayOfWeek dayOfWeek)
         {
-            var flags = Enum<DayOfWeek>.SplitFlags(dayOfWeek);
+            var flags = FastEnum<DayOfWeek>.SplitFlags(dayOfWeek);
             if (flags == null) throw new ArgumentException();
             return flags;
         }
