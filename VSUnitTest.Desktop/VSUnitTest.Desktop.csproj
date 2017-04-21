@@ -159,11 +159,11 @@
     <Compile Include="Jasily\IO\TestStringReader.cs" />
     <Compile Include="Jasily\Reflection\Descriptors\TestTypeDescriptor.cs" />
     <Compile Include="Jasily\Reflection\TestActivator.cs" />
+    <Compile Include="Jasily\TestFastEnum.cs" />
     <Compile Include="Jasily\Text\TestStringSegment.cs" />
     <Compile Include="Jasily\Text\TestTextReplacer.cs" />
     <Compile Include="Jasily\TestDayOfWeek.cs" />
     <Compile Include="Jasily\TestSystemCall.cs" />
-    <Compile Include="Jasily\UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
