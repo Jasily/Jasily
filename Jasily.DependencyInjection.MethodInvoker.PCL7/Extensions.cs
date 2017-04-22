@@ -4,13 +4,15 @@ using System;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    public static class Extensions
+    public static class ServiceCollectionServiceExtensions
     {
         public static void UseMethodInvoker([NotNull] this IServiceCollection serviceCollection)
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
 
             serviceCollection.AddSingleton(typeof(IMethodInvoker<>), typeof(MethodInvoker<>));
+            serviceCollection.AddSingleton(typeof(ISingletonArguments<>), typeof(SingletonArguments<>));
+            serviceCollection.AddScoped(typeof(IScopedArguments<>), typeof(ScopedArguments<>));
         }
     }
 }

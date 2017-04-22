@@ -1,7 +1,9 @@
-﻿namespace Jasily.DependencyInjection.MethodInvoker
+﻿using System.Collections.Concurrent;
+
+namespace Jasily.DependencyInjection.MethodInvoker
 {
-    public interface IArguments
+    public interface IArguments<T>
     {
-        bool TryGetValue(string key, out object value);
+        ConcurrentDictionary<string, T> Data { get; }
     }
 }

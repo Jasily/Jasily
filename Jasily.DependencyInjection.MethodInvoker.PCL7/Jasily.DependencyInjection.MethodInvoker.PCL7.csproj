@@ -47,6 +47,8 @@
     <Compile Include="OverrideArguments.cs" />
     <Compile Include="ParameterInfoDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopedArguments.cs" />
+    <Compile Include="SingletonArguments.cs" />
     <Compile Include="StaticMethodInvoker.cs" />
   </ItemGroup>
   <ItemGroup>

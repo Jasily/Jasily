@@ -44,31 +44,21 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public override object ResolveArgument(IServiceProvider provider, OverrideArguments arguments)
         {
             var p = this;
-            if (arguments.TryGetValue(this.Parameter.Name, out var value))
+            if (arguments.TryGetValue<T>(this.Parameter.Name, out var value))
             {
-                try
-                {
-                    return (T)value;
-                }
-                catch (InvalidCastException)
-                {
-                    throw new InvalidOperationException();
-                }
+                return value;
             }
 
             for (var i = 0; i < this.ArgumentsTypes.Length; i++)
             {
-                if (provider.GetService(this.ArgumentsTypes[i]) is IArguments s &&
-                    s.TryGetValue(p.Parameter.Name, out value))
+                if (provider.GetService(this.ArgumentsTypes[i]) is IArguments<T> args &&
+                    args.Data.TryGetValue(p.Parameter.Name, out value))
                 {
                     return value;
                 }
             }
 
-            if (p.Parameter.HasDefaultValue)
-            {
-                return p.Parameter.DefaultValue;
-            }
+            if (p.Parameter.HasDefaultValue) return p.Parameter.DefaultValue;
 
             throw new InvalidOperationException();
         }

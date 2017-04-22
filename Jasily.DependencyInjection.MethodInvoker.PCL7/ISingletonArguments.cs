@@ -1,6 +1,6 @@
 ﻿namespace Jasily.DependencyInjection.MethodInvoker
 {
-    public interface ISingletonArguments<T> : IArguments
+    public interface ISingletonArguments<T> : IArguments<T>
     {
 
     }
