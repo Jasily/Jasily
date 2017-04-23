@@ -7,22 +7,24 @@ using System.Threading.Tasks;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    internal class InstanceMethodInvoker : MethodInvoker
+    internal sealed class InstanceMethodInvoker<T> : MethodInvoker, IInstanceMethodInvoker<T>
     {
-        private Func<object, IServiceProvider, OverrideArguments, object> func;
+        private readonly bool isValueType;
+        private Func<T, IServiceProvider, OverrideArguments, object> func;
 
-        public InstanceMethodInvoker(MethodInfo method) : base(method)
+        public InstanceMethodInvoker(MethodInfo method, bool isValueType) : base(method)
         {
+            this.isValueType = isValueType;
             this.func = this.ImplFunc();
         }
 
-        public override object Invoke(object instance, IServiceProvider provider, OverrideArguments arguments)
+        public object Invoke(T instance, IServiceProvider provider, OverrideArguments arguments)
         {
-            if (object.Equals(instance, null)) throw new ArgumentNullException();
+            if (!this.isValueType && object.Equals(instance, null)) throw new ArgumentNullException();
             return this.func(instance, provider, arguments);
         }
 
-        private Func<object, IServiceProvider, OverrideArguments, object> ImplFunc()
+        private Func<T, IServiceProvider, OverrideArguments, object> ImplFunc()
         {
             var count = 0;
             if (this.Parameters.Length == 0)
@@ -67,10 +69,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
         }
 
-        private Func<object, IServiceProvider, OverrideArguments, object> CompileFunc()
+        private Func<T, IServiceProvider, OverrideArguments, object> CompileFunc()
         {
-            var instanceParameter = Expression.Parameter(typeof(object));
-            var instance = Expression.Convert(instanceParameter, this.Method.DeclaringType);
+            var instance = Expression.Parameter(typeof(T));
 
             Expression body = this.Parameters.Length == 0
                 ? Expression.Call(instance, this.Method)
@@ -79,8 +80,8 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
             if (this.Method.ReturnType == typeof(void))
             {
-                var action = Expression.Lambda<Action<object, IServiceProvider, OverrideArguments>>(body,
-                    instanceParameter, ParameterServiceProvider, ParameterOverrideArguments
+                var action = Expression.Lambda<Action<T, IServiceProvider, OverrideArguments>>(body,
+                    instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
                 return (i, z, x) =>
                 {
@@ -90,9 +91,8 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
             else
             {
-                
-                return Expression.Lambda<Func<object, IServiceProvider, OverrideArguments, object>>(body,
-                    instanceParameter, ParameterServiceProvider, ParameterOverrideArguments
+                return Expression.Lambda<Func<T, IServiceProvider, OverrideArguments, object>>(body,
+                    instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
             }
         }

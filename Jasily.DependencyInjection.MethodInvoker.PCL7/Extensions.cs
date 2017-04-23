@@ -10,7 +10,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
 
-            serviceCollection.AddSingleton(typeof(IMethodInvoker<>), typeof(MethodInvoker<>));
+            serviceCollection.AddSingleton(typeof(IMethodInvoker<>), typeof(ClassMethodInvoker<>));
             serviceCollection.AddSingleton(typeof(ISingletonArguments<>), typeof(SingletonArguments<>));
             serviceCollection.AddScoped(typeof(IScopedArguments<>), typeof(ScopedArguments<>));
         }

@@ -37,9 +37,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassMethodInvoker.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IArguments.cs" />
+    <Compile Include="IInstanceMethodInvoker.cs" />
     <Compile Include="IMethodInvoker.cs" />
+    <Compile Include="IMethodInvokerContainer.cs" />
     <Compile Include="InstanceMethodInvoker.cs" />
     <Compile Include="IScopedArguments.cs" />
     <Compile Include="ISingletonArguments.cs" />

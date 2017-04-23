@@ -17,7 +17,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
             this.func = this.ImplFunc();
         }
 
-        public override object Invoke(object instance, IServiceProvider provider, OverrideArguments arguments)
+        public object Invoke(IServiceProvider provider, OverrideArguments arguments)
         {
             return this.func(provider, arguments);
         }

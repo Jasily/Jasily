@@ -1,53 +1,12 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using System.Collections.Generic;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    internal class MethodInvoker<T> : IMethodInvoker<T>
-    {
-        private readonly IServiceProvider serviceProvider;
-
-        private readonly HashSet<MethodInfo> methods = new HashSet<MethodInfo>();
-        private readonly ConcurrentDictionary<MethodInfo, MethodInvoker> invokerMaps
-            = new ConcurrentDictionary<MethodInfo, MethodInvoker>();
-
-        public MethodInvoker(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-            this.methods = new HashSet<MethodInfo>(typeof(T).GetRuntimeMethods());
-        }
-
-        public object InvokeInstanceMethod(MethodInfo method, T instance, OverrideArguments arguments = default(OverrideArguments))
-        {
-            if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this.methods.Contains(method)) throw new InvalidOperationException();
-            if (method.IsStatic) throw new InvalidOperationException();
-            if (!this.invokerMaps.TryGetValue(method, out var invoker))
-            {
-                invoker = this.invokerMaps.GetOrAdd(method, new InstanceMethodInvoker(method));
-            }
-            return invoker.Invoke(instance, this.serviceProvider, arguments);
-        }
-
-        public object InvokeStaticMethod(MethodInfo method, OverrideArguments arguments = default(OverrideArguments))
-        {
-            if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this.methods.Contains(method)) throw new InvalidOperationException();
-            if (!method.IsStatic) throw new InvalidOperationException();
-            if (!this.invokerMaps.TryGetValue(method, out var invoker))
-            {
-                invoker = this.invokerMaps.GetOrAdd(method, new StaticMethodInvoker(method));
-            }
-            return invoker.Invoke(null, this.serviceProvider, arguments);
-        }
-    }
-
     internal abstract class MethodInvoker
     {
         protected static readonly ParameterExpression ParameterServiceProvider = Expression.Parameter(typeof(IServiceProvider));
@@ -101,7 +60,5 @@ namespace Jasily.DependencyInjection.MethodInvoker
                 return Expression.Convert(body, typeof(object));
             }
         }
-
-        public abstract object Invoke(object instance, IServiceProvider provider, OverrideArguments arguments);
     }
 }
