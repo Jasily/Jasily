@@ -15,16 +15,20 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
         public bool TryGetValue<T>(string key, out T value)
         {
-            var result = this.data.TryGetValue(key, out var ret);
-            if (result)
+            if (this.data != null)
             {
-                if (ret is T)
+                var result = this.data.TryGetValue(key, out var ret);
+                if (result)
                 {
-                    value = (T)ret;
-                    return true;
+                    if (ret is T)
+                    {
+                        value = (T)ret;
+                        return true;
+                    }
+                    throw new InvalidOperationException();
                 }
-                throw new InvalidOperationException();
             }
+            
             value = default(T);
             return false;
         }
