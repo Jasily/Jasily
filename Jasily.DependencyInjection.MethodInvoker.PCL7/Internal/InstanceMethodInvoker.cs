@@ -27,6 +27,9 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         private Func<T, OverrideArguments, object> ImplFunc()
         {
+#if DEBUG
+            if (CompileImmediately) return this.CompileFunc();
+#endif
             var count = 0;
             if (this.Parameters.Length == 0)
             {

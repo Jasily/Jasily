@@ -9,6 +9,10 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal abstract class MethodInvoker
     {
+#if DEBUG
+        protected const bool CompileImmediately = false;
+#endif
+
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
 
         public MethodInvoker(IServiceProvider serviceProvider, MethodInfo method)
