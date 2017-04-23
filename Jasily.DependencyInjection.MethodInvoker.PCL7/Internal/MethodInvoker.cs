@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace Jasily.DependencyInjection.MethodInvoker
+namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal abstract class MethodInvoker
     {
-        protected static readonly ParameterExpression ParameterServiceProvider = Expression.Parameter(typeof(IServiceProvider));
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
 
-        public MethodInvoker(MethodInfo method)
+        public MethodInvoker(IServiceProvider serviceProvider, MethodInfo method)
         {
+            this.ServiceProvider = serviceProvider;
             this.Method = method;
             this.Parameters = this.Method.GetParameters()
                 .Select(z => ParameterInfoDescriptor.Build(z))
@@ -22,24 +22,26 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
         public MethodInfo Method { get; }
 
+        public IServiceProvider ServiceProvider { get; }
+
         public ParameterInfoDescriptor[] Parameters { get; }
 
-        protected object[] ResolveArguments(IServiceProvider provider, OverrideArguments arguments)
+        protected object[] ResolveArguments(OverrideArguments arguments)
         {
             var length = this.Parameters.Length;
             var args = new object[length];
             for (var i = 0; i < length; i++)
             {
                 var p = this.Parameters[i];
-                args[i] = p.ResolveArgument(provider, arguments);
+                args[i] = p.ResolveArgument(this.ServiceProvider, arguments);
             }
             return args;
         }
 
         protected Expression[] ResolveArgumentsExpressions()
         {
-            var lambda = new Func<IServiceProvider, OverrideArguments, object[]>((z, x) => this.ResolveArguments(z, x));
-            var args = Expression.Invoke(Expression.Constant(lambda), ParameterServiceProvider, ParameterOverrideArguments);
+            var lambda = new Func<OverrideArguments, object[]>(x => this.ResolveArguments(x));
+            var args = Expression.Invoke(Expression.Constant(lambda), ParameterOverrideArguments);
             var exps = new Expression[this.Parameters.Length];
             for (var i = 0; i < this.Parameters.Length; i++)
             {

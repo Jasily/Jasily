@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Jasily.DependencyInjection.MethodInvoker
+namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal abstract class ParameterInfoDescriptor
     {

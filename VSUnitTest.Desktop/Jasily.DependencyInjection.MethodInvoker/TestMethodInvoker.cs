@@ -59,7 +59,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MethodInvoker
             var sc = new ServiceCollection();
             sc.UseMethodInvoker();
             var provider = sc.BuildServiceProvider();
-            var invoker = provider.GetService<IMethodInvoker<Class1>>();
+            var invoker = provider.GetService<IMethodInvokerFactory<Class1>>();
             Assert.IsNotNull(invoker);
 
             var method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method1));

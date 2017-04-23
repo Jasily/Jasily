@@ -2,8 +2,8 @@
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    internal interface IInstanceMethodInvoker<in T>
+    public interface IInstanceMethodInvoker<in T>
     {
-        object Invoke(T instance, IServiceProvider provider, OverrideArguments arguments);
+        object Invoke(T instance, OverrideArguments arguments);
     }
 }

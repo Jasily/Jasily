@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Jasily.DependencyInjection.MethodInvoker
+namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal class SingletonArguments<T> : ISingletonArguments<T>
     {

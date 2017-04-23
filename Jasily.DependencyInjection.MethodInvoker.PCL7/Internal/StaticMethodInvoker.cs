@@ -6,28 +6,29 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Diagnostics;
 
-namespace Jasily.DependencyInjection.MethodInvoker
+namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
-    internal class StaticMethodInvoker : MethodInvoker
+    internal class StaticMethodInvoker : MethodInvoker, IStaticMethodInvoker
     {
-        private Func<IServiceProvider, OverrideArguments, object> func;
+        private Func<OverrideArguments, object> func;
 
-        public StaticMethodInvoker(MethodInfo method) : base(method)
+        public StaticMethodInvoker(IServiceProvider serviceProvider, MethodInfo method)
+            : base(serviceProvider, method)
         {
             this.func = this.ImplFunc();
         }
 
-        public object Invoke(IServiceProvider provider, OverrideArguments arguments)
+        public object Invoke(OverrideArguments arguments)
         {
-            return this.func(provider, arguments);
+            return this.func(arguments);
         }
 
-        private Func<IServiceProvider, OverrideArguments, object> ImplFunc()
+        private Func<OverrideArguments, object> ImplFunc()
         {
             var count = 0;
             if (this.Parameters.Length == 0)
             {
-                return (p, a) =>
+                return a =>
                 {
                     if (Interlocked.Increment(ref count) == 4)
                     {
@@ -47,7 +48,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
             else
             {
-                return (p, a) =>
+                return a =>
                 {
                     if (Interlocked.Increment(ref count) == 4)
                     {
@@ -56,7 +57,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
                     try
                     {
-                        return this.Method.Invoke(null, this.ResolveArguments(p, a));
+                        return this.Method.Invoke(null, this.ResolveArguments(a));
                     }
                     catch (TargetInvocationException e)
                     {
@@ -67,7 +68,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
         }
 
-        private Func<IServiceProvider, OverrideArguments, object> CompileFunc()
+        private Func<OverrideArguments, object> CompileFunc()
         {
             Expression body = this.Parameters.Length == 0
                 ? Expression.Call(this.Method)
@@ -76,19 +77,19 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
             if (this.Method.ReturnType == typeof(void))
             {
-                var action = Expression.Lambda<Action<IServiceProvider, OverrideArguments>>(body,
-                    ParameterServiceProvider, ParameterOverrideArguments
+                var action = Expression.Lambda<Action<OverrideArguments>>(body,
+                    ParameterOverrideArguments
                 ).Compile();
-                return (z, x) =>
+                return x =>
                 {
-                    action(z, x);
+                    action(x);
                     return null;
                 };
             }
             else
             {
-                return Expression.Lambda<Func<IServiceProvider, OverrideArguments, object>>(body,
-                    ParameterServiceProvider, ParameterOverrideArguments
+                return Expression.Lambda<Func<OverrideArguments, object>>(body,
+                    ParameterOverrideArguments
                 ).Compile();
             }
         }
