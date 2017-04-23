@@ -13,24 +13,38 @@ namespace Jasily.DependencyInjection.MethodInvoker
     {
         private readonly IServiceProvider serviceProvider;
 
+        private readonly HashSet<MethodInfo> methods = new HashSet<MethodInfo>();
         private readonly ConcurrentDictionary<MethodInfo, MethodInvoker> invokerMaps
             = new ConcurrentDictionary<MethodInfo, MethodInvoker>();
 
         public MethodInvoker(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
+            this.methods = new HashSet<MethodInfo>(typeof(T).GetRuntimeMethods());
         }
 
-        public object Invoke(MethodInfo method, T instance = default(T), OverrideArguments arguments = default(OverrideArguments))
+        public object InvokeInstanceMethod(MethodInfo method, T instance, OverrideArguments arguments = default(OverrideArguments))
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            if (method.DeclaringType != typeof(T)) throw new InvalidOperationException();
+            if (!this.methods.Contains(method)) throw new InvalidOperationException();
+            if (method.IsStatic) throw new InvalidOperationException();
             if (!this.invokerMaps.TryGetValue(method, out var invoker))
             {
-                invoker = method.IsStatic ? new StaticMethodInvoker(method) : new InstanceMethodInvoker(method) as MethodInvoker;
-                invoker = this.invokerMaps.GetOrAdd(method, invoker);
+                invoker = this.invokerMaps.GetOrAdd(method, new InstanceMethodInvoker(method));
             }
             return invoker.Invoke(instance, this.serviceProvider, arguments);
+        }
+
+        public object InvokeStaticMethod(MethodInfo method, OverrideArguments arguments = default(OverrideArguments))
+        {
+            if (method == null) throw new ArgumentNullException(nameof(method));
+            if (!this.methods.Contains(method)) throw new InvalidOperationException();
+            if (!method.IsStatic) throw new InvalidOperationException();
+            if (!this.invokerMaps.TryGetValue(method, out var invoker))
+            {
+                invoker = this.invokerMaps.GetOrAdd(method, new StaticMethodInvoker(method));
+            }
+            return invoker.Invoke(null, this.serviceProvider, arguments);
         }
     }
 

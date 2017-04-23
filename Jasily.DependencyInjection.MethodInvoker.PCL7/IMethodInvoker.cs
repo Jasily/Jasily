@@ -4,6 +4,8 @@ namespace Jasily.DependencyInjection.MethodInvoker
 {
     public interface IMethodInvoker<T>
     {
-        object Invoke(MethodInfo method, T instance = default(T), OverrideArguments arguments = default(OverrideArguments));
+        object InvokeInstanceMethod(MethodInfo method, T instance, OverrideArguments arguments = default(OverrideArguments));
+
+        object InvokeStaticMethod(MethodInfo method, OverrideArguments arguments = default(OverrideArguments));
     }
 }
