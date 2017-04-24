@@ -4,20 +4,21 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal abstract class MethodInvoker
     {
 #if DEBUG
-        protected const bool CompileImmediately = false;
+        protected static readonly bool CompileImmediately = false;
 #endif
 
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
 
-        public MethodInvoker(IServiceProvider serviceProvider, MethodInfo method)
+        public MethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
         {
-            this.ServiceProvider = serviceProvider;
+            this.ServiceProvider = factory.ServiceProvider;
             this.Method = method;
             this.Parameters = this.Method.GetParameters()
                 .Select(z => ParameterInfoDescriptor.Build(z))
@@ -55,15 +56,18 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return exps;
         }
 
-        protected Expression ResolveBodyExpressions(Expression body)
+        protected T InvokeMethod<T>(object instance, OverrideArguments args)
         {
-            if (this.Method.ReturnType == typeof(void) || this.Method.ReturnType == typeof(object))
+            var a = this.Parameters.Length == 0 ? null : this.ResolveArguments(args);
+
+            try
             {
-                return body;
+                return (T) this.Method.Invoke(instance, a);
             }
-            else
+            catch (TargetInvocationException e)
             {
-                return Expression.Convert(body, typeof(object));
+                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                throw;
             }
         }
     }

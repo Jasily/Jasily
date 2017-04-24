@@ -7,21 +7,42 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
-    internal class MethodInvokerFactory<T> : IMethodInvokerFactory<T>, IMethodInvokerContainer
+    internal class MethodInvokerFactory<T> : IMethodInvokerFactory<T>, IInternalMethodInvokerFactory
     {
-        private readonly bool isValueType;
-        private readonly IServiceProvider serviceProvider;
-
         private readonly HashSet<MethodInfo> methods = new HashSet<MethodInfo>();
         private readonly ConcurrentDictionary<MethodInfo, MethodInvoker> invokerMaps
             = new ConcurrentDictionary<MethodInfo, MethodInvoker>();
 
+        public IServiceProvider ServiceProvider { get; }
+
+        public bool IsValueType { get; }
+
         public MethodInvokerFactory(IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+            this.ServiceProvider = serviceProvider;
             var type = typeof(T);
-            this.isValueType = type.GetTypeInfo().IsValueType;
+            this.IsValueType = type.GetTypeInfo().IsValueType;
             this.methods = new HashSet<MethodInfo>(type.GetRuntimeMethods());
+        }
+
+        private Type ResolveType(MethodInfo method)
+        {
+            if (method.IsStatic)
+            {
+                if (method.ReturnType == typeof(void))
+                    return typeof(StaticMethodInvoker);
+                else
+                    return typeof(StaticMethodInvoker<>).MakeGenericType(method.ReturnType);
+            }
+            else
+            {
+                if (method.ReturnType == typeof(void))
+                    return typeof(InstanceMethodInvoker<T>);
+                else
+                    return typeof(InstanceMethodInvoker<,>).MakeGenericType(typeof(T), method.ReturnType);
+            }
+
+            throw new NotImplementedException();
         }
 
         public MethodInvoker GetMethodInvoker(MethodInfo method)
@@ -30,15 +51,13 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             {
                 if (method.DeclaringType == typeof(T))
                 {
-                    invoker = method.IsStatic
-                        ? new StaticMethodInvoker(this.serviceProvider, method)
-                        : new InstanceMethodInvoker<T>(this.serviceProvider, method, this.isValueType) as MethodInvoker;
+                    invoker = (MethodInvoker) Activator.CreateInstance(this.ResolveType(method), new object[] { this, method });
                     invoker = this.invokerMaps.GetOrAdd(method, invoker);
                 }
                 else
                 {
                     var type = typeof(IMethodInvokerFactory<>).MakeGenericType(method.DeclaringType);
-                    var container = (IMethodInvokerContainer) this.serviceProvider.GetService(type);
+                    var container = (IInternalMethodInvokerFactory) this.ServiceProvider.GetService(type);
                     invoker = container.GetMethodInvoker(method);
                 }
                 invoker = this.invokerMaps.GetOrAdd(method, invoker);

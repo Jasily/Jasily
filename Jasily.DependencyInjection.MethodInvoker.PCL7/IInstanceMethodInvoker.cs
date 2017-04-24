@@ -6,4 +6,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
     {
         object Invoke(T instance, OverrideArguments arguments);
     }
+
+    public interface IInstanceMethodInvoker<in T, out TResult>
+    {
+        TResult Invoke(T instance, OverrideArguments arguments);
+    }
 }

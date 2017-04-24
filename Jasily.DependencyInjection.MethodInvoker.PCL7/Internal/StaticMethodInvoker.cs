@@ -8,93 +8,99 @@ using System.Diagnostics;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
-    internal class StaticMethodInvoker : MethodInvoker, IStaticMethodInvoker
+    internal class StaticMethodInvoker : MethodInvoker,
+        IStaticMethodInvoker, IStaticMethodInvoker<object>
     {
-        private Func<OverrideArguments, object> func;
+        private Action<OverrideArguments> func;
 
-        public StaticMethodInvoker(IServiceProvider serviceProvider, MethodInfo method)
-            : base(serviceProvider, method)
+        public StaticMethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
+            : base(factory, method)
         {
             this.func = this.ImplFunc();
         }
 
         public object Invoke(OverrideArguments arguments)
         {
-            return this.func(arguments);
+            this.func(arguments);
+            return null;
         }
 
-        private Func<OverrideArguments, object> ImplFunc()
+        private Action<OverrideArguments> ImplFunc()
         {
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
             var count = 0;
-            if (this.Parameters.Length == 0)
+            return args =>
             {
-                return a =>
+                if (Interlocked.Increment(ref count) == 4)
                 {
-                    if (Interlocked.Increment(ref count) == 4)
-                    {
-                        Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
-                    }
+                    Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
+                }
 
-                    try
-                    {
-                        return this.Method.Invoke(null, null);
-                    }
-                    catch (TargetInvocationException e)
-                    {
-                        ExceptionDispatchInfo.Capture(e.InnerException).Throw();
-                        throw;
-                    }
-                };
-            }
-            else
-            {
-                return a =>
-                {
-                    if (Interlocked.Increment(ref count) == 4)
-                    {
-                        Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
-                    }
-
-                    try
-                    {
-                        return this.Method.Invoke(null, this.ResolveArguments(a));
-                    }
-                    catch (TargetInvocationException e)
-                    {
-                        ExceptionDispatchInfo.Capture(e.InnerException).Throw();
-                        throw;
-                    }
-                };
-            }
+                this.InvokeMethod<object>(null, args);
+            };
         }
 
-        private Func<OverrideArguments, object> CompileFunc()
+        private Action<OverrideArguments> CompileFunc()
         {
             Expression body = this.Parameters.Length == 0
                 ? Expression.Call(this.Method)
                 : Expression.Call(this.Method, this.ResolveArgumentsExpressions());
-            body = this.ResolveBodyExpressions(body);
 
-            if (this.Method.ReturnType == typeof(void))
-            {
-                var action = Expression.Lambda<Action<OverrideArguments>>(body,
+            return Expression.Lambda<Action<OverrideArguments>>(body,
                     ParameterOverrideArguments
                 ).Compile();
-                return x =>
+        }
+    }
+
+    internal class StaticMethodInvoker<TResult> : MethodInvoker,
+        IStaticMethodInvoker, IStaticMethodInvoker<TResult>
+    {
+        private Func<OverrideArguments, TResult> func;
+
+        public StaticMethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
+            : base(factory, method)
+        {
+            this.func = this.ImplFunc();
+        }
+
+        public TResult Invoke(OverrideArguments arguments)
+        {
+            return this.func(arguments);
+        }
+
+        object IStaticMethodInvoker.Invoke(OverrideArguments arguments)
+        {
+            return this.Invoke(arguments);
+        }
+
+        private Func<OverrideArguments, TResult> ImplFunc()
+        {
+#if DEBUG
+            if (CompileImmediately) return this.CompileFunc();
+#endif
+            var count = 0;
+            return args =>
+            {
+                if (Interlocked.Increment(ref count) == 4)
                 {
-                    action(x);
-                    return null;
-                };
-            }
-            else
-            {
-                return Expression.Lambda<Func<OverrideArguments, object>>(body,
+                    Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
+                }
+
+                return this.InvokeMethod<TResult>(null, args);
+            };
+        }
+
+        private Func<OverrideArguments, TResult> CompileFunc()
+        {
+            Expression body = this.Parameters.Length == 0
+                ? Expression.Call(this.Method)
+                : Expression.Call(this.Method, this.ResolveArgumentsExpressions());
+
+            return Expression.Lambda<Func<OverrideArguments, TResult>>(body,
                     ParameterOverrideArguments
                 ).Compile();
-            }
         }
     }
 }
