@@ -52,7 +52,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             for (var i = 0; i < this.ArgumentsTypes.Length; i++)
             {
                 if (provider.GetService(this.ArgumentsTypes[i]) is IArguments<T> args &&
-                    args.Data.TryGetValue(p.Parameter.Name, out value))
+                    args.TryGetValue(p.Parameter.Name, out value))
                 {
                     return value;
                 }

@@ -59,29 +59,29 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MethodInvoker
             var sc = new ServiceCollection();
             sc.UseMethodInvoker();
             var provider = sc.BuildServiceProvider();
-            var invoker = provider.GetService<IMethodInvokerFactory<Class1>>();
-            Assert.IsNotNull(invoker);
+            var factory = provider.GetService<IMethodInvokerFactory<Class1>>();
+            Assert.IsNotNull(factory);
 
             var method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method1));
-            Assert.AreEqual(1, invoker.InvokeInstanceMethod(method, new Class1()));
+            Assert.AreEqual(1, factory.InvokeInstanceMethod(method, new Class1()));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method2));
-            Assert.AreEqual(2, invoker.InvokeStaticMethod(method));
+            Assert.AreEqual(2, factory.InvokeStaticMethod(method));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method3));
-            Assert.AreEqual(null, invoker.InvokeInstanceMethod(method, new Class1()));
+            Assert.AreEqual(null, factory.InvokeInstanceMethod(method, new Class1()));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method4));
-            Assert.AreEqual(null, invoker.InvokeStaticMethod(method));
+            Assert.AreEqual(null, factory.InvokeStaticMethod(method));
 
             var args = new OverrideArguments();
             args.AddArgument("key", 1);
 
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method5));
-            Assert.AreEqual(1, invoker.InvokeInstanceMethod(method, new Class1(), args));
+            Assert.AreEqual(1, factory.InvokeInstanceMethod(method, new Class1(), args));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method6));
-            Assert.AreEqual(2, invoker.InvokeStaticMethod(method, args));
+            Assert.AreEqual(2, factory.InvokeStaticMethod(method, args));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method7));
-            Assert.AreEqual(null, invoker.InvokeInstanceMethod(method, new Class1(), args));
+            Assert.AreEqual(null, factory.InvokeInstanceMethod(method, new Class1(), args));
             method = typeof(Class1).GetRuntimeMethods().Single(z => z.Name == nameof(Class1.Method8));
-            Assert.AreEqual(null, invoker.InvokeStaticMethod(method, args));
+            Assert.AreEqual(null, factory.InvokeStaticMethod(method, args));
         }
     }
 }

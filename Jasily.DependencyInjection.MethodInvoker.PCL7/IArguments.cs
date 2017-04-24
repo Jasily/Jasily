@@ -1,9 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
     public interface IArguments<T>
     {
-        ConcurrentDictionary<string, T> Data { get; }
+        bool TryGetValue(string key, out T value);
     }
 }
