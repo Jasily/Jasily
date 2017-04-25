@@ -16,6 +16,15 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         protected const int CompileThreshold = 4;
 
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
+        private static readonly MethodInfo MethodResolveArguments;
+
+        static MethodInvoker()
+        {
+            MethodResolveArguments = typeof(MethodInvoker).GetRuntimeMethods()
+                .Where(z => z.Name == nameof(MethodInvoker.ResolveArguments))
+                .Where(z => z.GetParameters().Length == 2)
+                .Single();
+        }
 
         public MethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
         {
@@ -32,27 +41,32 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public ParameterInfoDescriptor[] Parameters { get; }
 
-        protected object[] ResolveArguments(OverrideArguments arguments)
+        private object[] ResolveArguments(OverrideArguments arguments)
         {
             var length = this.Parameters.Length;
             var args = new object[length];
             for (var i = 0; i < length; i++)
             {
                 var p = this.Parameters[i];
-                args[i] = p.ResolveArgument(this.ServiceProvider, arguments);
+                args[i] = p.ResolveArgumentObject(this.ServiceProvider, arguments);
             }
             return args;
         }
 
+        private T ResolveArguments<T>(OverrideArguments arguments, int index)
+        {
+            var p = (ParameterInfoDescriptor<T>) this.Parameters[index];
+            return p.ResolveArgumentValue(this.ServiceProvider, arguments);
+        }
+
         protected Expression[] ResolveArgumentsExpressions()
         {
-            var lambda = new Func<OverrideArguments, object[]>(x => this.ResolveArguments(x));
-            var args = Expression.Invoke(Expression.Constant(lambda), ParameterOverrideArguments);
             var exps = new Expression[this.Parameters.Length];
             for (var i = 0; i < this.Parameters.Length; i++)
             {
-                var item = Expression.ArrayIndex(args, Expression.Constant(i));
-                exps[i] = Expression.Convert(item, this.Parameters[i].Parameter.ParameterType);
+                var p = this.Parameters[i];
+                var m = MethodResolveArguments.MakeGenericMethod(p.Parameter.ParameterType);
+                exps[i] = Expression.Call(Expression.Constant(this), m, ParameterOverrideArguments, Expression.Constant(i));
             }
             return exps;
         }
