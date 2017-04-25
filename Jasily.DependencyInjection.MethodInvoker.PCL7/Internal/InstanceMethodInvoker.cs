@@ -38,7 +38,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             {
                 if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
-                    Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
+                    Task.Run(() => Interlocked.Exchange(ref this.func, this.CompileFunc()));
                 }
 
                 this.InvokeMethod<object>(instance, args);
@@ -95,7 +95,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             {
                 if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
-                    Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
+                    Task.Run(() => Interlocked.Exchange(ref this.func, this.CompileFunc()));
                 }
 
                 return this.InvokeMethod<TResult>(i, a);
