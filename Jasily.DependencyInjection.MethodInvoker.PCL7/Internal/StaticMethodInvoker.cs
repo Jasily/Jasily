@@ -30,10 +30,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
+            if (CompileThreshold == 0) return this.CompileFunc();
             var count = 0;
             return args =>
             {
-                if (Interlocked.Increment(ref count) == 4)
+                if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
                     Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
                 }
@@ -80,10 +81,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
+            if (CompileThreshold == 0) return this.CompileFunc();
             var count = 0;
             return args =>
             {
-                if (Interlocked.Increment(ref count) == 4)
+                if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
                     Task.Run(() => Volatile.Write(ref this.func, this.CompileFunc()));
                 }

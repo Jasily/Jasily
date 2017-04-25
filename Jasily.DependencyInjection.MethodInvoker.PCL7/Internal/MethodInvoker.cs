@@ -13,6 +13,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
         protected static readonly bool CompileImmediately = false;
 #endif
+        protected const int CompileThreshold = 4;
 
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
 
