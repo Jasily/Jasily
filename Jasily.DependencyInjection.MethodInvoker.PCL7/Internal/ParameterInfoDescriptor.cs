@@ -45,33 +45,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public Type[] ArgumentsTypes { get; }
 
-        public override object ResolveArgumentObject(IServiceProvider provider, OverrideArguments arguments)
+        private bool TryResolveArgument(IServiceProvider provider, OverrideArguments arguments, out T value)
         {
-            var p = this;
-            if (arguments.TryGetValue<T>(this.Parameter.Name, out var value))
+            if (arguments.TryGetValue<T>(this.Parameter, out value))
             {
-                return value;
-            }
-
-            for (var i = 0; i < this.ArgumentsTypes.Length; i++)
-            {
-                if (provider.GetService(this.ArgumentsTypes[i]) is IArguments<T> args &&
-                    args.TryGetValue(p.Parameter.Name, out value))
-                {
-                    return value;
-                }
-            }
-
-            if (p.Parameter.HasDefaultValue) return p.Parameter.DefaultValue;
-
-            throw new InvalidOperationException();
-        }
-
-        public T ResolveArgumentValue(IServiceProvider provider, OverrideArguments arguments)
-        {
-            if (arguments.TryGetValue<T>(this.Parameter.Name, out var value))
-            {
-                return value;
+                return true;
             }
 
             for (var i = 0; i < this.ArgumentsTypes.Length; i++)
@@ -79,13 +57,29 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 if (provider.GetService(this.ArgumentsTypes[i]) is IArguments<T> args &&
                     args.TryGetValue(this.Parameter.Name, out value))
                 {
-                    return value;
+                    return true;
                 }
             }
 
+            return false;
+        }
+
+        public override object ResolveArgumentObject(IServiceProvider provider, OverrideArguments arguments)
+        {
+            if (this.TryResolveArgument(provider, arguments, out var value)) return value;
+
+            if (this.Parameter.HasDefaultValue) return this.Parameter.DefaultValue;
+
+            throw new ParameterResolveException(this.Parameter);
+        }
+
+        public T ResolveArgumentValue(IServiceProvider provider, OverrideArguments arguments)
+        {
+            if (this.TryResolveArgument(provider, arguments, out var value)) return value;
+
             if (this.Parameter.HasDefaultValue) return this.DefaultValue;
 
-            throw new InvalidOperationException();
+            throw new ParameterResolveException(this.Parameter);
         }
     }
 }

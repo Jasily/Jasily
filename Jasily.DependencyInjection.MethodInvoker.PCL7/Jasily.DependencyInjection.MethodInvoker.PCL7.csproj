@@ -49,6 +49,7 @@
     <Compile Include="IStaticMethodInvoker.cs" />
     <Compile Include="OverrideArguments.cs" />
     <Compile Include="Internal\ParameterInfoDescriptor.cs" />
+    <Compile Include="ParameterResolveException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Internal\ScopedArguments.cs" />
     <Compile Include="Internal\SingletonArguments.cs" />
