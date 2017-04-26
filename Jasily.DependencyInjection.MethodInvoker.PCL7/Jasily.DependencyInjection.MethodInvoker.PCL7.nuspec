@@ -1,29 +1,27 @@
-<?xml version="1.0"?>
-<package >
-  <metadata>
-    <id>Jasily.DependencyInjection.MethodInvoker</id>
-    <version>0.0.0.1</version>
-    <title>Jasily.DependencyInjection.MethodInvoker</title>
-    <authors>Jasily</authors>
-    <owners>Jasily</owners>
-    <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>reject for method.</description>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright 2017</copyright>
-    <tags>DependencyInjection</tags>
-
-    <dependencies>
-      <dependency id="JetBrains.Annotations" version="10.4.0" />
-      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.0" />
-    </dependencies>
-  </metadata>
-
-  <files>
-    <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll"
-          target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
-    <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.xml"
-          target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.xml" />
-  </files>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Jasily.DependencyInjection.MethodInvoker</id>
+        <version>0.0.0.2</version>
+        <title>Jasily.DependencyInjection.MethodInvoker</title>
+        <authors>Jasily</authors>
+        <owners>Jasily</owners>
+        <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>reject for method.</description>
+        <releaseNotes />
+        <copyright>Copyright 2017</copyright>
+        <tags>DependencyInjection</tags>
+        <dependencies>
+            <dependency id="JetBrains.Annotations" version="10.4.0" />
+            <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.xml" />
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" target="lib\net45\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" target="lib\net45\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" />
+    </files>
 </package>
