@@ -30,9 +30,7 @@ namespace System.Reflection
 
             public MethodExpressionBuilder([NotNull] MethodInfo method)
             {
-                if (method == null) throw new ArgumentNullException(nameof(method));
-
-                this.method = method;
+                this.method = method ?? throw new ArgumentNullException(nameof(method));
                 this.methodParameters = method.GetParameters();
                 this.isStatic = method.IsStatic;
                 this.argumentsOffset = this.isStatic ? 0 : 1;

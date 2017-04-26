@@ -329,11 +329,17 @@ namespace System.Linq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
 
-            var list = source as IList<T>;
-            if (list != null) return list.RandomTake(random);
+            switch (source)
+            {
+                case IList<T> li:
+                    return li.RandomTake(random);
 
-            var rList = source as IReadOnlyList<T>;
-            if (rList != null) return rList.RandomTake(random);
+                case IReadOnlyList<T> li:
+                    return li.RandomTake(random);
+
+                default:
+                    break;
+            }
 
             var c = source.TryGetCount();
             if (c < 0)
@@ -518,15 +524,16 @@ namespace System.Linq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0) return Empty<T>.Array;
 
-            var array = source as T[];
-            if (array != null)
+            switch (source)
             {
-                return array.Length < count ? array.AsReadOnly() : array.Skip(count - array.Length);
-            }
-            var list = source as List<T>;
-            if (list != null)
-            {
-                return list.Count < count ? list.AsReadOnly() : list.Skip(count - list.Count);
+                case T[] array:
+                    return array.Length < count ? array.AsReadOnly() : array.Skip(count - array.Length);
+
+                case List<T> list:
+                    return list.Count < count ? list.AsReadOnly() : list.Skip(count - list.Count);
+
+                default:
+                    break;
             }
 
             var q = new Queue<T>(count);

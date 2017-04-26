@@ -123,9 +123,8 @@ namespace System.Linq
         public static int Count([NotNull] this IEnumerable source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-
-            var collection = source as ICollection;
-            if (collection != null) return collection.Count;
+            
+            if (source is ICollection collection) return collection.Count;
 
             var count = 0;
             var itor = source.GetEnumerator();
