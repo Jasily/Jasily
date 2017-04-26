@@ -131,25 +131,42 @@ namespace System
 
         #region ensure
 
+        /// <summary>
+        /// ensure length of string large or equals the <paramref name="length"/>.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <param name="paddingChar"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        [PublicAPI]
         [NotNull]
-        public static string EnsureLength([NotNull] this string str, int count,
-            char paddingChar, Position paddingPosition)
+        public static string EnsureLength([NotNull] this string str, int length, char paddingChar, Position position)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
-            if (count < 0) throw new ArgumentOutOfRangeException();
-            if (str.Length >= count) return str;
-            var padding = new string(paddingChar, count - str.Length);
-            switch (paddingPosition)
+            if (length < 0) throw new ArgumentOutOfRangeException();
+
+            if (str.Length >= length) return str;
+            var padding = new string(paddingChar, length - str.Length);
+            switch (position)
             {
-                case Position.Start:
+                case Position.Begin:
                     return padding + str;
                 case Position.End:
                     return str + padding;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(paddingPosition), paddingPosition, null);
+                    throw new ArgumentOutOfRangeException(nameof(position), position, null);
             }
         }
 
+        /// <summary>
+        /// ensure string startswith <paramref name="value"/>. if NOT, insert it.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="value"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        [PublicAPI]
         [NotNull]
         public static string EnsureStart([NotNull] this string str, string value, StringComparison comparisonType = StringComparison.Ordinal)
         {
@@ -157,6 +174,14 @@ namespace System
             return str.StartsWith(value, comparisonType) ? str : value + str;
         }
 
+        /// <summary>
+        /// ensure string endswith <paramref name="value"/>. if NOT, append it.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="value"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        [PublicAPI]
         [NotNull]
         public static string EnsureEnd([NotNull] this string str, string value, StringComparison comparisonType = StringComparison.Ordinal)
         {

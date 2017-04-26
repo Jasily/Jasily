@@ -48,7 +48,7 @@ namespace System.Linq
 
             switch (position)
             {
-                case Position.Start:
+                case Position.Begin:
                     IEnumerable<T> StartIterator()
                     {
                         yield return item;

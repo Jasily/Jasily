@@ -42,7 +42,6 @@
     <Compile Include="Empty.cs" />
     <Compile Include="Exceptions\ReachableException.cs" />
     <Compile Include="IDisposable.cs" />
-    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueContainer.cs" />
   </ItemGroup>
