@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.Annotations;
-using E = System.Linq.Enumerable;
 
 namespace Jasily.Core
 {
+    /// <summary>
+    /// empty 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public static class Empty<T>
     {
         /// <summary>
@@ -21,7 +24,7 @@ namespace Jasily.Core
 
         static Empty()
         {
-            Array = (T[])E.Empty<T>();
+            Array = (T[])System.Linq.Enumerable.Empty<T>();
             Debug.Assert(Array != null);
             Enumerable = Array;
         }
