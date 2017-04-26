@@ -7,26 +7,38 @@ using JetBrains.Annotations;
 
 namespace System
 {
+    /// <summary>
+    /// useful extension methods for string.
+    /// </summary>
     public static class StringExtensions
     {
         #region encoding & decoding
 
         /// <summary>
-        /// 
+        /// use utf-8 encoding convert string to byte[].
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static byte[] GetBytes([NotNull] this string s) => GetBytes(s, Encoding.UTF8);
+        [PublicAPI]
+        [NotNull]
+        public static byte[] GetBytes([NotNull] this string s)
+        {
+            if (s == null) throw new ArgumentNullException(nameof(s));
+            return Encoding.UTF8.GetBytes(s);
+        }
 
         /// <summary>
-        /// 
+        /// use <paramref name="encoding"/> encoding convert string to byte[].
         /// </summary>
         /// <param name="s"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [PublicAPI]
+        [NotNull]
         public static byte[] GetBytes([NotNull] this string s, [NotNull] Encoding encoding)
         {
+            if (s == null) throw new ArgumentNullException(nameof(s));
             if (encoding == null) throw new ArgumentNullException(nameof(encoding));
             return encoding.GetBytes(s);
         }
