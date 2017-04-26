@@ -9,7 +9,7 @@
         <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>reject for method.</description>
+        <description>dependency reject for method.</description>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <tags>DependencyInjection</tags>
@@ -19,9 +19,9 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
-        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.xml" />
         <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" target="lib\net45\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
         <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" target="lib\net45\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" />
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.dll" />
+        <file src="bin\Release\Jasily.DependencyInjection.MethodInvoker.PCL7.XML" target="lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.PCL7.xml" />
     </files>
 </package>
