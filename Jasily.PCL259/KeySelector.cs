@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Jasily.Collections.Generic;
 using Jasily.ComponentModel;
@@ -34,11 +35,19 @@ namespace Jasily
 
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
             [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.First.Select(selector);
+            => PropertySelector<T>.Root.Select(selector);
 
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
             [NotNull] Expression<Func<T, TProperty>> selector)
-            => PropertySelector<T>.First.Select(selector);
+            => PropertySelector<T>.Root.Select(selector);
+
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
+            [NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
+            => PropertySelector<T>.Root.Select(selector);
+
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
+            [NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
+            => PropertySelector<T>.Root.Select(selector);
 
         #endregion
     }

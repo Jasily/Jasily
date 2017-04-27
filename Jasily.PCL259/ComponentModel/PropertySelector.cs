@@ -9,7 +9,7 @@ namespace Jasily.ComponentModel
     {
         private readonly string propertyName;
 
-        public static PropertySelector<T> First { get; } = new PropertySelector<T>();
+        public static PropertySelector<T> Root { get; } = new PropertySelector<T>();
 
         private PropertySelector()
             : this(null)
@@ -26,7 +26,12 @@ namespace Jasily.ComponentModel
             if (selector == null) throw new ArgumentNullException(nameof(selector));
             var body = selector.Body;
             var name = this.Visit(body);
-            return new PropertySelector<TProperty>(this.propertyName == null ? name : this.propertyName + "." + name);
+            return new PropertySelector<TProperty>(Concat(this.propertyName, name));
+        }
+
+        public PropertySelector<TProperty> Select<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
+        {
+            return SelectMany(selector);
         }
 
         public PropertySelector<TProperty> SelectMany<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
