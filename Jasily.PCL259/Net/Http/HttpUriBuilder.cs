@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Jasily.Interfaces;
 using JetBrains.Annotations;
 
 namespace Jasily.Net.Http

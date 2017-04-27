@@ -1,5 +1,4 @@
-﻿using Jasily.Interfaces;
-
+﻿
 namespace Jasily.ComponentModel.Editor.Converters
 {
     public abstract class ToStringConverter<T> : TwoWayConverter<T, string>

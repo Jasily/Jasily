@@ -9,8 +9,6 @@ namespace Jasily.Threading
         public event TypedEventHandler<Releaser<T>, T> ReleaseRaised;
         private int disposed;
 
-        public static Releaser<T> Default { get; } = new Releaser<T>(false);
-
         public Releaser() : this(false)
         {
         }

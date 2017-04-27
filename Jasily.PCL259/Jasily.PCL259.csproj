@@ -121,7 +121,6 @@
     <Compile Include="IO\Internal\ReadonlyStream.cs" />
     <Compile Include="IO\StreamReadObserverHandler.cs" />
     <Compile Include="IO\StreamReadProgressHandler.cs" />
-    <Compile Include="IO\StringReader.cs" />
     <Compile Include="IO\Internal\WrapStream.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
     <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />

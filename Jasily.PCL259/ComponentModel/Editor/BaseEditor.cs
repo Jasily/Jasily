@@ -1,8 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Jasily.Interfaces;
-using Jasily.Interfaces.Collections.Generic;
+using Jasily.Core;
 
 namespace Jasily.ComponentModel.Editor
 {

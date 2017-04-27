@@ -39,8 +39,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Serialization\ISerializer.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="IDisposable.cs" />
+    <Compile Include="IGetKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

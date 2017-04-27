@@ -1,5 +1,4 @@
-﻿using Jasily.Interfaces;
-
+﻿
 namespace Jasily.Net.Http.Headers
 {
     public struct RangeHeader

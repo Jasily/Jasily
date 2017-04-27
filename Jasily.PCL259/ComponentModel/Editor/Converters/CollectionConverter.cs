@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Jasily.Interfaces;
 
 namespace Jasily.ComponentModel.Editor.Converters
 {

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Jasily.ComponentModel.Editor.Conditions;
-using Jasily.Interfaces;
 
 namespace Jasily.ComponentModel.Editor
 {

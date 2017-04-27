@@ -51,6 +51,9 @@
     <Compile Include="Collections\Generic\QueueExtensions.cs" />
     <Compile Include="ComparableExtensions.cs" />
     <Compile Include="ComponentModel\NotifyPropertyChangedExtensions.cs" />
+    <Compile Include="Data\Serialization\JsonSerializerExtensions.cs" />
+    <Compile Include="Data\Serialization\SerializationException.cs" />
+    <Compile Include="Data\Serialization\XmlSerializerExtensions.cs" />
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventHandlerExtensions.cs" />

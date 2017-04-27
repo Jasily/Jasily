@@ -10,8 +10,7 @@ namespace Jasily.Collections.Generic
 
         public CachedLastEqualityComparer([NotNull] IEqualityComparer<T> baseComparer)
         {
-            if (baseComparer == null) throw new ArgumentNullException(nameof(baseComparer));
-            this.baseComparer = baseComparer;
+            this.baseComparer = baseComparer ?? throw new ArgumentNullException(nameof(baseComparer));
         }
 
         public T LastCompareItem1 { get; private set; }

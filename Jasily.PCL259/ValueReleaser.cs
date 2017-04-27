@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Jasily
 {
     /// <summary>
-    /// For value typed ValueReleaser, be careful reentrant ReleaseRaised event.
+    /// If EventHandler is NOT reentrant, use <see cref="Threading.Releaser{T}"/> instead.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public struct ValueReleaser<T> : IDisposable

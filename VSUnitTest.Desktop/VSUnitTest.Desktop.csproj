@@ -156,7 +156,6 @@
     <Compile Include="Jasily\Collections\Generic\TestRangeDictionary.cs" />
     <Compile Include="Jasily\Collections\Generic\TestCriticalValue.cs" />
     <Compile Include="Jasily\ComponentModel\TestPropertySelector.cs" />
-    <Compile Include="Jasily\IO\TestStringReader.cs" />
     <Compile Include="Jasily\Reflection\Descriptors\TestTypeDescriptor.cs" />
     <Compile Include="Jasily\Reflection\TestActivator.cs" />
     <Compile Include="Jasily\TestFastEnum.cs" />
@@ -187,10 +186,6 @@
       <Project>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.Interfaces.PCL259\Jasily.Interfaces.PCL259.csproj">
-      <Project>{c37786f7-4816-4151-952b-2cf9cb38116d}</Project>
-      <Name>Jasily.Interfaces.PCL259</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
       <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
       <Name>Jasily.PCL259</Name>
@@ -198,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Jasily\Cache\" />
+    <Folder Include="Jasily\IO\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

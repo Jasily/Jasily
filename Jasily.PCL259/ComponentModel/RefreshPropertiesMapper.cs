@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Jasily.Interfaces;
 using JetBrains.Annotations;
 
 namespace Jasily.ComponentModel
@@ -32,7 +31,7 @@ namespace Jasily.ComponentModel
                 from property in type.GetRuntimeProperties()
                 let attr = property.GetCustomAttribute<NotifyPropertyChangedAttribute>()
                 where attr != null
-                orderby attr.AsOrderable().GetOrderCode()
+                orderby attr.Order
                 select new PropertyChangedEventArgs(property.Name)
                 ).ToArray();
         }
