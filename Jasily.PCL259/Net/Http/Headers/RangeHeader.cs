@@ -2,7 +2,7 @@
 
 namespace Jasily.Net.Http.Headers
 {
-    public struct RangeHeader : IBuilder<string>
+    public struct RangeHeader
     {
         public long From { get; private set; }
 

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace Jasily.Net.Http
 {
-    public class HttpUriBuilder : IBuilder<string>
+    public class HttpUriBuilder
     {
         private readonly string baseUri;
 

@@ -1,4 +1,4 @@
-namespace Jasily.Interfaces
+﻿namespace Jasily.ComponentModel.Editor
 {
     public abstract class TwoWayConverter<TIn, TOut> : ITwoWayConverter<TIn, TOut>
     {

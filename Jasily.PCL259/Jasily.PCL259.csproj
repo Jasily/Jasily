@@ -40,6 +40,10 @@
     <Compile Include="Cache\Funcs\FuncTemplate.cs" />
     <Compile Include="Collections\Generic\KeySelectorComparer.cs" />
     <Compile Include="Collections\Generic\ReverseComparer.cs" />
+    <Compile Include="ComponentModel\Editor\IConverter.cs" />
+    <Compile Include="ComponentModel\Editor\IReverseConverter.cs" />
+    <Compile Include="ComponentModel\Editor\ITwoWayConverter.cs" />
+    <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
     <Compile Include="CurryingFunc.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Linq\Generater.cs" />
