@@ -108,9 +108,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Jasily.Extensions.System.Desktop\Net\Sockets\SocketExtensions.cs">
-      <Link>Net\Sockets\SocketExtensions.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformObjectExtensions.cs" />
     <EmbeddedResource Include="Properties\Jasily.Extensions.System.UWP10240.rd.xml" />
