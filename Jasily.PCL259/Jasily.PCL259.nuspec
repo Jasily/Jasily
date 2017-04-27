@@ -17,7 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\Jasily.Core.PCL259.dll" target="lib\net45\Jasily.Core.PCL259.dll" />
-        <file src="bin\Release\Jasily.Core.PCL259.xml" target="lib\net45\Jasily.Core.PCL259.xml" />
+        <file src="bin\Release\Jasily.PCL259.dll" target="lib\net45\Jasily.PCL259.dll" />
+        <file src="bin\Release\Jasily.PCL259.xml" target="lib\net45\Jasily.PCL259.xml" />
     </files>
 </package>
