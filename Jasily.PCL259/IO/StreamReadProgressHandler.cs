@@ -10,8 +10,7 @@ namespace Jasily.IO
 
         public StreamReadProgressHandler([NotNull] IProgress<long> progress)
         {
-            if (progress == null) throw new ArgumentNullException(nameof(progress));
-            this.progress = progress;
+            this.progress = progress ?? throw new ArgumentNullException(nameof(progress));
         }
 
         public void OnReaded(byte[] buffer, int offset, int count)

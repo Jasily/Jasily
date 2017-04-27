@@ -20,8 +20,7 @@ namespace Jasily.Windows
 
         public ClipboardMonitor(Window window)
         {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            this.handleSource = window;
+            this.handleSource = window ?? throw new ArgumentNullException(nameof(window));
         }
 
         public void Begin()

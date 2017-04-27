@@ -10,8 +10,7 @@ namespace Jasily.IO
 
         public StreamReadObserverHandler([NotNull] IObserver<long> observer)
         {
-            if (observer == null) throw new ArgumentNullException(nameof(observer));
-            this.observer = observer;
+            this.observer = observer ?? throw new ArgumentNullException(nameof(observer));
         }
 
         public void OnReaded(byte[] buffer, int offset, int count)

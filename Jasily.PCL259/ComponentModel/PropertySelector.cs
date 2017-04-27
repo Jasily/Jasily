@@ -24,11 +24,17 @@ namespace Jasily.ComponentModel
             return new PropertySelector<TProperty>(Concat(this.propertyName, name));
         }
 
+        /// <summary>
+        /// same as <see cref="SelectMany{TProperty}(Expression{Func{T, IEnumerable{TProperty}}})"/>
+        /// </summary>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
         public PropertySelector<TProperty> Select<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
         {
             return SelectMany(selector);
         }
-
+        
         public PropertySelector<TProperty> SelectMany<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));

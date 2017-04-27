@@ -156,7 +156,9 @@ namespace System.Collections.Generic
             where TValue : IGetKey<TKey>
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
+#pragma warning disable IDE0016 // 使用 "throw" 表达式
             if (item == null) throw new ArgumentNullException(nameof(item));
+#pragma warning restore IDE0016 // 使用 "throw" 表达式
 
             dict[item.GetKey()] = item;
         }

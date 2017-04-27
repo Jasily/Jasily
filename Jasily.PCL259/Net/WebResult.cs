@@ -20,10 +20,8 @@ namespace Jasily.Net
         /// <param name="response"></param>
         public WebResult(WebResponse response)
         {
-            if (response == null) throw new ArgumentNullException(nameof(response));
-
             this.IsSuccess = true;
-            this.Response = response;
+            this.Response = response ?? throw new ArgumentNullException(nameof(response));
         }
 
         ~WebResult()
@@ -38,10 +36,8 @@ namespace Jasily.Net
         /// <param name="e"></param>
         public WebResult(WebException e)
         {
-            if (e == null) throw new ArgumentNullException(nameof(e));
-
             this.IsSuccess = false;
-            this.WebException = e;
+            this.WebException = e ?? throw new ArgumentNullException(nameof(e));
             this.Response = e.Response;
         }
 

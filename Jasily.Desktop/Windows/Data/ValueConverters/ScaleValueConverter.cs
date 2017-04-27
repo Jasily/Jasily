@@ -25,8 +25,7 @@ namespace Jasily.UI.Xaml.Data.ValueConverters
             }
             else if (parameter is string)
             {
-                double tmp;
-                if (double.TryParse((string)parameter, out tmp)) scale = tmp;
+                if (double.TryParse((string)parameter, out var tmp)) scale = tmp;
             }
 
             if (value is double)

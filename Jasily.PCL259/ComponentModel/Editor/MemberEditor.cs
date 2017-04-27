@@ -114,8 +114,7 @@ namespace Jasily.ComponentModel.Editor
             if (this.IsPropertyContainer)
             {
                 // wrap IPropertyContainer
-                var container = this.ViewModelGetter(vm) as IPropertyContainer;
-                if (container != null) container.Value = value;
+                if (this.ViewModelGetter(vm) is IPropertyContainer container) container.Value = value;
             }
             else
             {

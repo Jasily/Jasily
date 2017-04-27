@@ -8,8 +8,7 @@ namespace Jasily.IO.Internal
     {
         protected WrapStream([NotNull] Stream baseStream)
         {
-            if (baseStream == null) throw new ArgumentNullException(nameof(baseStream));
-            this.BaseStream = baseStream;
+            this.BaseStream = baseStream ?? throw new ArgumentNullException(nameof(baseStream));
         }
 
         public Stream BaseStream { get; }

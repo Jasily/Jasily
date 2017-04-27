@@ -8,8 +8,7 @@ namespace Jasily.Reflection.Descriptors
     {
         public Descriptor([NotNull] T obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            this.DescriptedObject = obj;
+            this.DescriptedObject = obj ?? throw new ArgumentNullException(nameof(obj));
         }
 
         public T DescriptedObject { get; }

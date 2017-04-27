@@ -160,8 +160,7 @@ namespace Jasily.Collections.Generic
         {
             get
             {
-                TValue value;
-                if (!this.TryGetValue(key, out value)) throw new KeyNotFoundException();
+                if (!this.TryGetValue(key, out var value)) throw new KeyNotFoundException();
                 return value;
             }
         }

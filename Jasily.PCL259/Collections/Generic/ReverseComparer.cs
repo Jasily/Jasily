@@ -10,8 +10,7 @@ namespace Jasily.Collections.Generic
 
         public ReverseComparer([NotNull] IComparer<T> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-            this.comparer = comparer;
+            this.comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
         }
 
         public int Compare(T x, T y) => -this.comparer.Compare(x, y);

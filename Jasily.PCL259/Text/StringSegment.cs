@@ -14,9 +14,7 @@ namespace Jasily.Text
         /// <exception cref="ArgumentNullException"></exception>
         public StringSegment([NotNull] string str)
         {
-            if (str == null) throw new ArgumentNullException(nameof(str));
-
-            this.String = str;
+            this.String = str ?? throw new ArgumentNullException(nameof(str));
             this.StartIndex = 0;
             this.Count = str.Length;
         }
@@ -30,10 +28,9 @@ namespace Jasily.Text
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public StringSegment([NotNull] string str, int startIndex)
         {
-            if (str == null) throw new ArgumentNullException(nameof(str));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
 
-            this.String = str;
+            this.String = str ?? throw new ArgumentNullException(nameof(str));
             this.StartIndex = startIndex;
             this.Count = str.Length - startIndex;
         }
@@ -198,8 +195,7 @@ namespace Jasily.Text
         [Pure]
         public override bool Equals(object other)
         {
-            var str = other as string;
-            if (str != null) return this.Equals(str);
+            if (other is string str) return this.Equals(str);
             var range = other as StringSegment?;
             return range != null && this.Equals(range.Value);
         }

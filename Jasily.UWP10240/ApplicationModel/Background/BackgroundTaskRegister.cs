@@ -13,10 +13,8 @@ namespace Jasily.ApplicationModel.Background
 
         protected BackgroundTaskRegister([NotNull] string taskName, [NotNull] Type taskEntryPoint)
         {
-            if (taskName == null) throw new ArgumentNullException(nameof(taskName));
-            if (taskEntryPoint == null) throw new ArgumentNullException(nameof(taskEntryPoint));
-            this.TaskName = taskName;
-            this.taskEntryPoint = taskEntryPoint;
+            this.TaskName = taskName ?? throw new ArgumentNullException(nameof(taskName));
+            this.taskEntryPoint = taskEntryPoint ?? throw new ArgumentNullException(nameof(taskEntryPoint));
         }
 
         protected string TaskName { get; }
@@ -77,8 +75,7 @@ namespace Jasily.ApplicationModel.Background
             public BackgroundTaskRegisterImpl([NotNull] string taskName, [NotNull] Action<BackgroundTaskBuilder> builder)
                 : base(taskName, typeof(T))
             {
-                if (builder == null) throw new ArgumentNullException(nameof(builder));
-                this.builder = builder;
+                this.builder = builder ?? throw new ArgumentNullException(nameof(builder));
             }
 
             protected override void Configuration(BackgroundTaskBuilder builder) => this.builder(builder);

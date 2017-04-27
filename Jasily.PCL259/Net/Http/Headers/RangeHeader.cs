@@ -42,8 +42,7 @@ namespace Jasily.Net.Http.Headers
             }
             else
             {
-                int to;
-                if (int.TryParse(array[0], out from) && int.TryParse(array[0], out to))
+                if (int.TryParse(array[0], out from) && int.TryParse(array[0], out var to))
                     return new RangeHeader(from, to);
             }
 

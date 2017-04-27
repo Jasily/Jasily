@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>Jasily.Extensions.System.Standard</id>
-        <version>0.0.0.1</version>
-        <title>Jasily.Extensions.System.Standard</title>
+        <id>Jasily.PCL259</id>
+        <version>0.0.0.2</version>
+        <title>Jasily.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
         <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>just for test.</description>
+        <description>just for test</description>
+        <summary>fix ref error.</summary>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <dependencies>
-            <dependency id="JetBrains.Annotations" version="10.4.0" />
-            <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
+            <dependency id="Jasily.Extensions.System.PCL259" version="0.0.0.2" />
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.Extensions.System.Standard.xml" target="lib\netstandard1.4\Jasily.Extensions.System.Standard.xml" />
-        <file src="bin\Release\netstandard1.4\Jasily.Extensions.System.Standard.dll" target="lib\netstandard1.4\Jasily.Extensions.System.Standard.dll" />
+        <file src="..\Jasily.PCL259\bin\Release\Jasily.PCL259.dll" target="lib\net45\Jasily.PCL259.dll" />
+        <file src="..\Jasily.PCL259\bin\Release\Jasily.PCL259.XML" target="lib\net45\Jasily.PCL259.xml" />
     </files>
 </package>

@@ -13,7 +13,6 @@ namespace Jasily.ComponentModel
 
         private RefreshPropertiesMapper([NotNull] Type type)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
             this.type = type;
             this.properties = MapNotifyPropertyChangedAttribute(type);
         }

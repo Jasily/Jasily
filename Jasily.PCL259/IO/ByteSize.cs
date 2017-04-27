@@ -62,8 +62,7 @@ namespace Jasily.IO
 
         public override string ToString()
         {
-            UnitType unit;
-            var value = this.Format(out unit);
+            var value = this.Format(out var unit);
             return string.Format("{0,-6:##0.000} {1}", value, unit);
         }
     }

@@ -25,8 +25,7 @@ namespace Jasily.UI.Xaml.Data.ValueConverters
             var enumerable = value as IEnumerable;
             if (list == null && enumerable == null)
             {
-                var itemControl = value as ItemsControl;
-                if (itemControl != null)
+                if (value is ItemsControl itemControl)
                 {
                     list = itemControl.ItemsSource as IList;
                     enumerable = itemControl.ItemsSource as IEnumerable; // as IEnumerable is use for UWP.

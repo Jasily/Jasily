@@ -18,8 +18,7 @@ namespace VSUnitTest.Desktop.Jasily.Reflection.Descriptors
 
             public Wrapper(T obj)
             {
-                if (obj == null) throw new ArgumentNullException(nameof(obj));
-                this.WrappedObject = obj;
+                this.WrappedObject = obj ?? throw new ArgumentNullException(nameof(obj));
             }
 
             public T WrappedObject { get; }

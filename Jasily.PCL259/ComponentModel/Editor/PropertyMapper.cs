@@ -48,8 +48,7 @@ namespace Jasily.ComponentModel.Editor
                 {
                     var attr = field.GetCustomAttribute<EditableAttribute>();
                     if (attr == null) continue;
-                    var vmAttr = attr as EditableViewModelAttribute;
-                    if (vmAttr != null)
+                    if (attr is EditableViewModelAttribute vmAttr)
                     {
                         if (!EditorInterfaceTypeInfo.IsAssignableFrom(field.FieldType.GetTypeInfo()))
                             throw new InvalidCastException();
@@ -60,8 +59,7 @@ namespace Jasily.ComponentModel.Editor
                         mapped.Add(executor);
                         continue;
                     }
-                    var mAttr = attr as EditableMemberAttribute;
-                    if (mAttr != null)
+                    if (attr is EditableMemberAttribute mAttr)
                     {
                         if (PropertyContainerInterfaceTypeInfo.IsAssignableFrom(field.FieldType.GetTypeInfo()))
                         {
@@ -90,8 +88,7 @@ namespace Jasily.ComponentModel.Editor
                 {
                     var attr = property.GetCustomAttribute<EditableAttribute>();
                     if (attr == null) continue;
-                    var vmAttr = attr as EditableViewModelAttribute;
-                    if (vmAttr != null)
+                    if (attr is EditableViewModelAttribute vmAttr)
                     {
                         if (!EditorInterfaceTypeInfo.IsAssignableFrom(property.PropertyType.GetTypeInfo()))
                             throw new InvalidCastException();
@@ -102,8 +99,7 @@ namespace Jasily.ComponentModel.Editor
                         mapped.Add(executor);
                         continue;
                     }
-                    var mAttr = attr as EditableMemberAttribute;
-                    if (mAttr != null)
+                    if (attr is EditableMemberAttribute mAttr)
                     {
                         if (PropertyContainerInterfaceTypeInfo.IsAssignableFrom(property.PropertyType.GetTypeInfo()))
                         {
@@ -131,11 +127,9 @@ namespace Jasily.ComponentModel.Editor
                 // object
                 foreach (var field in this.ObjectType.GetRuntimeFields())
                 {
-                    BaseEditor memberEditor;
-                    if (mapped.TryGetValue(field.Name, out memberEditor))
+                    if (mapped.TryGetValue(field.Name, out var memberEditor))
                     {
-                        var writer = memberEditor as MemberEditor;
-                        if (writer != null)
+                        if (memberEditor is MemberEditor writer)
                         {
                             writer.ObjectGetter = field.CompileGetter();
                             writer.ObjectSetter = field.CompileSetter();
@@ -145,11 +139,9 @@ namespace Jasily.ComponentModel.Editor
 
                 foreach (var property in this.ObjectType.GetRuntimeProperties())
                 {
-                    BaseEditor memberEditor;
-                    if (mapped.TryGetValue(property.Name, out memberEditor))
+                    if (mapped.TryGetValue(property.Name, out var memberEditor))
                     {
-                        var writer = memberEditor as MemberEditor;
-                        if (writer != null)
+                        if (memberEditor is MemberEditor writer)
                         {
                             writer.ObjectGetter = property.CompileGetter();
                             writer.ObjectSetter = property.CompileSetter();
