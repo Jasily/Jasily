@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Jasily.Threading
 {
-    public class LockFreeResource : IResource
+    public class LockFreeResource
     {
         private readonly int maxCount;
         private int currentCount;
@@ -46,7 +46,7 @@ namespace Jasily.Threading
             while (true)
             {
                 var current = this.currentCount;
-                if (count > current) return Releaser<int>.Default;
+                if (count > current) return new Releaser<int>();
                 if (Interlocked.CompareExchange(ref this.currentCount, current - count, current) == current)
                 {
                     var locker = new Releaser<int>(true, count);

@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Jasily.Threading
 {
-    public class Resource : IResource
+    public class Resource
     {
         private readonly int maxCount;
         private int currentCount;
@@ -39,7 +39,7 @@ namespace Jasily.Threading
         public Releaser<int> Acquire(int count = 1)
         {
             if (count < 1) throw new ArgumentOutOfRangeException();
-            if (count > this.currentCount) return Releaser<int>.Default;
+            if (count > this.currentCount) return new Releaser<int>();
             this.currentCount -= count;
             var locker = new Releaser<int>(true, count);
             locker.ReleaseRaised += this.Locker_ReleaseRaised;

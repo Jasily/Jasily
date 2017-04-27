@@ -136,13 +136,11 @@
     <Compile Include="Reflection\Activator.cs" />
     <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />
     <Compile Include="Reflection\IActivator.cs" />
-    <Compile Include="Releaser.cs" />
+    <Compile Include="Threading\Releaser.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />
-    <Compile Include="Threading\InterlockedBoolean.cs" />
-    <Compile Include="IResource.cs" />
     <Compile Include="Threading\LockFreeResource.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Threading\Resource.cs" />

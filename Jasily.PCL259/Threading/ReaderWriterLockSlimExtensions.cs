@@ -20,14 +20,14 @@ namespace Jasily.Threading
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterReadLock(millisecondsTimeout)
                 ? GetReadReleaser(locker)
-                : Releaser<ReaderWriterLockSlim>.Default;
+                : new Releaser<ReaderWriterLockSlim>();
         }
 
         public static Releaser<ReaderWriterLockSlim> TryAcquireReadLock([NotNull] this ReaderWriterLockSlim locker,
             TimeSpan timeout)
         {
             if (locker == null) throw new ArgumentNullException(nameof(locker));
-            return locker.TryEnterReadLock(timeout) ? GetReadReleaser(locker) : Releaser<ReaderWriterLockSlim>.Default;
+            return locker.TryEnterReadLock(timeout) ? GetReadReleaser(locker) : new Releaser<ReaderWriterLockSlim>();
         }
 
         public static Releaser<ReaderWriterLockSlim> AcquireWriteLock([NotNull] this ReaderWriterLockSlim locker)
@@ -43,7 +43,7 @@ namespace Jasily.Threading
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterWriteLock(millisecondsTimeout)
                 ? GetWriteReleaser(locker)
-                : Releaser<ReaderWriterLockSlim>.Default;
+                : new Releaser<ReaderWriterLockSlim>();
         }
 
         public static Releaser<ReaderWriterLockSlim> TryAcquireWriteLock([NotNull] this ReaderWriterLockSlim locker,
@@ -52,7 +52,7 @@ namespace Jasily.Threading
             if (locker == null) throw new ArgumentNullException(nameof(locker));
             return locker.TryEnterWriteLock(timeout)
                 ? GetWriteReleaser(locker)
-                : Releaser<ReaderWriterLockSlim>.Default;
+                : new Releaser<ReaderWriterLockSlim>();
         }
 
         private static Releaser<ReaderWriterLockSlim> GetReadReleaser(ReaderWriterLockSlim locker)

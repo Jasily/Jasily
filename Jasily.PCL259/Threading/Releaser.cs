@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace Jasily
+namespace Jasily.Threading
 {
     public sealed class Releaser<T> : IDisposable
     {
@@ -11,8 +11,7 @@ namespace Jasily
 
         public static Releaser<T> Default { get; } = new Releaser<T>(false);
 
-        public Releaser()
-             : this(false)
+        public Releaser() : this(false)
         {
         }
 
