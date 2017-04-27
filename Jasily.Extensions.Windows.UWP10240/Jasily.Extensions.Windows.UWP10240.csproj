@@ -128,10 +128,6 @@
       <Project>{55aba9dd-dc88-4417-9d00-b99dd18cd71d}</Project>
       <Name>Jasily.Extensions.System.PCL259</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.Interfaces.PCL259\Jasily.Interfaces.PCL259.csproj">
-      <Project>{c37786f7-4816-4151-952b-2cf9cb38116d}</Project>
-      <Name>Jasily.Interfaces.PCL259</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\ViewManagement\" />
