@@ -11,7 +11,7 @@ namespace System.Net.Sockets
         /// <param name="socket"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static async Task<SocketError> TrySendAsync([NotNull] this Socket socket, [NotNull] SocketAsyncEventArgs args)
+        public static async ValueTask<SocketError> TrySendAsync([NotNull] this Socket socket, [NotNull] SocketAsyncEventArgs args)
         {
             if (socket == null) throw new ArgumentNullException(nameof(socket));
             if (args == null) throw new ArgumentNullException(nameof(args));
