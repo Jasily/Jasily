@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Jasily.PCL259</id>
+        <version>0.0.0.1</version>
+        <title>Jasily.PCL259</title>
+        <authors>Jasily</authors>
+        <owners>Jasily</owners>
+        <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>just for test</description>
+        <releaseNotes />
+        <copyright>Copyright 2017</copyright>
+        <dependencies>
+            <dependency id="Jasily.Extensions.System.PCL259" version="0.0.0.2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\Jasily.Core.PCL259.dll" target="lib\net45\Jasily.Core.PCL259.dll" />
+        <file src="bin\Release\Jasily.Core.PCL259.xml" target="lib\net45\Jasily.Core.PCL259.xml" />
+    </files>
+</package>
