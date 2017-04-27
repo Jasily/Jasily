@@ -5,16 +5,11 @@ using JetBrains.Annotations;
 
 namespace Jasily.ComponentModel
 {
-    public class PropertySelector<T>
+    public struct PropertySelector<T>
     {
         private readonly string propertyName;
 
         public static PropertySelector<T> Root { get; } = new PropertySelector<T>();
-
-        private PropertySelector()
-            : this(null)
-        {
-        }
 
         private PropertySelector(string name)
         {
