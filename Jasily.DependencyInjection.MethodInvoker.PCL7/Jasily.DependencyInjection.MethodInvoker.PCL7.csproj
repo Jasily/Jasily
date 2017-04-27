@@ -41,6 +41,7 @@
     <Compile Include="IMethodInvokerFactory.cs" />
     <Compile Include="IArguments.cs" />
     <Compile Include="IInstanceMethodInvoker.cs" />
+    <Compile Include="Internal\ConcurrentArguments.cs" />
     <Compile Include="Internal\IMethodInvokerContainer.cs" />
     <Compile Include="Internal\InstanceMethodInvoker.cs" />
     <Compile Include="Internal\MethodInvokerFactory.cs" />
@@ -52,8 +53,6 @@
     <Compile Include="Internal\ParameterInfoDescriptor.cs" />
     <Compile Include="ParameterResolveException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Internal\ScopedArguments.cs" />
-    <Compile Include="Internal\SingletonArguments.cs" />
     <Compile Include="Internal\StaticMethodInvoker.cs" />
     <Compile Include="ServiceCollectionServiceExtensions.cs" />
   </ItemGroup>
