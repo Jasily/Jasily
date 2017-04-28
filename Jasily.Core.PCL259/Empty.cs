@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Jasily.Core
 {
     /// <summary>
-    /// empty 
+    /// reuseable empty instances.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public static class Empty<T>
@@ -14,12 +14,14 @@ namespace Jasily.Core
         /// get a empty array.
         /// </summary>
         [NotNull]
+        [PublicAPI]
         public static T[] Array { get; }
 
         /// <summary>
-        /// get a empty array.
+        /// get a empty array (without type cast).
         /// </summary>
         [NotNull]
+        [PublicAPI]
         public static IEnumerable<T> Enumerable { get; }
 
         static Empty()

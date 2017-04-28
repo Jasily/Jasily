@@ -13,6 +13,7 @@ namespace Jasily.Core
         /// </summary>
         /// <returns></returns>
         [NotNull]
+        [PublicAPI]
         T GetKey();
     }
 }
