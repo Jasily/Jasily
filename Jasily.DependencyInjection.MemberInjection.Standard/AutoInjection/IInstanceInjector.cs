@@ -1,5 +1,11 @@
-﻿namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
+﻿using System;
+
+namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
 {
+    /// <summary>
+    /// provide instance injector interface.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IInstanceInjector<in T>
     {
         /// <summary>

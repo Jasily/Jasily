@@ -4,6 +4,10 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.MemberInjection
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IMemberInjectorFactory<T>
     {
         /// <summary>

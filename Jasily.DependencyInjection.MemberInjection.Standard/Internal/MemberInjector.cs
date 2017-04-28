@@ -21,9 +21,10 @@ namespace Jasily.DependencyInjection.MemberInjection.Internal
 
         public MemberInjector(IInternalMemberInjectorFactory factory, MemberInfo member)
         {
+            this.member = member;
             this.isInstanceValueType = factory.IsValueType;
             this.isMemberValueType = typeof(TMember).GetTypeInfo().IsValueType;
-            this.serviceProvider = factory.ServiceProvider;
+            this.serviceProvider = factory.ServiceProvider;            
         }
 
         public void Inject(T instance, bool isRequired)

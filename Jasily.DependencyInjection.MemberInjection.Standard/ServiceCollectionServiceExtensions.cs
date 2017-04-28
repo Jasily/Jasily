@@ -14,7 +14,7 @@ namespace Jasily.DependencyInjection.MemberInjection
     public static class ServiceCollectionServiceExtensions
     {
         /// <summary>
-        /// add <see cref="IMemberInjectorFactory{}"/> services to <paramref name="serviceCollection"/>.
+        /// add <see cref="IMemberInjectorFactory{T}"/> services to <paramref name="serviceCollection"/>.
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="serviceCollection"/> is null.</exception>
@@ -26,7 +26,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         }
 
         /// <summary>
-        /// add <see cref="IInstanceInjector{}"/> services to <paramref name="serviceCollection"/>.
+        /// add <see cref="IInstanceInjector{T}"/> services to <paramref name="serviceCollection"/>.
         /// require call: <see cref="UseMemberInjector(IServiceCollection)"/>.
         /// </summary>
         /// <param name="serviceCollection"></param>
