@@ -65,18 +65,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return invoker;
         }
 
-        public object InvokeInstanceMethod([NotNull] MethodInfo method, [NotNull]  T instance,
-            OverrideArguments arguments = default(OverrideArguments))
-        {
-            return this.GetInstanceMethodInvoker(method).Invoke(instance, arguments);
-        }
-
-        public object InvokeStaticMethod([NotNull] MethodInfo method,
-            OverrideArguments arguments = default(OverrideArguments))
-        {
-            return this.GetStaticMethodInvoker(method).Invoke(arguments);
-        }
-
         public IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));

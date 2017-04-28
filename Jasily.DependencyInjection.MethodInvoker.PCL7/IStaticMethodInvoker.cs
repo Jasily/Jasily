@@ -17,7 +17,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="TResult2"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <exception cref="InvalidOperationException"></exception>
         /// <returns></returns>
         IStaticMethodInvoker<TResult> CastTo<TResult>();
