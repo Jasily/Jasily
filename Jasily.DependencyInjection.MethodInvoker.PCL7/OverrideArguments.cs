@@ -73,6 +73,13 @@ namespace Jasily.DependencyInjection.MethodInvoker
                         return true;
                     }
 
+                    converter = provider.GetService<IValueConverterFactory>()?.GetValueConverter<T>();
+                    if (converter?.CanConvertFrom(ret) == true)
+                    {
+                        value = converter.Convert(ret);
+                        return true;
+                    }
+
                     throw new InvalidOperationException();
                 }
             }
