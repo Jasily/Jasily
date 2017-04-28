@@ -22,7 +22,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public object Invoke(T instance, OverrideArguments arguments)
         {
-            if (!this.isValueType && object.Equals(instance, null)) throw new ArgumentNullException();
+            if (!this.isValueType && object.Equals(instance, null)) throw new ArgumentNullException(nameof(instance));
             this.func(instance, arguments);
             return null;
         }
@@ -74,7 +74,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public TResult Invoke(T instance, OverrideArguments arguments)
         {
-            if (!this.isValueType && object.Equals(instance, null)) throw new ArgumentNullException();
+            if (!this.isValueType && object.Equals(instance, null)) throw new ArgumentNullException(nameof(instance));
             return this.func(instance, arguments);
         }
 
