@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public struct OverrideArguments
     {
         private Dictionary<string, object> data;
@@ -34,6 +37,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public bool TryGetValue([NotNull] string key, out object value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
+
             if (this.data != null)
             {
                 return this.data.TryGetValue(key, out value);
@@ -86,6 +90,24 @@ namespace Jasily.DependencyInjection.MethodInvoker
             
             value = default(T);
             return false;
+        }
+
+        /// <summary>
+        /// count of added arguments.
+        /// </summary>
+        public int Count => this.data?.Count ?? 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="key"/> is null.</exception>
+        /// <returns></returns>
+        public bool ContainsKey([NotNull] string key)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
+
+            return this.data?.ContainsKey(key) ?? false;
         }
     }
 }
