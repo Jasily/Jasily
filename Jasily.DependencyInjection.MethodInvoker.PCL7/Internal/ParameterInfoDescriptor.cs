@@ -47,7 +47,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         private bool TryResolveArgument(IServiceProvider provider, OverrideArguments arguments, out T value)
         {
-            if (arguments.TryGetValue<T>(this.Parameter, out value))
+            if (arguments.TryGetValue(this.Parameter, out value, provider))
             {
                 return true;
             }

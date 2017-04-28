@@ -2,41 +2,58 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
     public struct OverrideArguments
     {
-        private bool isRecordRequest;
-        private List<ParameterInfo> requests;
         private Dictionary<string, object> data;
 
-        public OverrideArguments(bool recordRequest)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="key"/> is <see cref="null"/>.</exception>
+        public void AddArgument([NotNull] string key, object value)
         {
-            this.data = null;
-            this.requests = null;
-
-            this.isRecordRequest = recordRequest;
-        }
-
-        public IEnumerable<ParameterInfo> Requests()
-        {
-            return this.requests?.ToArray() ?? Enumerable.Empty<ParameterInfo>();
-        }
-
-        public void AddArgument(string key, object value)
-        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
             if (this.data == null) this.data = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             this.data.Add(key, value);
         }
 
-        public bool TryGetValue<T>(ParameterInfo parameter, out T value)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="key"/> is <see cref="null"/>.</exception>
+        /// <returns></returns>
+        public bool TryGetValue([NotNull] string key, out object value)
         {
-            if (this.isRecordRequest)
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            if (this.data != null)
             {
-                if (this.requests == null) this.requests = new List<ParameterInfo>();
-                this.requests.Add(parameter);
+                return this.data.TryGetValue(key, out value);
             }
+            value = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parameter"></param>
+        /// <param name="value"></param>
+        /// <param name="provider"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="parameter"/> is <see cref="null"/>.</exception>
+        /// <returns></returns>
+        public bool TryGetValue<T>([NotNull] ParameterInfo parameter, out T value, [CanBeNull] IServiceProvider provider)
+        {
+            if (parameter == null) throw new ArgumentNullException(nameof(parameter));
 
             if (this.data != null)
             {
@@ -48,6 +65,14 @@ namespace Jasily.DependencyInjection.MethodInvoker
                         value = (T)ret;
                         return true;
                     }
+
+                    var converter = provider?.GetService<IValueConverter<T>>();
+                    if (converter?.CanConvertFrom(ret) == true)
+                    {
+                        value = converter.Convert(ret);
+                        return true;
+                    }
+
                     throw new InvalidOperationException();
                 }
             }

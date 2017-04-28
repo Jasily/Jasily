@@ -49,6 +49,7 @@
     <Compile Include="ISingletonArguments.cs" />
     <Compile Include="Internal\MethodInvoker.cs" />
     <Compile Include="IStaticMethodInvoker.cs" />
+    <Compile Include="IValueConverter.cs" />
     <Compile Include="OverrideArguments.cs" />
     <Compile Include="Internal\ParameterInfoDescriptor.cs" />
     <Compile Include="ParameterResolveException.cs" />
