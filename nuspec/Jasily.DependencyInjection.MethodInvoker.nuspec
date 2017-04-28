@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Jasily.DependencyInjection.MethodInvoker</id>
+        <version>0.0.0.3</version>
+        <title>Jasily.DependencyInjection.MethodInvoker</title>
+        <authors>Jasily</authors>
+        <owners>Jasily</owners>
+        <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>dependency reject for method.</description>
+        <releaseNotes />
+        <copyright>Copyright 2017</copyright>
+        <tags>DependencyInjection</tags>
+        <dependencies>
+            <dependency id="Jasily.DependencyInjection.MethodInvoker.PCL7" version="0.0.0.3" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="lib\net45\_._" target="lib\net45\_._" />
+    </files>
+</package>
