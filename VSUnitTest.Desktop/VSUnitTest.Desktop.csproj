@@ -121,6 +121,9 @@
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.RegularExpressions.4.3.0\lib\net463\System.Text.RegularExpressions.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -146,6 +149,8 @@
     <Compile Include="CodeTimerHelper.cs" />
     <Compile Include="CodeTimerResult.cs" />
     <Compile Include="Jasily.Core\TestEmpty.cs" />
+    <Compile Include="Jasily.DependencyInjection.MemberInjection\TestInstanceInjector.cs" />
+    <Compile Include="Jasily.DependencyInjection.MemberInjection\TestMemberInjector.cs" />
     <Compile Include="Jasily.DependencyInjection.MethodInvoker\TestMethodInvoker.cs" />
     <Compile Include="Jasily.Extensions.System\Collections\Generic\TestListExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Linq\TestEnumerableExtensions.cs" />
@@ -170,9 +175,13 @@
       <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
       <Name>Jasily.Core.PCL259</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.MethodInvoker.PCL7\Jasily.DependencyInjection.MethodInvoker.PCL7.csproj">
-      <Project>{0e11699a-3c58-4ded-93ef-18db8f716e9b}</Project>
-      <Name>Jasily.DependencyInjection.MethodInvoker.PCL7</Name>
+    <ProjectReference Include="..\Jasily.DependencyInjection.MemberInjection.Standard\Jasily.DependencyInjection.MemberInjection.Standard.csproj">
+      <Project>{1db55be3-2717-444e-8e92-1817101edb65}</Project>
+      <Name>Jasily.DependencyInjection.MemberInjection.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.DependencyInjection.MethodInvoker.Standard\Jasily.DependencyInjection.MethodInvoker.Standard.csproj">
+      <Project>{2e0c2313-455f-442a-9270-aee9a826ee92}</Project>
+      <Name>Jasily.DependencyInjection.MethodInvoker.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.Desktop\Jasily.Desktop.csproj">
       <Project>{0a825a8a-522a-4a51-8301-fd903bb07968}</Project>
