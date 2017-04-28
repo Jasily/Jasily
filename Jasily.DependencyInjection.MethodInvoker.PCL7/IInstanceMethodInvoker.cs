@@ -16,6 +16,14 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> is null.</exception>
         /// <returns></returns>
         object Invoke(T instance, OverrideArguments arguments);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <returns></returns>
+        IInstanceMethodInvoker<T, TResult> CastTo<TResult>();
     }
 
     /// <summary>

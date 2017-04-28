@@ -13,6 +13,14 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <param name="arguments"></param>
         /// <returns></returns>
         object Invoke(OverrideArguments arguments);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TResult2"></typeparam>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <returns></returns>
+        IStaticMethodInvoker<TResult> CastTo<TResult>();
     }
 
     /// <summary>

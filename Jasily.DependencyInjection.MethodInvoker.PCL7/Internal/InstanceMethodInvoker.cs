@@ -57,6 +57,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                     instance, ParameterOverrideArguments
                 ).Compile();
         }
+
+        public IInstanceMethodInvoker<T, TResult> CastTo<TResult>()
+        {
+            throw new InvalidOperationException("method has no return value.");
+        }
     }
 
     internal sealed class InstanceMethodInvoker<T, TResult> : MethodInvoker,
@@ -113,6 +118,13 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return Expression.Lambda<Func<T, OverrideArguments, TResult>>(body,
                     instance, ParameterOverrideArguments
                 ).Compile();
+        }
+
+        public IInstanceMethodInvoker<T, TResult2> CastTo<TResult2>()
+        {
+            var imi = this as IInstanceMethodInvoker<T, TResult2>;
+            if (imi != null) return imi;
+            throw new InvalidOperationException($"method return value type is {this.Method.ReturnType}, not {typeof(TResult2)}.");
         }
     }
 }

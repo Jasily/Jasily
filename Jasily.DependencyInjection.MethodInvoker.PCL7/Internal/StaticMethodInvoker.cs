@@ -53,6 +53,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                     ParameterOverrideArguments
                 ).Compile();
         }
+
+        public IStaticMethodInvoker<TResult> CastTo<TResult>()
+        {
+            throw new InvalidOperationException("method has no return value.");
+        }
     }
 
     internal class StaticMethodInvoker<TResult> : MethodInvoker,
@@ -103,6 +108,13 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return Expression.Lambda<Func<OverrideArguments, TResult>>(body,
                     ParameterOverrideArguments
                 ).Compile();
+        }
+
+        public IStaticMethodInvoker<TResult2> CastTo<TResult2>()
+        {
+            var smi = this as IStaticMethodInvoker<TResult2>;
+            if (smi != null) return smi;
+            throw new InvalidOperationException($"method return value type is {this.Method.ReturnType}, not {typeof(TResult2)}.");
         }
     }
 }
