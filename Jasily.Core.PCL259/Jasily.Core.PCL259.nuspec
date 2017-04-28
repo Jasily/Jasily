@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Core.PCL259</id>
-        <version>0.0.0.2</version>
+        <version>0.0.0.3</version>
         <title>Jasily.Core.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -13,9 +13,6 @@
 just for test.</description>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
-        <dependencies>
-            <dependency id="JetBrains.Annotations" version="10.4.0" />
-        </dependencies>
     </metadata>
     <files>
         <file src="bin\Release\Jasily.Core.PCL259.dll" target="lib\net45\Jasily.Core.PCL259.dll" />
