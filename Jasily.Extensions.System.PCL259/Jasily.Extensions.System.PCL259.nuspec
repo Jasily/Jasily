@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Extensions.System.PCL259</id>
-        <version>0.0.0.2</version>
+        <version>0.0.0.3</version>
         <title>Jasily.Extensions.System.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -13,10 +13,9 @@
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <dependencies>
-            <dependency id="JetBrains.Annotations" version="10.4.0" />
             <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
             <dependency id="System.ValueTuple" version="4.3.0" />
-            <dependency id="Jasily.Core.PCL259" version="0.0.0.2" />
+            <dependency id="Jasily.Core.PCL259" version="0.0.0.4" />
         </dependencies>
     </metadata>
     <files>
