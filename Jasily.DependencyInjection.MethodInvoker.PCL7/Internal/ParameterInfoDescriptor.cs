@@ -61,13 +61,20 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 }
             }
 
+            var obj = provider.GetService(typeof(T));
+            if (obj != null)
+            {
+                value = (T)obj;
+                return true;
+            }
+
+            value = default(T);
             return false;
         }
 
         public override object ResolveArgumentObject(IServiceProvider provider, OverrideArguments arguments)
         {
             if (this.TryResolveArgument(provider, arguments, out var value)) return value;
-
             if (this.Parameter.HasDefaultValue) return this.Parameter.DefaultValue;
 
             throw new ParameterResolveException(this.Parameter);
@@ -76,7 +83,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public T ResolveArgumentValue(IServiceProvider provider, OverrideArguments arguments)
         {
             if (this.TryResolveArgument(provider, arguments, out var value)) return value;
-
             if (this.Parameter.HasDefaultValue) return this.DefaultValue;
 
             throw new ParameterResolveException(this.Parameter);
