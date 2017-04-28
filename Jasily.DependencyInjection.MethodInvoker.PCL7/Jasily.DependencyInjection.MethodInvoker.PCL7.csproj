@@ -51,6 +51,7 @@
     <Compile Include="IStaticMethodInvoker.cs" />
     <Compile Include="IValueConverter.cs" />
     <Compile Include="IValueConverterFactory.cs" />
+    <Compile Include="MethodInvokerExtensions.cs" />
     <Compile Include="OverrideArguments.cs" />
     <Compile Include="Internal\ParameterInfoDescriptor.cs" />
     <Compile Include="ParameterResolveException.cs" />
