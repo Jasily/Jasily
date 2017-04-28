@@ -80,8 +80,8 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this.methods.Contains(method)) throw new InvalidOperationException();
-            if (method.IsStatic) throw new InvalidOperationException();
+            if (!this.methods.Contains(method)) throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
+            if (method.IsStatic) throw new InvalidOperationException($"method is static method.");
 
             return (IInstanceMethodInvoker<T>)this.GetMethodInvoker(method);
         }
@@ -89,8 +89,8 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IStaticMethodInvoker GetStaticMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this.methods.Contains(method)) throw new InvalidOperationException();
-            if (!method.IsStatic) throw new InvalidOperationException();
+            if (!this.methods.Contains(method)) throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
+            if (!method.IsStatic) throw new InvalidOperationException($"method is instance method.");
 
             return (IStaticMethodInvoker) this.GetMethodInvoker(method);
         }
