@@ -49,6 +49,7 @@
     <Compile Include="Collections\Generic\EnumeratorExtensions.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
     <Compile Include="Collections\Generic\QueueExtensions.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyListExtensions.cs" />
     <Compile Include="ComparableExtensions.cs" />
     <Compile Include="ComponentModel\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Data\Serialization\JsonSerializerExtensions.cs" />
