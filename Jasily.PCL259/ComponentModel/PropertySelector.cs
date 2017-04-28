@@ -11,11 +11,19 @@ namespace Jasily.ComponentModel
 
         public static PropertySelector<T> Root { get; } = new PropertySelector<T>();
 
-        private PropertySelector(string name)
+        private PropertySelector([CanBeNull] string name)
         {
             this.propertyName = name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
+        /// <returns></returns>
+        [PublicAPI]
         public PropertySelector<TProperty> Select<TProperty>([NotNull] Expression<Func<T, TProperty>> selector)
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
@@ -25,16 +33,13 @@ namespace Jasily.ComponentModel
         }
 
         /// <summary>
-        /// same as <see cref="SelectMany{TProperty}(Expression{Func{T, IEnumerable{TProperty}}})"/>
+        /// 
         /// </summary>
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
         /// <returns></returns>
-        public PropertySelector<TProperty> Select<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
-        {
-            return SelectMany(selector);
-        }
-        
+        [PublicAPI]
         public PropertySelector<TProperty> SelectMany<TProperty>([NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
@@ -80,9 +85,13 @@ namespace Jasily.ComponentModel
             return Concat(parentName, memberName);
         }
 
-        public static implicit operator string(PropertySelector<T> selector)
-            => selector.ToString();
+        public static implicit operator string(PropertySelector<T> selector) => selector.ToString();
 
+        /// <summary>
+        /// build string path for <see cref="PropertySelector{T}"/>.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
         public override string ToString() => this.propertyName ?? string.Empty;
     }
 }

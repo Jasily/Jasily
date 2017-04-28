@@ -33,21 +33,55 @@ namespace Jasily
 
         #region property
 
-        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="_"></param>
+        /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
+        /// <returns></returns>
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T _,
             [NotNull] Expression<Func<T, TProperty>> selector)
             => PropertySelector<T>.Root.Select(selector);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
+        /// <returns></returns>
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
             [NotNull] Expression<Func<T, TProperty>> selector)
             => PropertySelector<T>.Root.Select(selector);
 
-        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T obj,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="_"></param>
+        /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
+        /// <returns></returns>
+        public static PropertySelector<TProperty> SelectProperty<T, TProperty>([CanBeNull] this T _,
             [NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
-            => PropertySelector<T>.Root.Select(selector);
+            => PropertySelector<T>.Root.SelectMany(selector);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="selector"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="selector"/> is null.</exception>
+        /// <returns></returns>
         public static PropertySelector<TProperty> SelectProperty<T, TProperty>(
             [NotNull] Expression<Func<T, IEnumerable<TProperty>>> selector)
-            => PropertySelector<T>.Root.Select(selector);
+            => PropertySelector<T>.Root.SelectMany(selector);
 
         #endregion
     }
