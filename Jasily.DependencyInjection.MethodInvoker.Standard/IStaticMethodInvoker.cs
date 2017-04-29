@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
@@ -11,8 +12,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// 
         /// </summary>
         /// <param name="arguments"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
-        object Invoke(OverrideArguments arguments);
+        object Invoke([NotNull] IServiceProvider serviceProvider, OverrideArguments arguments);
 
         /// <summary>
         /// 
@@ -33,7 +35,8 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// 
         /// </summary>
         /// <param name="arguments"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
-        TResult Invoke(OverrideArguments arguments);
+        TResult Invoke([NotNull] IServiceProvider serviceProvider, OverrideArguments arguments);
     }
 }

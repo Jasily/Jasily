@@ -11,7 +11,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
     internal class StaticMethodInvoker : MethodInvoker,
         IStaticMethodInvoker, IStaticMethodInvoker<object>
     {
-        private Action<OverrideArguments> func;
+        private Action<IServiceProvider, OverrideArguments> func;
 
         public StaticMethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
             : base(factory, method)
@@ -19,38 +19,39 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             this.func = this.ImplFunc();
         }
 
-        public object Invoke(OverrideArguments arguments)
+        public object Invoke(IServiceProvider serviceProvider, OverrideArguments arguments)
         {
-            this.func(arguments);
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            this.func(serviceProvider, arguments);
             return null;
         }
 
-        private Action<OverrideArguments> ImplFunc()
+        private Action<IServiceProvider, OverrideArguments> ImplFunc()
         {
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
             if (CompileThreshold == 0) return this.CompileFunc();
             var count = 0;
-            return args =>
+            return (p, args) =>
             {
                 if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
                     Task.Run(() => Interlocked.Exchange(ref this.func, this.CompileFunc()));
                 }
 
-                this.InvokeMethod<object>(null, args);
+                this.InvokeMethod<object>(null, p, args);
             };
         }
 
-        private Action<OverrideArguments> CompileFunc()
+        private Action<IServiceProvider, OverrideArguments> CompileFunc()
         {
             Expression body = this.Parameters.Length == 0
                 ? Expression.Call(this.Method)
                 : Expression.Call(this.Method, this.ResolveArgumentsExpressions());
 
-            return Expression.Lambda<Action<OverrideArguments>>(body,
-                    ParameterOverrideArguments
+            return Expression.Lambda<Action<IServiceProvider, OverrideArguments>>(body,
+                    ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
         }
 
@@ -63,7 +64,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
     internal class StaticMethodInvoker<TResult> : MethodInvoker,
         IStaticMethodInvoker, IStaticMethodInvoker<TResult>
     {
-        private Func<OverrideArguments, TResult> func;
+        private Func<IServiceProvider, OverrideArguments, TResult> func;
 
         public StaticMethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
             : base(factory, method)
@@ -71,42 +72,43 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             this.func = this.ImplFunc();
         }
 
-        public TResult Invoke(OverrideArguments arguments)
+        public TResult Invoke(IServiceProvider serviceProvider, OverrideArguments arguments)
         {
-            return this.func(arguments);
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            return this.func(serviceProvider, arguments);
         }
 
-        object IStaticMethodInvoker.Invoke(OverrideArguments arguments)
+        object IStaticMethodInvoker.Invoke(IServiceProvider serviceProvider, OverrideArguments arguments)
         {
-            return this.Invoke(arguments);
+            return this.Invoke(serviceProvider, arguments);
         }
 
-        private Func<OverrideArguments, TResult> ImplFunc()
+        private Func<IServiceProvider, OverrideArguments, TResult> ImplFunc()
         {
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
             if (CompileThreshold == 0) return this.CompileFunc();
             var count = 0;
-            return args =>
+            return (p, args) =>
             {
                 if (Interlocked.Increment(ref count) == CompileThreshold)
                 {
                     Task.Run(() => Interlocked.Exchange(ref this.func, this.CompileFunc()));
                 }
 
-                return this.InvokeMethod<TResult>(null, args);
+                return this.InvokeMethod<TResult>(null, p, args);
             };
         }
 
-        private Func<OverrideArguments, TResult> CompileFunc()
+        private Func<IServiceProvider, OverrideArguments, TResult> CompileFunc()
         {
             Expression body = this.Parameters.Length == 0
                 ? Expression.Call(this.Method)
                 : Expression.Call(this.Method, this.ResolveArgumentsExpressions());
 
-            return Expression.Lambda<Func<OverrideArguments, TResult>>(body,
-                    ParameterOverrideArguments
+            return Expression.Lambda<Func<IServiceProvider, OverrideArguments, TResult>>(body,
+                    ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
         }
 

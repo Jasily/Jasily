@@ -16,19 +16,19 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         protected const int CompileThreshold = 4;
 
         protected static readonly ParameterExpression ParameterOverrideArguments = Expression.Parameter(typeof(OverrideArguments));
+        protected static readonly ParameterExpression ParameterServiceProvider = Expression.Parameter(typeof(IServiceProvider));
         private static readonly MethodInfo MethodResolveArguments;
 
         static MethodInvoker()
         {
             MethodResolveArguments = typeof(MethodInvoker).GetRuntimeMethods()
                 .Where(z => z.Name == nameof(MethodInvoker.ResolveArguments))
-                .Where(z => z.GetParameters().Length == 2)
+                .Where(z => z.GetParameters().Length == 3)
                 .Single();
         }
 
         public MethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
         {
-            this.ServiceProvider = factory.ServiceProvider;
             this.Method = method;
             this.Parameters = this.Method.GetParameters()
                 .Select(z => ParameterInfoDescriptor.Build(z))
@@ -37,26 +37,24 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public MethodInfo Method { get; }
 
-        public IServiceProvider ServiceProvider { get; }
-
         public ParameterInfoDescriptor[] Parameters { get; }
 
-        private object[] ResolveArguments(OverrideArguments arguments)
+        private object[] ResolveArguments(IServiceProvider serviceProvider, OverrideArguments arguments)
         {
             var length = this.Parameters.Length;
             var args = new object[length];
             for (var i = 0; i < length; i++)
             {
                 var p = this.Parameters[i];
-                args[i] = p.ResolveArgumentObject(this.ServiceProvider, arguments);
+                args[i] = p.ResolveArgumentObject(serviceProvider, arguments);
             }
             return args;
         }
 
-        private T ResolveArguments<T>(OverrideArguments arguments, int index)
+        private T ResolveArguments<T>(IServiceProvider serviceProvider, OverrideArguments arguments, int index)
         {
             var p = (ParameterInfoDescriptor<T>) this.Parameters[index];
-            return p.ResolveArgumentValue(this.ServiceProvider, arguments);
+            return p.ResolveArgumentValue(serviceProvider, arguments);
         }
 
         protected Expression[] ResolveArgumentsExpressions()
@@ -66,14 +64,15 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             {
                 var p = this.Parameters[i];
                 var m = MethodResolveArguments.MakeGenericMethod(p.Parameter.ParameterType);
-                exps[i] = Expression.Call(Expression.Constant(this), m, ParameterOverrideArguments, Expression.Constant(i));
+                exps[i] = Expression.Call(Expression.Constant(this), m,
+                    ParameterServiceProvider, ParameterOverrideArguments, Expression.Constant(i));
             }
             return exps;
         }
 
-        protected T InvokeMethod<T>(object instance, OverrideArguments args)
+        protected T InvokeMethod<T>(object instance, IServiceProvider serviceProvider, OverrideArguments args)
         {
-            var a = this.Parameters.Length == 0 ? null : this.ResolveArguments(args);
+            var a = this.Parameters.Length == 0 ? null : this.ResolveArguments(serviceProvider, args);
 
             try
             {
