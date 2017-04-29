@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.MemberInjection
 {
@@ -11,8 +12,10 @@ namespace Jasily.DependencyInjection.MemberInjection
         /// <summary>
         /// inject value from <see cref="IServiceProvider"/> to <paramref name="instance"/>.
         /// </summary>
+        /// <param name="serviceProvider"></param>
         /// <param name="instance"></param>
         /// <param name="isRequired"></param>
-        void Inject(T instance, bool isRequired);
+        /// <exception cref="ArgumentNullException">throw if <paramref name="serviceProvider"/> or <paramref name="instance"/> is null.</exception>
+        void Inject([NotNull] IServiceProvider serviceProvider, [NotNull] T instance, bool isRequired);
     }
 }

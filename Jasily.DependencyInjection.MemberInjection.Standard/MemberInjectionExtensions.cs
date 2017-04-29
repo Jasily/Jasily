@@ -21,10 +21,13 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
 
-            var service = serviceProvider.GetRequiredService<T>();
-            var injector = serviceProvider.GetRequiredService<IInstanceInjector<T>>();
-            injector.Inject(service);
-            return service;
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var service = scope.ServiceProvider.GetRequiredService<T>();
+                var injector = scope.ServiceProvider.GetRequiredService<IInstanceInjector<T>>();
+                injector.Inject(scope.ServiceProvider, service);
+                return service;
+            }
         }
 
         /// <summary>
@@ -38,13 +41,16 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
 
-            var service = serviceProvider.GetService<T>();
-            if (service != null)
+            using (var scope = serviceProvider.CreateScope())
             {
-                var injector = serviceProvider.GetRequiredService<IInstanceInjector<T>>();
-                injector.Inject(service);
+                var service = scope.ServiceProvider.GetService<T>();
+                if (service != null)
+                {
+                    var injector = scope.ServiceProvider.GetRequiredService<IInstanceInjector<T>>();
+                    injector.Inject(scope.ServiceProvider, service);
+                }
+                return service;
             }
-            return service;
         }
 
         /// <summary>
@@ -59,8 +65,11 @@ namespace Jasily.DependencyInjection.MemberInjection
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            var injector = serviceProvider.GetRequiredService<IInstanceInjector<T>>();
-            injector.Inject(instance);
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var injector = scope.ServiceProvider.GetRequiredService<IInstanceInjector<T>>();
+                injector.Inject(scope.ServiceProvider, instance);
+            }
         }
     }
 }

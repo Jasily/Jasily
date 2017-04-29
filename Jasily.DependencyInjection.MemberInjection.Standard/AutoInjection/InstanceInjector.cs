@@ -14,7 +14,7 @@ namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
         private readonly (FieldInfo, InjectAttribute)[] fields;
         private readonly (PropertyInfo, InjectAttribute)[] properties;
         private readonly IServiceProvider serviceProvider;
-        private Action<T> injectAction;
+        private Action<IServiceProvider, T> injectAction;
 
         public InstanceInjector(IServiceProvider serviceProvider)
         {
@@ -36,21 +36,30 @@ namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
             }
         }
 
-        public void Inject(T instance)
+        public void Inject(IServiceProvider serviceProvider, T instance)
         {
             if (this.injectAction == null)
             {
-                var factory = (IInternalMemberInjectorFactory) this.serviceProvider.GetRequiredService<IMemberInjectorFactory<T>>();
-                var ps = this.properties.Select<(PropertyInfo, InjectAttribute), (MemberInfo, InjectAttribute)>(z => z);
-                var fs = this.fields.Select<(FieldInfo, InjectAttribute), (MemberInfo, InjectAttribute)>(z => z);
-                var actions = ps.Concat(fs)
-                    .Select(z => new Action<T>(i => ((IMemberInjector<T>)factory.InternalGetMemberInjector(z.Item1)).Inject(i, z.Item2.IsRequired)))
-                    .ToArray();
-                var action = new Action<T>(i => { foreach (var a in actions) a(i); });
-                Interlocked.CompareExchange(ref this.injectAction, action, null);
+                Interlocked.CompareExchange(ref this.injectAction, this.ImplInjectAction(), null);
             }
 
-            this.injectAction(instance);
+            this.injectAction(serviceProvider, instance);
+        }
+
+        private Action<IServiceProvider, T> ImplInjectAction()
+        {
+            var factory = (IInternalMemberInjectorFactory)this.serviceProvider.GetRequiredService<IMemberInjectorFactory<T>>();
+            var ps = this.properties.Select<(PropertyInfo, InjectAttribute), (MemberInfo, InjectAttribute)>(z => z);
+            var fs = this.fields.Select<(FieldInfo, InjectAttribute), (MemberInfo, InjectAttribute)>(z => z);
+            var actions = ps.Concat(fs)
+                .Select(z => new Action<IServiceProvider, T>((provider, instance) =>
+                    ((IMemberInjector<T>)factory.InternalGetMemberInjector(z.Item1))
+                    .Inject(provider, instance, z.Item2.IsRequired))
+                ).ToArray();
+            return new Action<IServiceProvider, T>((provider, instance) => 
+            {
+                foreach (var a in actions) a(provider, instance);
+            });
         }
     }
 }
