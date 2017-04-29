@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.DependencyInjection.MethodInvoker</id>
-        <version>0.0.0.4</version>
+        <version>0.0.1.0</version>
         <title>Jasily.DependencyInjection.MethodInvoker</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -14,10 +14,11 @@
         <copyright>Copyright 2017</copyright>
         <tags>DependencyInjection</tags>
         <dependencies>
-            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.0.0.7" />
+            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.0.1.0" />
         </dependencies>
     </metadata>
     <files>
         <file src="lib\net45\_._" target="lib\net45\_._" />
+        <file src="lib\netstandard1.4\_._" target="lib\netstandard1.4\_._" />
     </files>
 </package>
