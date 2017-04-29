@@ -13,6 +13,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// invoke instance method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
@@ -38,6 +39,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// invoke instance method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
