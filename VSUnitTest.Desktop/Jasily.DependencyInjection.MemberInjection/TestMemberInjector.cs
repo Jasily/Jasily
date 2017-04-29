@@ -25,7 +25,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(instance, false);
+            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(provider, instance, false);
             Assert.IsNotNull(instance.Property);
         }
 
@@ -37,7 +37,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(instance, false);
+            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(provider, instance, false);
             Assert.IsNull(instance.Property);
         }
 
@@ -50,7 +50,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(instance, true);
+            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(provider, instance, true);
             Assert.IsNotNull(instance.Property);
         }
 
@@ -63,7 +63,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(instance, true);
+            factory.GetMemberInjector(typeof(TestClass1).GetProperty("Property")).Inject(provider, instance, true);
             Assert.IsNotNull(instance.Property);
         }
 
@@ -76,7 +76,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(instance, false);
+            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(provider, instance, false);
             Assert.AreEqual("123", instance.Field);
         }
 
@@ -88,7 +88,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(instance, false);
+            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(provider, instance, false);
             Assert.IsNull(instance.Field);
         }
 
@@ -101,7 +101,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(instance, true);
+            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(provider, instance, true);
             Assert.AreEqual("123", instance.Field);
         }
 
@@ -114,7 +114,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
-            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(instance, true);
+            factory.GetMemberInjector(typeof(TestClass1).GetField("Field")).Inject(provider, instance, true);
             Assert.AreEqual("123", instance.Field);
         }
     }

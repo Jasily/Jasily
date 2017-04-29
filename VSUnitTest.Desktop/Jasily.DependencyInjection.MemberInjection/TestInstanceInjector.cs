@@ -47,7 +47,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var injector = provider.GetService<IInstanceInjector<TestClass1>>();
             var instance = new TestClass1();
-            injector.Inject(instance);
+            injector.Inject(provider, instance);
             Assert.IsNotNull(instance.Property);
             Assert.AreEqual("123", instance.Field);
             Assert.IsNotNull(instance.OptionalProperty);
@@ -68,7 +68,7 @@ namespace VSUnitTest.Desktop.Jasily.DependencyInjection.MemberInjection
             var provider = sc.BuildServiceProvider();
             var injector = provider.GetService<IInstanceInjector<TestClass1>>();
             var instance = new TestClass1();
-            injector.Inject(instance);
+            injector.Inject(provider, instance);
             Assert.IsNotNull(instance.Property);
             Assert.AreEqual("123", instance.Field);
             Assert.IsNotNull(instance.OptionalProperty);
