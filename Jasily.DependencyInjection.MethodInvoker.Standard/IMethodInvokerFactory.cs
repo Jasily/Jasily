@@ -4,17 +4,11 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.MethodInvoker
 {
-    public interface IMethodInvokerFactory<in T>
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IMethodInvokerFactory
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="method"></param>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="method"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method);
-
         /// <summary>
         /// 
         /// </summary>
@@ -32,5 +26,21 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <exception cref="InvalidOperationException"></exception>
         /// <returns></returns>
         IStaticMethodInvoker GetConstructorInvoker([NotNull] ConstructorInfo constructor);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IMethodInvokerFactory<in T> : IMethodInvokerFactory
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="method"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="method"/> is null.</exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <returns></returns>
+        IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method);
     }
 }
