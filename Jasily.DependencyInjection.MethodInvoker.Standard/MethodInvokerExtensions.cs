@@ -62,6 +62,21 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
         }
 
+        public static object InvokeConstructor<T>([NotNull] this IServiceProvider serviceProvider,
+            [NotNull] ConstructorInfo constructor, OverrideArguments arguments = default(OverrideArguments))
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            if (constructor == null) throw new ArgumentNullException(nameof(constructor));
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var factory = scope.ServiceProvider.GetService<IMethodInvokerFactory<T>>();
+                if (factory == null)
+                    throw new InvalidOperationException("before invoke constructor, call `UseMethodInvoker()` by `IServiceCollection`.");
+                return factory.GetConstructorInvoker(constructor).Invoke(scope.ServiceProvider, arguments);
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -116,6 +131,33 @@ namespace Jasily.DependencyInjection.MethodInvoker
             using (var scope = serviceProvider.CreateScope())
             {
                 return factory.GetStaticMethodInvoker(method).Invoke(scope.ServiceProvider, arguments);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="factory"></param>
+        /// <param name="constructor"></param>
+        /// <param name="arguments"></param>
+        /// <exception cref="ArgumentNullException">
+        /// throw if <paramref name="factory"/> 
+        /// or <paramref name="constructor"/> 
+        /// or <paramref name="serviceProvider"/> is null.</exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <returns></returns>
+        public static object InvokeConstructor<T>([NotNull] this IMethodInvokerFactory<T> factory,
+            [NotNull] ConstructorInfo constructor, [NotNull] IServiceProvider serviceProvider,
+            OverrideArguments arguments = default(OverrideArguments))
+        {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+            if (constructor == null) throw new ArgumentNullException(nameof(constructor));
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                return factory.GetConstructorInvoker(constructor).Invoke(scope.ServiceProvider, arguments);
             }
         }
     }

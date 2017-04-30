@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
@@ -31,7 +30,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
-            if (CompileThreshold == 0) return this.CompileFunc();
+            if (CompileThreshold <= 0) return this.CompileFunc();
             var count = 0;
             return (p, args) =>
             {
@@ -88,7 +87,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
-            if (CompileThreshold == 0) return this.CompileFunc();
+            if (CompileThreshold <= 0) return this.CompileFunc();
             var count = 0;
             return (p, args) =>
             {

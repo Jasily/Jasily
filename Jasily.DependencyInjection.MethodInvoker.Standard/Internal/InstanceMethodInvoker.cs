@@ -33,7 +33,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
-            if (CompileThreshold == 0) return this.CompileFunc();
+            if (CompileThreshold <= 0) return this.CompileFunc();
             var count = 0;
             return (instance, provider, args) =>
             {
@@ -97,7 +97,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 #if DEBUG
             if (CompileImmediately) return this.CompileFunc();
 #endif
-            if (CompileThreshold == 0) return this.CompileFunc();
+            if (CompileThreshold <= 0) return this.CompileFunc();
             var count = 0;
             return (i, p, a) =>
             {

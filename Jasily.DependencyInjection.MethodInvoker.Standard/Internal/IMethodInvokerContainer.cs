@@ -9,6 +9,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         bool IsValueType { get; }
 
-        MethodInvoker GetMethodInvoker(MethodInfo method);
+        BaseInvoker GetMethodInvoker(MethodBase method);
     }
 }
