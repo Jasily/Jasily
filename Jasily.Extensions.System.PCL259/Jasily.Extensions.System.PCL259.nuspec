@@ -13,6 +13,7 @@
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <dependencies>
+            <dependency id="JetBrains.Annotations" version="10.4.0.0" />
             <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
             <dependency id="System.ValueTuple" version="4.3.0" />
             <dependency id="Jasily.Core.PCL259" version="0.0.0.4" />
