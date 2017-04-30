@@ -26,7 +26,7 @@ namespace System.Threading.Tasks
         /// <param name="selector"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task<TTo> SelectAsync<TFrom, TTo>([NotNull] this Task<TFrom> task,
+        public static async ValueTask<TTo> SelectAsync<TFrom, TTo>([NotNull] this Task<TFrom> task,
             [NotNull] Func<TFrom, TTo> selector)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
@@ -36,7 +36,16 @@ namespace System.Threading.Tasks
             ).ConfigureAwait(false);
         }
 
-        public static async Task<TTo> AsyncSelectAsync<TFrom, TTo>([NotNull] this Task<TFrom> task,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TFrom"></typeparam>
+        /// <typeparam name="TTo"></typeparam>
+        /// <param name="task"></param>
+        /// <param name="asyncSelector"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns></returns>
+        public static async ValueTask<TTo> AsyncSelectAsync<TFrom, TTo>([NotNull] this Task<TFrom> task,
             [NotNull] Func<TFrom, Task<TTo>> asyncSelector)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
@@ -46,6 +55,15 @@ namespace System.Threading.Tasks
             ).ConfigureAwait(false);
         }
 
-        public static Task<TResult> AsTaskResult<TResult>([CanBeNull] this TResult value) => Task.FromResult(value);
+        /// <summary>
+        /// create <see cref="ValueTask{TResult}"/> from <paramref name="value"/>.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ValueTask<TResult> AsTaskResult<TResult>([CanBeNull] this TResult value)
+        {
+            return new ValueTask<TResult>(value);
+        }
     }
 }
