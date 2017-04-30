@@ -19,7 +19,7 @@ namespace System.Linq
         /// <param name="source"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="source"/> is null.</exception>
         /// <returns></returns>
-        public static IEnumerable<T> NotNull<T>([NotNull] this IEnumerable<T> source)
+        public static IEnumerable<T> NotNull<T>([NotNull] this IEnumerable<T> source) where T : class
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
