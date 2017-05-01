@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Extensions.System.PCL259</id>
-        <version>0.0.0.3</version>
+        <version>0.0.0.4</version>
         <title>Jasily.Extensions.System.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -16,11 +16,13 @@
             <dependency id="JetBrains.Annotations" version="10.4.0.0" />
             <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
             <dependency id="System.ValueTuple" version="4.3.0" />
-            <dependency id="Jasily.Core.PCL259" version="0.0.0.4" />
+            <dependency id="Jasily.Core.PCL259" version="0.0.0.5" />
         </dependencies>
     </metadata>
     <files>
         <file src="bin\Release\Jasily.Extensions.System.PCL259.dll" target="lib\net45\Jasily.Extensions.System.PCL259.dll" />
         <file src="bin\Release\Jasily.Extensions.System.PCL259.XML" target="lib\net45\Jasily.Extensions.System.PCL259.XML" />
+        <file src="bin\Release\Jasily.Extensions.System.PCL259.dll" target="lib\netstandard1.4\Jasily.Extensions.System.PCL259.dll" />
+        <file src="bin\Release\Jasily.Extensions.System.PCL259.XML" target="lib\netstandard1.4\Jasily.Extensions.System.PCL259.XML" />
     </files>
 </package>
