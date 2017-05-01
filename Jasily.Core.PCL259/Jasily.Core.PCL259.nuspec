@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Core.PCL259</id>
-        <version>0.0.0.4</version>
+        <version>0.0.0.5</version>
         <title>Jasily.Core.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -17,5 +17,7 @@ just for test.</description>
     <files>
         <file src="bin\Release\Jasily.Core.PCL259.dll" target="lib\net45\Jasily.Core.PCL259.dll" />
         <file src="bin\Release\Jasily.Core.PCL259.XML" target="lib\net45\Jasily.Core.PCL259.XML" />
+        <file src="bin\Release\Jasily.Core.PCL259.dll" target="lib\netstandard1.4\Jasily.Core.PCL259.dll" />
+        <file src="bin\Release\Jasily.Core.PCL259.XML" target="lib\netstandard1.4\Jasily.Core.PCL259.XML" />
     </files>
 </package>
