@@ -9,7 +9,8 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal class MethodInvokerFactory<T> : IMethodInvokerFactory<T>, IInternalMethodInvokerFactory
     {
-        private readonly HashSet<MethodBase> methods = new HashSet<MethodBase>();
+        private readonly HashSet<ConstructorInfo> constructors;
+        private readonly HashSet<MethodInfo> methods;
         private readonly ConcurrentDictionary<MethodBase, BaseInvoker> invokerMaps
             = new ConcurrentDictionary<MethodBase, BaseInvoker>();
 
@@ -21,59 +22,58 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         {
             this.ServiceProvider = serviceProvider;
             var type = typeof(T);
-            this.IsValueType = type.GetTypeInfo().IsValueType;
-            this.methods = new HashSet<MethodBase>(type.GetRuntimeMethods());
-            foreach (var ctor in type.GetTypeInfo().DeclaredConstructors)
-            {
-                this.methods.Add(ctor);
-            }
+            this.IsValueType = type.GetTypeInfo().IsValueType;           
+            this.constructors = new HashSet<ConstructorInfo>(type.GetTypeInfo().DeclaredConstructors);
+            this.methods = new HashSet<MethodInfo>(type.GetRuntimeMethods());
         }
 
-        private BaseInvoker CreateInvoker(MethodBase function)
+        private BaseInvoker CreateInvoker(ConstructorInfo constructor)
         {
-            if (function is MethodInfo method)
-            {
-                return (BaseInvoker)Activator.CreateInstance(this.ResolveType(method), new object[] { this, method });
-            }
-            else if (function is ConstructorInfo constructor)
-            {
-                return (BaseInvoker)Activator.CreateInstance(this.ResolveType(constructor), new object[] { this, constructor });
-            }
+            var type = typeof(ConstructorInvoker<>).MakeGenericType(typeof(T));
 
-            throw new NotSupportedException();
+            return (BaseInvoker)Activator.CreateInstance(type, new object[] { this, constructor });
         }
 
-        private Type ResolveType(MethodInfo method)
+        private BaseInvoker CreateInvoker(MethodInfo method)
         {
-            if (method.IsStatic)
+            Type ResolveType()
             {
-                if (method.ReturnType == typeof(void))
-                    return typeof(StaticMethodInvoker);
+                if (method.IsStatic)
+                {
+                    if (method.ReturnType == typeof(void))
+                        return typeof(StaticMethodInvoker);
+                    else
+                        return typeof(StaticMethodInvoker<>).MakeGenericType(method.ReturnType);
+                }
                 else
-                    return typeof(StaticMethodInvoker<>).MakeGenericType(method.ReturnType);
+                {
+                    if (method.ReturnType == typeof(void))
+                        return typeof(InstanceMethodInvoker<T>);
+                    else
+                        return typeof(InstanceMethodInvoker<,>).MakeGenericType(typeof(T), method.ReturnType);
+                }
             }
-            else
-            {
-                if (method.ReturnType == typeof(void))
-                    return typeof(InstanceMethodInvoker<T>);
-                else
-                    return typeof(InstanceMethodInvoker<,>).MakeGenericType(typeof(T), method.ReturnType);
-            }
+
+            return (BaseInvoker)Activator.CreateInstance(ResolveType(), new object[] { this, method });
         }
 
-        private Type ResolveType(ConstructorInfo constructor)
+        public BaseInvoker GetMethodInvoker(ConstructorInfo constructor)
         {
-            return typeof(ConstructorInvoker<>).MakeGenericType(typeof(T));
+            if (!this.invokerMaps.TryGetValue(constructor, out var invoker))
+            {
+                invoker = this.CreateInvoker(constructor);
+                invoker = this.invokerMaps.GetOrAdd(constructor, invoker);
+            }
+            return invoker;
         }
 
-        public BaseInvoker GetMethodInvoker(MethodBase method)
+        public BaseInvoker GetMethodInvoker(MethodInfo method)
         {
             if (!this.invokerMaps.TryGetValue(method, out var invoker))
             {
                 if (method.DeclaringType == typeof(T))
                 {
                     invoker = this.CreateInvoker(method);
-                    invoker = this.invokerMaps.GetOrAdd(method, invoker);
                 }
                 else
                 {
@@ -109,7 +109,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IStaticMethodInvoker GetConstructorInvoker([NotNull] ConstructorInfo constructor)
         {
             if (constructor == null) throw new ArgumentNullException(nameof(constructor));
-            if (!this.methods.Contains(constructor))
+            if (!this.constructors.Contains(constructor))
                 throw new InvalidOperationException($"type {typeof(T)} does not contains the constructor.");
 
             return (IStaticMethodInvoker) this.GetMethodInvoker(constructor);
