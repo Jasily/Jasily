@@ -61,7 +61,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public IInstanceMethodInvoker<T, TResult> CastTo<TResult>()
         {
-            throw new InvalidOperationException("method has no return value.");
+            return (IInstanceMethodInvoker<T, TResult>) (object) this;
         }
     }
 
@@ -125,9 +125,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public IInstanceMethodInvoker<T, TResult2> CastTo<TResult2>()
         {
-            var imi = this as IInstanceMethodInvoker<T, TResult2>;
-            if (imi != null) return imi;
-            throw new InvalidOperationException($"method return value type is {this.Method.ReturnType}, not {typeof(TResult2)}.");
+            return (IInstanceMethodInvoker<T, TResult2>) (object) this;
         }
     }
 }

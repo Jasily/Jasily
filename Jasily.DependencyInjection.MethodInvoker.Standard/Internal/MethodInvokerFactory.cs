@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.Annotations;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
@@ -25,7 +27,13 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             this.IsValueType = type.GetTypeInfo().IsValueType;           
             this.constructors = new HashSet<ConstructorInfo>(type.GetTypeInfo().DeclaredConstructors);
             this.methods = new HashSet<MethodInfo>(type.GetRuntimeMethods());
+            this.Constructors = new ReadOnlyCollection<ConstructorInfo>(this.constructors.ToArray());
+            this.Methods = new ReadOnlyCollection<MethodInfo>(this.methods.ToArray());
         }
+
+        public IReadOnlyList<ConstructorInfo> Constructors { get; }
+
+        public IReadOnlyList<MethodInfo> Methods { get; }
 
         private BaseInvoker CreateInvoker(ConstructorInfo constructor)
         {

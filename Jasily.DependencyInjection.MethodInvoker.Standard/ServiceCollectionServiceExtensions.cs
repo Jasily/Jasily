@@ -22,6 +22,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
             serviceCollection.AddSingleton(typeof(IMethodInvokerFactory<>), typeof(MethodInvokerFactory<>));
             serviceCollection.AddSingleton(typeof(ISingletonArguments<>), typeof(ConcurrentArguments<>));
             serviceCollection.AddScoped(typeof(IScopedArguments<>), typeof(ConcurrentArguments<>));
+            serviceCollection.AddSingleton(typeof(AwaiterAdapter<>));
+            serviceCollection.AddSingleton(typeof(AwaiterAdapter<,>));
+            serviceCollection.AddSingleton(typeof(ITypeWaiter<>), typeof(TypeWaiter<>));
         }
     }
 }

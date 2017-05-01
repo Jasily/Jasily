@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
@@ -9,6 +10,16 @@ namespace Jasily.DependencyInjection.MethodInvoker
     /// </summary>
     public interface IMethodInvokerFactory
     {
+        /// <summary>
+        /// all available constructors.
+        /// </summary>
+        IReadOnlyList<ConstructorInfo> Constructors { get; }
+
+        /// <summary>
+        /// all available methods.
+        /// </summary>
+        IReadOnlyList<MethodInfo> Methods { get; }
+
         /// <summary>
         /// 
         /// </summary>

@@ -153,6 +153,7 @@
     <Compile Include="Jasily.DependencyInjection.MemberInjection\TestMemberInjector.cs" />
     <Compile Include="Jasily.DependencyInjection.MethodInvoker\TestConstructorInvoker.cs" />
     <Compile Include="Jasily.DependencyInjection.MethodInvoker\TestMethodInvoker.cs" />
+    <Compile Include="Jasily.DependencyInjection.MethodInvoker\TestWaiter.cs" />
     <Compile Include="Jasily.Extensions.System\Collections\Generic\TestListExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Collections\Generic\TestReadOnlyListExtensions.cs" />
     <Compile Include="Jasily.Extensions.System\Linq\TestEnumerableExtensions.cs" />

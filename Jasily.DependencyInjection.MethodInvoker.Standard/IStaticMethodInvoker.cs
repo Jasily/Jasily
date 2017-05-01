@@ -9,7 +9,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
     public interface IStaticMethodInvoker
     {
         /// <summary>
-        /// 
+        /// invoke static method.
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
@@ -33,7 +33,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
     public interface IStaticMethodInvoker<out TResult>
     {
         /// <summary>
-        /// 
+        /// invoke static method.
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>

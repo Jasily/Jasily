@@ -78,8 +78,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public IStaticMethodInvoker<TResult2> CastTo<TResult2>()
         {
-            var smi = this as IStaticMethodInvoker<TResult2>;
-            if (smi != null) return smi;
+            if (this is IStaticMethodInvoker<TResult2> smi) return smi;
             throw new InvalidOperationException();
         }
     }
