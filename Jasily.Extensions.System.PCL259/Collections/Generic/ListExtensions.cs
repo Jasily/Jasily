@@ -4,22 +4,29 @@ using JetBrains.Annotations;
 
 namespace System.Collections.Generic
 {
+    /// <summary>
+    /// extensions for <see cref="List{T}"/> or <see cref="IList{T}"/>.
+    /// </summary>
     public static class ListExtensions
     {
-        public static IReadOnlyList<T> AsReadOnly<T>([NotNull] this IList<T> list) => new ReadOnlyCollection<T>(list);
-
         /// <summary>
-        /// return a simple synchronized list.
-        /// if you want to use better solution, use System.Collections.Concurrent.
+        /// create a <see cref="ReadOnlyCollection{T}"/> list as a readonly wrapper.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static IList<T> AsSynchronized<T>([NotNull] IList<T> list)
-        {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            return new SynchronizedList<T>(list);
-        }
+        [PublicAPI]
+        public static IReadOnlyList<T> AsReadOnly<T>([NotNull] this IList<T> list) => new ReadOnlyCollection<T>(list);
+
+        /// <summary>
+        /// return a simple synchronized list (use lock).
+        /// if you looking for lockfree solution, try namespace `System.Collections.Concurrent`.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        [PublicAPI]
+        public static IList<T> AsSynchronized<T>([NotNull] IList<T> list) => new SynchronizedList<T>(list);
 
         /// <summary>
         /// copy from http://referencesource.microsoft.com/.
@@ -27,12 +34,11 @@ namespace System.Collections.Generic
         /// <typeparam name="T"></typeparam>
         private class SynchronizedList<T> : IList<T>, ICollection
         {
-            private readonly IList<T> list;
+            private readonly IList<T> _list;
 
             internal SynchronizedList(IList<T> list)
             {
-                Debug.Assert(list != null);
-                this.list = list;
+                this._list = list ?? throw new ArgumentNullException(nameof(list));
                 this.SyncRoot = (list as ICollection)?.SyncRoot ?? new object();
             }
 
@@ -40,7 +46,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.CopyTo(array, index);
+                    this._list.CopyTo(array, index);
                 }
             }
 
@@ -50,7 +56,7 @@ namespace System.Collections.Generic
                 {
                     lock (this.SyncRoot)
                     {
-                        return this.list.Count;
+                        return this._list.Count;
                     }
                 }
             }
@@ -59,13 +65,13 @@ namespace System.Collections.Generic
 
             public object SyncRoot { get; }
 
-            public bool IsReadOnly => this.list.IsReadOnly;
+            public bool IsReadOnly => this._list.IsReadOnly;
 
             public void Add(T item)
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.Add(item);
+                    this._list.Add(item);
                 }
             }
 
@@ -73,7 +79,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.Clear();
+                    this._list.Clear();
                 }
             }
 
@@ -81,7 +87,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    return this.list.Contains(item);
+                    return this._list.Contains(item);
                 }
             }
 
@@ -89,7 +95,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.CopyTo(array, arrayIndex);
+                    this._list.CopyTo(array, arrayIndex);
                 }
             }
 
@@ -97,7 +103,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    return this.list.Remove(item);
+                    return this._list.Remove(item);
                 }
             }
 
@@ -105,7 +111,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    return this.list.GetEnumerator();
+                    return this._list.GetEnumerator();
                 }
             }
 
@@ -113,7 +119,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    return this.list.GetEnumerator();
+                    return this._list.GetEnumerator();
                 }
             }
 
@@ -123,14 +129,14 @@ namespace System.Collections.Generic
                 {
                     lock (this.SyncRoot)
                     {
-                        return this.list[index];
+                        return this._list[index];
                     }
                 }
                 set
                 {
                     lock (this.SyncRoot)
                     {
-                        this.list[index] = value;
+                        this._list[index] = value;
                     }
                 }
             }
@@ -139,7 +145,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    return this.list.IndexOf(item);
+                    return this._list.IndexOf(item);
                 }
             }
 
@@ -147,7 +153,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.Insert(index, item);
+                    this._list.Insert(index, item);
                 }
             }
 
@@ -155,7 +161,7 @@ namespace System.Collections.Generic
             {
                 lock (this.SyncRoot)
                 {
-                    this.list.RemoveAt(index);
+                    this._list.RemoveAt(index);
                 }
             }
         }
