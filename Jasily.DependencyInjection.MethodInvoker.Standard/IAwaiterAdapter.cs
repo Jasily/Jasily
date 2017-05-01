@@ -1,4 +1,6 @@
-﻿namespace Jasily.DependencyInjection.MethodInvoker
+﻿using System;
+
+namespace Jasily.DependencyInjection.MethodInvoker
 {
     public interface IAwaiterAdapter
     {
