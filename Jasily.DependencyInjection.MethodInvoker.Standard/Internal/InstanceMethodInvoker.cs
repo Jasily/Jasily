@@ -123,9 +123,9 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 ).Compile();
         }
 
-        public IInstanceMethodInvoker<T, TResult2> CastTo<TResult2>()
+        public IInstanceMethodInvoker<T, TOut> CastTo<TOut>()
         {
-            return (IInstanceMethodInvoker<T, TResult2>) (object) this;
+            return (IInstanceMethodInvoker<T, TOut>) (object) this;
         }
     }
 }

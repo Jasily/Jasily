@@ -161,71 +161,12 @@ namespace Jasily.DependencyInjection.MethodInvoker
             }
         }
 
-        /// <summary>
-        /// if <paramref name="instance"/> is awaitable, return result of awaitable (null if void).
-        /// if <paramref name="instance"/> is NOT awaitable, return <paramref name="instance"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceProvider"></param>
-        /// <param name="instance"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        public static object GetValueOrAwaitableResult([NotNull] this IServiceProvider serviceProvider, [NotNull] object instance)
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (instance == null) throw new ArgumentNullException(nameof(instance));
-
-            var taskWaiter = (ITypeWaiter) serviceProvider.GetService(typeof(ITypeWaiter<>).MakeGenericType(instance.GetType()));
-            if (taskWaiter == null)
-            {
-                throw new InvalidOperationException("before invoke method, call `UseMethodInvoker()` by `IServiceCollection`.");
-            }
-            if (taskWaiter.AwaiterAdapter.IsAwaitable)
-            {
-                return taskWaiter.GetResult(instance);
-            }
-            return instance;
-        }
-
-        /// <summary>
-        /// if <paramref name="instance"/> is awaitable, return result of awaitable (null if void).
-        /// if <paramref name="instance"/> is NOT awaitable, return <paramref name="instance"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceProvider"></param>
-        /// <param name="instance"></param>
-        /// <param name="recursive"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        public static object GetValueOrAwaitableResult([NotNull] this IServiceProvider serviceProvider, [NotNull] object instance,
-            bool recursive)
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (instance == null) throw new ArgumentNullException(nameof(instance));
-
-            if (recursive)
-            {
-                object result = null;
-                while (result != instance)
-                {
-                    result = instance;
-                    instance = serviceProvider.GetValueOrAwaitableResult(instance);
-                }
-                return instance;
-            }
-            else
-            {
-                return serviceProvider.GetValueOrAwaitableResult(instance);
-            }
-        }
-
         #region default(OverrideArguments)
 
         /// <summary>
         /// invoke instance method.
         /// </summary>
+        /// <param name="invoker"></param>
         /// <param name="instance"></param>
         /// <param name="serviceProvider"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
@@ -240,6 +181,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <summary>
         /// invoke instance method.
         /// </summary>
+        /// <param name="invoker"></param>
         /// <param name="instance"></param>
         /// <param name="serviceProvider"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
