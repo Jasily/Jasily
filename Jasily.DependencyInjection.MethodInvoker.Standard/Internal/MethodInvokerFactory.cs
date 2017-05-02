@@ -46,7 +46,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         {
             var type = typeof(ConstructorInvoker<>).MakeGenericType(typeof(T));
 
-            return (BaseInvoker)Activator.CreateInstance(type, new object[] { this, constructor });
+            return (BaseInvoker)Activator.CreateInstance(type, this, constructor);
         }
 
         private BaseInvoker CreateInvoker(MethodInfo method)
@@ -86,17 +86,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         {
             if (!this.invokerMaps.TryGetValue(method, out var invoker))
             {
-                if (method.DeclaringType == typeof(T))
-                {
-                    invoker = this.CreateInvoker(method);
-                }
-                else
-                {
-                    var type = typeof(IMethodInvokerFactory<>).MakeGenericType(method.DeclaringType);
-                    var container = (IInternalMethodInvokerFactory) this.ServiceProvider.GetService(type);
-                    invoker = container.GetMethodInvoker(method);
-                }
-                invoker = this.invokerMaps.GetOrAdd(method, invoker);
+                invoker = this.invokerMaps.GetOrAdd(method, this.CreateInvoker(method));
             }
             return invoker;
         }
