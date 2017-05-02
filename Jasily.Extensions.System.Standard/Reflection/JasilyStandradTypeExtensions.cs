@@ -25,7 +25,7 @@ namespace System.Reflection
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="NotSupportedException"></exception>
         /// <returns></returns>
-        public static Type FastMakeGenericType([NotNull] Type genericType, [NotNull] params Type[] typeArguments)
+        public static Type FastMakeGenericType([NotNull] this Type genericType, [NotNull] params Type[] typeArguments)
         {
             if (genericType == null) throw new ArgumentNullException(nameof(genericType));
             if (typeArguments == null) throw new ArgumentNullException(nameof(typeArguments));
