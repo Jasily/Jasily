@@ -1,22 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{13267EC7-D849-4D68-A3C9-1E594D219CA2}</ProjectGuid>
+    <ProjectGuid>{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Jasily</RootNamespace>
-    <AssemblyName>VSUnitTest.Desktop</AssemblyName>
+    <RootNamespace>NugetPackageTest</RootNamespace>
+    <AssemblyName>NugetPackageTest</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,8 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    <Reference Include="Jasily.DependencyInjection.MethodInvoker.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jasily.DependencyInjection.MethodInvoker.Standard.0.0.1.5\lib\netstandard1.4\Jasily.DependencyInjection.MethodInvoker.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
@@ -53,6 +50,7 @@
     <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -124,128 +122,22 @@
     <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
-    <Compile Include="TestUtils\CodeTimer.cs" />
-    <Compile Include="TestUtils\CodeTimerHelper.cs" />
-    <Compile Include="TestUtils\CodeTimerResult.cs" />
-    <Compile Include="TestEmpty.cs" />
-    <Compile Include="DependencyInjection.MemberInjection\TestInstanceInjector.cs" />
-    <Compile Include="DependencyInjection.MemberInjection\TestMemberInjector.cs" />
-    <Compile Include="DependencyInjection.MethodInvoker\TestConstructorInvoker.cs" />
-    <Compile Include="DependencyInjection.MethodInvoker\TestMethodInvoker.cs" />
-    <Compile Include="DependencyInjection.AwaiterAdapter\TestAwaiterAdapter.cs" />
-    <Compile Include="Collections\Generic\TestListExtensions.cs" />
-    <Compile Include="Collections\Generic\TestReadOnlyListExtensions.cs" />
-    <Compile Include="Linq\TestEnumerableExtensions.cs" />
-    <Compile Include="Reflection\TestConstructorInfoExtensions.cs" />
-    <Compile Include="Reflection\TestMethodInfoExtensions.cs" />
-    <Compile Include="Reflection\TestTypeExtensions.cs" />
-    <Compile Include="TestStringExtensions.cs" />
-    <Compile Include="Collections\Generic\TestRange.cs" />
-    <Compile Include="Collections\Generic\TestRangeDictionary.cs" />
-    <Compile Include="Collections\Generic\TestCriticalValue.cs" />
-    <Compile Include="ComponentModel\TestPropertySelector.cs" />
-    <Compile Include="Reflection\Descriptors\TestTypeDescriptor.cs" />
-    <Compile Include="Reflection\TestActivator.cs" />
-    <Compile Include="TestFastEnum.cs" />
-    <Compile Include="Text\TestStringSegment.cs" />
-    <Compile Include="Text\TestTextReplacer.cs" />
-    <Compile Include="TestDayOfWeek.cs" />
-    <Compile Include="TestSystemCall.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
-      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
-      <Name>Jasily.Core.PCL259</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.AwaiterAdapter.Standard\Jasily.DependencyInjection.AwaiterAdapter.Standard.csproj">
-      <Project>{b1106f26-cbcb-413f-9262-77028c33eb7e}</Project>
-      <Name>Jasily.DependencyInjection.AwaiterAdapter.Standard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.MemberInjection.Standard\Jasily.DependencyInjection.MemberInjection.Standard.csproj">
-      <Project>{1db55be3-2717-444e-8e92-1817101edb65}</Project>
-      <Name>Jasily.DependencyInjection.MemberInjection.Standard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.MethodInvoker.Standard\Jasily.DependencyInjection.MethodInvoker.Standard.csproj">
-      <Project>{2e0c2313-455f-442a-9270-aee9a826ee92}</Project>
-      <Name>Jasily.DependencyInjection.MethodInvoker.Standard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Desktop\Jasily.Desktop.csproj">
-      <Project>{0a825a8a-522a-4a51-8301-fd903bb07968}</Project>
-      <Name>Jasily.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.Desktop\Jasily.Extensions.System.Desktop.csproj">
-      <Project>{33a2c8dd-bfbb-44d5-ab5d-8eec10dd2947}</Project>
-      <Name>Jasily.Extensions.System.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
-      <Project>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</Project>
-      <Name>Jasily.Extensions.System.PCL259</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj">
-      <Project>{432b6d1c-64ae-4f6e-a277-f0af08e05a7c}</Project>
-      <Name>Jasily.Extensions.System.Standard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
-      <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
-      <Name>Jasily.PCL259</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Cache\" />
-    <Folder Include="Core\" />
-    <Folder Include="IO\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

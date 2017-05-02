@@ -31,7 +31,9 @@ namespace System.Reflection
             if (typeArguments == null) throw new ArgumentNullException(nameof(typeArguments));
 
             var array = new TypeArray(genericType, typeArguments);
-            return Cache.TryGetValue(array, out var result) ? result : Cache.GetOrAdd(array, genericType.MakeGenericType(typeArguments));
+            return Cache.TryGetValue(array, out var result)
+                ? result
+                : Cache.GetOrAdd(array, genericType.MakeGenericType(typeArguments));
         }
 
         private class TypeArrayEqualityComparer : IEqualityComparer<TypeArray>
