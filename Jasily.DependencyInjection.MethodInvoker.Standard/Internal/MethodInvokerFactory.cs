@@ -20,13 +20,20 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         public bool IsValueType { get; }
 
-        public MethodInvokerFactory(IServiceProvider serviceProvider)
+        public MethodInvokerFactory([NotNull] IServiceProvider serviceProvider)
         {
-            this.ServiceProvider = serviceProvider;
+            this.ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             var type = typeof(T);
             this.IsValueType = type.GetTypeInfo().IsValueType;           
             this.constructors = new HashSet<ConstructorInfo>(type.GetTypeInfo().DeclaredConstructors);
             this.methods = new HashSet<MethodInfo>(type.GetRuntimeMethods());
+            foreach (var (setter, getter) in type.GetRuntimeProperties().Select(z => (z.SetMethod, z.GetMethod)))
+            {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (setter != null) this.methods.Add(setter);
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (getter != null) this.methods.Add(getter);
+            }
             this.Constructors = new ReadOnlyCollection<ConstructorInfo>(this.constructors.ToArray());
             this.Methods = new ReadOnlyCollection<MethodInfo>(this.methods.ToArray());
         }
