@@ -48,7 +48,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             if (recursive)
             {
                 object result = null;
-                while (result != instance)
+                while (result != instance && instance != null)
                 {
                     result = instance;
                     instance = serviceProvider.GetValueOrAwaitableResult(instance);
