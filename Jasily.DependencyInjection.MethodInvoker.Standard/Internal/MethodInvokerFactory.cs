@@ -13,6 +13,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
     {
         private readonly HashSet<ConstructorInfo> _constructors;
         private readonly HashSet<MethodInfo> _methods;
+        private readonly HashSet<MethodInfo> _genericMethods;
         private readonly ConcurrentDictionary<MethodBase, BaseInvoker> _invokerMaps
             = new ConcurrentDictionary<MethodBase, BaseInvoker>();
 
@@ -26,7 +27,9 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             var type = typeof(T);
             this.IsValueType = type.GetTypeInfo().IsValueType;           
             this._constructors = new HashSet<ConstructorInfo>(type.GetTypeInfo().DeclaredConstructors);
-            this._methods = new HashSet<MethodInfo>(type.GetRuntimeMethods());
+            var methods = type.GetRuntimeMethods().ToArray();
+            this._methods = new HashSet<MethodInfo>(methods.Where(z => !z.IsGenericMethod));
+            this._genericMethods = new HashSet<MethodInfo>(methods.Where(z => z.IsGenericMethod));
             foreach (var (setter, getter) in type.GetRuntimeProperties().Select(z => (z.SetMethod, z.GetMethod)))
             {
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -69,11 +72,14 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 }
             }
 
-            return (BaseInvoker)Activator.CreateInstance(ResolveType(), new object[] { this, method });
+            return (BaseInvoker)Activator.CreateInstance(ResolveType(), this, method);
         }
 
         public BaseInvoker GetMethodInvoker(ConstructorInfo constructor)
         {
+            if (!this._constructors.Contains(constructor))
+                throw new InvalidOperationException($"Type {typeof(T)} do not contains the constructor.");
+
             if (!this._invokerMaps.TryGetValue(constructor, out var invoker))
             {
                 invoker = this.CreateInvoker(constructor);
@@ -86,6 +92,37 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         {
             if (!this._invokerMaps.TryGetValue(method, out var invoker))
             {
+                if (!this._methods.Contains(method))
+                {
+                    if (method.IsGenericMethod)
+                    {
+                        if (method.ContainsGenericParameters)
+                        {
+                            throw new InvalidOperationException("Method cannot contains generic parameters.");
+                        }
+
+                        if (method.IsGenericMethodDefinition)
+                        {
+                            method = null;
+                        }
+                        else
+                        {
+                            var definition = method.GetGenericMethodDefinition();
+                            if (!this._genericMethods.Contains(definition))
+                            {
+                                method = null;
+                            }
+                        }
+                    }
+
+                    throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
+                }
+
+                if (method == null)
+                {
+                    throw new InvalidOperationException($"Type {typeof(T)} do not contains the method.");
+                }
+
                 invoker = this._invokerMaps.GetOrAdd(method, this.CreateInvoker(method));
             }
             return invoker;
@@ -94,9 +131,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this._methods.Contains(method))
-                throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
-            if (method.IsStatic) throw new InvalidOperationException($"method is static method.");
+            if (method.IsStatic) throw new InvalidOperationException("method is static method.");
 
             return (IInstanceMethodInvoker<T>)this.GetMethodInvoker(method);
         }
@@ -104,9 +139,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IStaticMethodInvoker GetStaticMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            if (!this._methods.Contains(method))
-                throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
-            if (!method.IsStatic) throw new InvalidOperationException($"method is instance method.");
+            if (!method.IsStatic) throw new InvalidOperationException("method is instance method.");
 
             return (IStaticMethodInvoker) this.GetMethodInvoker(method);
         }
@@ -114,8 +147,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public IStaticMethodInvoker GetConstructorInvoker([NotNull] ConstructorInfo constructor)
         {
             if (constructor == null) throw new ArgumentNullException(nameof(constructor));
-            if (!this._constructors.Contains(constructor))
-                throw new InvalidOperationException($"type {typeof(T)} does not contains the constructor.");
 
             return (IStaticMethodInvoker) this.GetMethodInvoker(constructor);
         }

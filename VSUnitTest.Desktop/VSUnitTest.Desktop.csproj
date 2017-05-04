@@ -145,6 +145,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DependencyInjection.MethodInvoker\TestPropertyInvoker.cs" />
     <Compile Include="TestUtils\CodeTimer.cs" />
     <Compile Include="TestUtils\CodeTimerHelper.cs" />
     <Compile Include="TestUtils\CodeTimerResult.cs" />
