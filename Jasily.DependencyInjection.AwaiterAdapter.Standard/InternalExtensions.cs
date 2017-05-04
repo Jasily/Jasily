@@ -26,7 +26,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             var taskWaiter = serviceProvider.GetTaskAdapter(instance.GetType());
-            return taskWaiter.TaskAwaiterAdapter.IsAwaitable ? taskWaiter.TaskAwaiterAdapter.GetResult(instance) : instance;
+            return taskWaiter.AwaitableAdapter.IsAwaitable ? taskWaiter.AwaitableAdapter.GetResult(instance) : instance;
         }
 
         /// <summary>

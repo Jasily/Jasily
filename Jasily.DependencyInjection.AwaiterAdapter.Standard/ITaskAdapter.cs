@@ -7,7 +7,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         /// <summary>
         /// 
         /// </summary>
-        ITaskAwaiterAdapter TaskAwaiterAdapter { get; }
+        IAwaitableAdapter AwaitableAdapter { get; }
     }
 
     /// <summary>

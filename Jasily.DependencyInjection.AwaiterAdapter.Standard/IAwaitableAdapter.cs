@@ -6,7 +6,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     /// <summary>
     /// 
     /// </summary>
-    public interface ITaskAwaiterAdapter
+    public interface IAwaitableAdapter
     {
         /// <summary>
         /// whether is adapter is valid or NOT
@@ -47,7 +47,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     /// 
     /// </summary>
     /// <typeparam name="TTask"></typeparam>
-    public interface ITaskAwaiterAdapter<in TTask> : ITaskAwaiterAdapter
+    public interface IAwaitableAdapter<in TTask> : IAwaitableAdapter
     {
         /// <summary>
         /// 
@@ -81,7 +81,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     /// </summary>
     /// <typeparam name="TTask"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    public interface ITaskAwaiterAdapter<in TTask, out TResult> : ITaskAwaiterAdapter
+    public interface IAwaitableAdapter<in TTask, out TResult> : IAwaitableAdapter
     {
         /// <summary>
         /// 

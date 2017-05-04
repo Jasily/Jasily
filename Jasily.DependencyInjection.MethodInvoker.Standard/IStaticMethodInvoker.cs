@@ -16,14 +16,6 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <exception cref="ArgumentNullException">throw if <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
         object Invoke([NotNull] IServiceProvider serviceProvider, OverrideArguments arguments);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        IStaticMethodInvoker<TResult> CastTo<TResult>();
     }
 
     /// <summary>

@@ -18,14 +18,6 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
         object Invoke([NotNull] T instance, [NotNull]  IServiceProvider serviceProvider, OverrideArguments arguments);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <exception cref="InvalidCastException"></exception>
-        /// <returns></returns>
-        IInstanceMethodInvoker<T, TResult> CastTo<TResult>();
     }
 
     /// <summary>

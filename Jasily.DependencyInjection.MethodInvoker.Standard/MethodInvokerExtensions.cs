@@ -84,6 +84,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <param name="factory"></param>
         /// <param name="instance"></param>
         /// <param name="method"></param>
+        /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
         /// <exception cref="ArgumentNullException">
         /// throw if <paramref name="factory"/>
@@ -113,6 +114,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <typeparam name="T"></typeparam>
         /// <param name="factory"></param>
         /// <param name="method"></param>
+        /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
         /// <exception cref="ArgumentNullException">
         /// throw if <paramref name="factory"/> 
@@ -140,6 +142,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <typeparam name="T"></typeparam>
         /// <param name="factory"></param>
         /// <param name="constructor"></param>
+        /// <param name="serviceProvider"></param>
         /// <param name="arguments"></param>
         /// <exception cref="ArgumentNullException">
         /// throw if <paramref name="factory"/> 
@@ -217,6 +220,22 @@ namespace Jasily.DependencyInjection.MethodInvoker
         {
             if (invoker == null) throw new ArgumentNullException(nameof(invoker));
             return invoker.Invoke(serviceProvider, default(OverrideArguments));
+        }
+
+        #endregion
+
+        #region cast
+
+        public static IInstanceMethodInvoker<T, TResult> HasResult<T, TResult>([NotNull] this IInstanceMethodInvoker<T> invoker)
+        {
+            if (invoker == null) throw new ArgumentNullException(nameof(invoker));
+            return (IInstanceMethodInvoker<T, TResult>) invoker;
+        }
+
+        public static IStaticMethodInvoker<TResult> HasResult<TResult>([NotNull] this IStaticMethodInvoker invoker)
+        {
+            if (invoker == null) throw new ArgumentNullException(nameof(invoker));
+            return (IStaticMethodInvoker<TResult>)invoker;
         }
 
         #endregion

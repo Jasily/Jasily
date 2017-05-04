@@ -11,18 +11,56 @@ using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
 {
-    internal abstract class TaskAwaiterAdapter : ITaskAwaiterAdapter
+    internal abstract class AwaitableAdapter
+    {
+        [NotNull]
+        public static IAwaitableAdapter GetAwaitableAdapter(IServiceProvider provider, Type instanceType)
+        {
+            var awaiterType = instanceType.GetRuntimeMethods()
+                .Where(z => z.Name == nameof(Task.GetAwaiter))
+                .Where(z => z.GetParameters().Length == 0)
+                .Select(z => z.ReturnType)
+                .FirstOrDefault(z => z != typeof(void));
+
+            if (awaiterType != null &&
+                awaiterType != typeof(void) &&
+                typeof(INotifyCompletion).GetTypeInfo().IsAssignableFrom(awaiterType.GetTypeInfo()))
+            {
+                var resultType = awaiterType.GetRuntimeMethods()
+                    .Where(z => z.Name == nameof(TaskAwaiter.GetResult))
+                    .Where(z => z.GetParameters().Length == 0)
+                    .Select(z => z.ReturnType)
+                    .FirstOrDefault();
+
+                if (resultType != null)
+                {
+                    if (resultType == typeof(void))
+                    {
+                        return (IAwaitableAdapter)provider.GetRequiredService(typeof(TaskGetAwaiterAdapter<,>)
+                            .FastMakeGenericType(instanceType, awaiterType));
+                    }
+                    else
+                    {
+                        return (IAwaitableAdapter)provider.GetRequiredService(typeof(TaskGetAwaiterAdapter<,,>)
+                            .FastMakeGenericType(instanceType, awaiterType, resultType));
+                    }
+                }
+            }
+
+            return NonTaskAwaiterAdapter.Instance;
+        }
+    }
+
+    internal abstract class TaskGetAwaiterAdapter : IAwaitableAdapter
     {
         private readonly bool _isValueType;
 
-        protected TaskAwaiterAdapter(Type type, Type awaiterType, IServiceProvider serviceProvider)
+        protected TaskGetAwaiterAdapter(Type type, Type awaiterType, IServiceProvider serviceProvider)
         {
             this.ServiceProvider = serviceProvider;
 
             this.GetAwaiterMethod = type.GetRuntimeMethods()
-                .Where(z => z.Name == nameof(Task.GetAwaiter))
-                .Where(z => z.GetParameters().Length == 0)
-                .FirstOrDefault(z => z.ReturnType != typeof(void));
+                .FirstOrDefault(z => z.Name == nameof(Task.GetAwaiter) && z.GetParameters().Length == 0);
 
             if (this.GetAwaiterMethod != null)
             {
@@ -71,14 +109,14 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
     /// </summary>
     /// <typeparam name="TInstance"></typeparam>
     /// <typeparam name="TAwaiter"></typeparam>
-    internal class TaskAwaiterAdapter<TInstance, TAwaiter> : TaskAwaiterAdapter, 
-        ITaskAwaiterAdapter<TInstance>, ITaskAwaiterAdapter<TInstance, object>
+    internal class TaskGetAwaiterAdapter<TInstance, TAwaiter> : TaskGetAwaiterAdapter, 
+        IAwaitableAdapter<TInstance>, IAwaitableAdapter<TInstance, object>
     {
         private readonly IInstanceMethodInvoker<TInstance, TAwaiter> _getAwaiterInvoker;
         private readonly IInstanceMethodInvoker<TAwaiter> _awaiterGetResultInvoker;
         private readonly IInstanceMethodInvoker<TAwaiter, bool> _awaiterIsCompletedInvoker;
 
-        public TaskAwaiterAdapter(IServiceProvider serviceProvider)
+        public TaskGetAwaiterAdapter(IServiceProvider serviceProvider)
             : base(typeof(TInstance), typeof(TAwaiter), serviceProvider)
         {
             if (this.IsAwaitable)
@@ -86,14 +124,14 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
                 this._getAwaiterInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TInstance>>()
                     .GetInstanceMethodInvoker(this.GetAwaiterMethod)
-                    .CastTo<TAwaiter>();
+                    .HasResult<TInstance, TAwaiter>();
                 this._awaiterGetResultInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TAwaiter>>()
                     .GetInstanceMethodInvoker(this.GetResultMethod);
                 this._awaiterIsCompletedInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TAwaiter>>()
                     .GetInstanceMethodInvoker(this.IsCompletedMethod)
-                    .CastTo<bool>();
+                    .HasResult<TAwaiter, bool>();
             }
         }
 
@@ -103,7 +141,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             return this._getAwaiterInvoker.Invoke(instance, this.ServiceProvider);
         }
 
-        #region ITaskAwaiterAdapter<T>
+        #region IAwaitableAdapter<T>
 
         public bool IsCompleted(TInstance instance)
         {
@@ -122,7 +160,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
 
         #endregion
 
-        #region ITaskAwaiterAdapter
+        #region IAwaitableAdapter
 
         public override bool IsCompleted(object instance) => this.IsCompleted((TInstance)instance);
 
@@ -136,22 +174,22 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
 
         #endregion
 
-        object ITaskAwaiterAdapter<TInstance, object>.GetResult(TInstance instance)
+        object IAwaitableAdapter<TInstance, object>.GetResult(TInstance instance)
         {
             this.GetResult(instance);
             return null;
         }
     }
 
-    internal class TaskAwaiterAdapter<TInstance, TAwaiter, TResult> : TaskAwaiterAdapter,
-        ITaskAwaiterAdapter<TInstance>,
-        ITaskAwaiterAdapter<TInstance, TResult>
+    internal class TaskGetAwaiterAdapter<TInstance, TAwaiter, TResult> : TaskGetAwaiterAdapter,
+        IAwaitableAdapter<TInstance>,
+        IAwaitableAdapter<TInstance, TResult>
     {
         private readonly IInstanceMethodInvoker<TInstance, TAwaiter> _getAwaiterInvoker;
         private readonly IInstanceMethodInvoker<TAwaiter, TResult> _awaiterGetResultInvoker;
         private readonly IInstanceMethodInvoker<TAwaiter, bool> _awaiterIsCompletedInvoker;
 
-        public TaskAwaiterAdapter(IServiceProvider serviceProvider)
+        public TaskGetAwaiterAdapter(IServiceProvider serviceProvider)
             : base(typeof(TInstance), typeof(TAwaiter), serviceProvider)
         {
             if (this.IsAwaitable)
@@ -159,15 +197,15 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
                 this._getAwaiterInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TInstance>>()
                     .GetInstanceMethodInvoker(this.GetAwaiterMethod)
-                    .CastTo<TAwaiter>();
+                    .HasResult<TInstance, TAwaiter>();
                 this._awaiterGetResultInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TAwaiter>>()
                     .GetInstanceMethodInvoker(this.GetResultMethod)
-                    .CastTo<TResult>();
+                    .HasResult<TAwaiter, TResult>();
                 this._awaiterIsCompletedInvoker = this.ServiceProvider
                     .GetRequiredService<IMethodInvokerFactory<TAwaiter>>()
                     .GetInstanceMethodInvoker(this.IsCompletedMethod)
-                    .CastTo<bool>();
+                    .HasResult<TAwaiter, bool>();
             }
         }
 
@@ -177,7 +215,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             return this._getAwaiterInvoker.Invoke(instance, this.ServiceProvider);
         }
 
-        #region ITaskAwaiterAdapter<T, TResult>
+        #region IAwaitableAdapter<T, TResult>
 
         public bool IsCompleted(TInstance instance)
         {
@@ -189,7 +227,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             return this._awaiterGetResultInvoker.Invoke(this.GetAwaiter(instance), this.ServiceProvider, default(OverrideArguments));
         }
 
-        void ITaskAwaiterAdapter<TInstance>.GetResult(TInstance instance) => this.GetResult(instance);
+        void IAwaitableAdapter<TInstance>.GetResult(TInstance instance) => this.GetResult(instance);
 
         public void OnCompleted(TInstance instance, Action continuation)
         {
@@ -198,7 +236,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
 
         #endregion
 
-        #region ITaskAwaiterAdapter
+        #region IAwaitableAdapter
 
         public override bool IsCompleted(object instance) => this.IsCompleted((TInstance)instance);
 

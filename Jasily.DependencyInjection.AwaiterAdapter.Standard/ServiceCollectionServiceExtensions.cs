@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Jasily.DependencyInjection.AwaiterAdapter.Internal;
 using Jasily.DependencyInjection.MemberInjection;
 using Jasily.DependencyInjection.MethodInvoker;
@@ -15,7 +16,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     public static class ServiceCollectionServiceExtensions
     {
         /// <summary>
-        /// add <see cref="ITaskAdapter{T}"/> services to <paramref name="serviceCollection"/>.
+        /// Add <see cref="ITaskAdapter{T}"/> services to <paramref name="serviceCollection"/>.
+        /// After add, you can use <see cref="ITaskAdapter{T}"/> to get singleton task adapter.
+        /// E.g: <see cref="IServiceProvider"/>.GetTaskAdapter(typeof(<see cref="Task{T}"/>))
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="serviceCollection"/> is null.</exception>
@@ -26,8 +29,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             // ensure use method invoker.
             serviceCollection.UseMethodInvoker();
 
-            serviceCollection.AddSingleton(typeof(TaskAwaiterAdapter<,>));
-            serviceCollection.AddSingleton(typeof(TaskAwaiterAdapter<,,>));
+            serviceCollection.AddSingleton(typeof(TaskGetAwaiterAdapter<,>));
+            serviceCollection.AddSingleton(typeof(TaskGetAwaiterAdapter<,,>));
             serviceCollection.AddSingleton(typeof(ITaskAdapter<>), typeof(TaskAdapter<>));
         }
     }

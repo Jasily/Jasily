@@ -53,11 +53,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                     ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
         }
-
-        public IStaticMethodInvoker<TResult> CastTo<TResult>()
-        {
-            return (IStaticMethodInvoker<TResult>)this;
-        }
     }
 
     internal class StaticMethodInvoker<TResult> : MethodInvoker,
@@ -109,11 +104,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return Expression.Lambda<Func<IServiceProvider, OverrideArguments, TResult>>(body,
                     ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
-        }
-
-        public IStaticMethodInvoker<TResult2> CastTo<TResult2>()
-        {
-            return (IStaticMethodInvoker<TResult2>)this;
         }
     }
 }

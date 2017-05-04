@@ -28,8 +28,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             get
             {
                 if (this._adapter == null) throw new InvalidOperationException();
-                if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return true;
-                return ((ITaskAwaiterAdapter<T>) this._adapter.TaskAwaiterAdapter).IsCompleted(this._instance);
+                if (!this._adapter.AwaitableAdapter.IsAwaitable) return true;
+                return ((IAwaitableAdapter<T>) this._adapter.AwaitableAdapter).IsCompleted(this._instance);
             }
         }
 
@@ -39,8 +39,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         public void GetResult()
         {
             if (this._adapter == null) throw new InvalidOperationException();
-            if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return;
-            ((ITaskAwaiterAdapter<T>)this._adapter.TaskAwaiterAdapter).GetResult(this._instance);
+            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T>)this._adapter.AwaitableAdapter).GetResult(this._instance);
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         {
             if (this._adapter == null) throw new InvalidOperationException();
             if (continuation == null) throw new ArgumentNullException(nameof(continuation));
-            if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return;
-            ((ITaskAwaiterAdapter<T>)this._adapter.TaskAwaiterAdapter).OnCompleted(this._instance, continuation);
+            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T>)this._adapter.AwaitableAdapter).OnCompleted(this._instance, continuation);
         }
     }
 
@@ -80,8 +80,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             get
             {
                 if (this._adapter == null) throw new InvalidOperationException();
-                if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return true;
-                return ((ITaskAwaiterAdapter<T, TResult>)this._adapter.TaskAwaiterAdapter).IsCompleted(this._instance);
+                if (!this._adapter.AwaitableAdapter.IsAwaitable) return true;
+                return ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).IsCompleted(this._instance);
             }
         }
 
@@ -91,8 +91,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         public TResult GetResult()
         {
             if (this._adapter == null) throw new InvalidOperationException();
-            if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return default(TResult);
-            return ((ITaskAwaiterAdapter<T, TResult>)this._adapter.TaskAwaiterAdapter).GetResult(this._instance);
+            if (!this._adapter.AwaitableAdapter.IsAwaitable) return default(TResult);
+            return ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).GetResult(this._instance);
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         {
             if (this._adapter == null) throw new InvalidOperationException();
             if (continuation == null) throw new ArgumentNullException(nameof(continuation));
-            if (!this._adapter.TaskAwaiterAdapter.IsAwaitable) return;
-            ((ITaskAwaiterAdapter<T, TResult>)this._adapter.TaskAwaiterAdapter).OnCompleted(this._instance, continuation);
+            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).OnCompleted(this._instance, continuation);
         }
     }
 }

@@ -58,11 +58,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                     instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
         }
-
-        public IInstanceMethodInvoker<T, TResult> CastTo<TResult>()
-        {
-            return (IInstanceMethodInvoker<T, TResult>) (object) this;
-        }
     }
 
     internal sealed class InstanceMethodInvoker<T, TResult> : MethodInvoker,
@@ -121,11 +116,6 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return Expression.Lambda<Func<T, IServiceProvider, OverrideArguments, TResult>>(body,
                     instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
-        }
-
-        public IInstanceMethodInvoker<T, TOut> CastTo<TOut>()
-        {
-            return (IInstanceMethodInvoker<T, TOut>) (object) this;
         }
     }
 }
