@@ -29,7 +29,7 @@ namespace System.Reflection
         {
             if (genericType == null) throw new ArgumentNullException(nameof(genericType));
             if (typeArguments == null) throw new ArgumentNullException(nameof(typeArguments));
-
+            
             var array = new TypeArray(genericType, typeArguments);
             return Cache.TryGetValue(array, out var result)
                 ? result
@@ -38,25 +38,36 @@ namespace System.Reflection
 
         private class TypeArrayEqualityComparer : IEqualityComparer<TypeArray>
         {
-            public bool Equals(TypeArray x, TypeArray y)
-                => x.Types.Length == y.Types.Length && x.Types.SequenceEqual(y.Types);
+            public bool Equals(TypeArray x, TypeArray y) => x.Equals(y);
 
-            public int GetHashCode(TypeArray obj)
-                => obj.Types.Aggregate(0, (current, t) => current ^ t.GetHashCode());
+            public int GetHashCode(TypeArray obj) => obj.HashCode;
         }
 
-        private struct TypeArray
+        private struct TypeArray : IEquatable<TypeArray>
         {
-            internal readonly Type[] Types;
+            internal readonly int HashCode;
+            private readonly Type[] _types;
 
-            public TypeArray(Type type, Type[] types)
+            public TypeArray([NotNull] Type type, [NotNull] Type[] types)
             {
-                this.Types = new Type[types.Length + 1];
-                this.Types[0] = type;
+                this._types = new Type[types.Length + 1];
+                this._types[0] = type;
+                this.HashCode = type.GetHashCode();
                 for (var i = 0; i < types.Length; i++)
                 {
-                    this.Types[i + 1] = types[i];
+                    this.HashCode ^= types[i].GetHashCode();
+                    this._types[i + 1] = types[i];
                 }
+            }
+
+            public bool Equals(TypeArray other)
+            {
+                if (this._types.Length != other._types.Length) return false;
+                for (var i = 0; i < this._types.Length; i++)
+                {
+                    if (this._types[i] != other._types[i]) return false;
+                }
+                return true;
             }
         }
     }
