@@ -3,7 +3,10 @@ using JetBrains.Annotations;
 
 namespace System.Net.Sockets
 {
-    public static class SocketExtensions
+    /// <summary>
+    /// extensions for <see cref="Socket"/>.
+    /// </summary>
+    public static class JSocketExtensions
     {
         /// <summary>
         /// Exception info see Socket.SendAsync()
@@ -17,14 +20,14 @@ namespace System.Net.Sockets
             if (args == null) throw new ArgumentNullException(nameof(args));
             
             var tcs = new TaskCompletionSource<SocketError>();
-            
-            EventHandler<SocketAsyncEventArgs> onComplete = null;
-            onComplete = (s, e) =>
+
+            void OnComplete(object s, SocketAsyncEventArgs e)
             {
-                args.Completed -= onComplete;
+                args.Completed -= OnComplete;
                 tcs.SetResult(args.SocketError);
-            };
-            args.Completed += onComplete;
+            }
+
+            args.Completed += OnComplete;
             
             if (!socket.SendAsync(args))
                 return args.SocketError;
