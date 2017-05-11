@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.PCL259", "Jasily.PCL259\Jasily.PCL259.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
 EndProject
@@ -9,15 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.PC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSUnitTest.Desktop", "VSUnitTest.Desktop\VSUnitTest.Desktop.csproj", "{13267EC7-D849-4D68-A3C9-1E594D219CA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.UWP10240", "Jasily.UWP10240\Jasily.UWP10240.csproj", "{5AFA1C89-2A10-42EE-AC6D-64754A6BAF63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.UWP", "Jasily.UWP\Jasily.UWP.csproj", "{5AFA1C89-2A10-42EE-AC6D-64754A6BAF63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Desktop", "Jasily.Desktop\Jasily.Desktop.csproj", "{0A825A8A-522A-4A51-8301-FD903BB07968}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.Desktop", "Jasily.Extensions.System.Desktop\Jasily.Extensions.System.Desktop.csproj", "{33A2C8DD-BFBB-44D5-AB5D-8EEC10DD2947}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.UWP10240", "Jasily.Extensions.System.UWP10240\Jasily.Extensions.System.UWP10240.csproj", "{9FC18249-8402-4BA7-AAC4-940E35277D07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.UWP", "Jasily.Extensions.System.UWP\Jasily.Extensions.System.UWP.csproj", "{9FC18249-8402-4BA7-AAC4-940E35277D07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.Windows.UWP10240", "Jasily.Extensions.Windows.UWP10240\Jasily.Extensions.Windows.UWP10240.csproj", "{19F6CEAB-5B00-4402-BDD8-15C6CEB30B5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.Windows.UWP", "Jasily.Extensions.Windows.UWP\Jasily.Extensions.Windows.UWP.csproj", "{19F6CEAB-5B00-4402-BDD8-15C6CEB30B5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Core.PCL259", "Jasily.Core.PCL259\Jasily.Core.PCL259.csproj", "{4FE68AB9-C412-4F5F-A5A8-5F55F932492F}"
 EndProject
