@@ -29,8 +29,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             // ensure use method invoker.
             serviceCollection.UseMethodInvoker();
 
-            serviceCollection.AddSingleton(typeof(TaskGetAwaiterAdapter<,>));
-            serviceCollection.AddSingleton(typeof(TaskGetAwaiterAdapter<,,>));
+            serviceCollection.AddSingleton(typeof(VoidAwaitableAdapter<,>));
+            serviceCollection.AddSingleton(typeof(GenericAwaitableAdapter<,,>));
             serviceCollection.AddSingleton(typeof(ITaskAdapter<>), typeof(TaskAdapter<>));
         }
     }
