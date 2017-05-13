@@ -13,77 +13,6 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="serviceProvider"></param>
-        /// <param name="instance"></param>
-        /// <param name="method"></param>
-        /// <param name="arguments"></param>
-        /// <exception cref="ArgumentNullException">
-        /// throw if <paramref name="serviceProvider"/> 
-        /// or <paramref name="instance"/> 
-        /// or <paramref name="method"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        public static object InvokeInstanceMethod<T>([NotNull] this IServiceProvider serviceProvider,
-            [NotNull] MethodInfo method, [NotNull] T instance, OverrideArguments arguments = default(OverrideArguments))
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (instance == null) throw new ArgumentNullException(nameof(instance));
-            if (method == null) throw new ArgumentNullException(nameof(method));
-
-            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
-            using (var scope = serviceProvider.CreateScope())
-            {
-                return factory.GetInstanceMethodInvoker(method).Invoke(instance, scope.ServiceProvider, arguments);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceProvider"></param>
-        /// <param name="method"></param>
-        /// <param name="arguments"></param>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="serviceProvider"/> or <paramref name="method"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <returns></returns>
-        public static object InvokeStaticMethod<T>([NotNull] this IServiceProvider serviceProvider,
-            [NotNull] MethodInfo method, OverrideArguments arguments = default(OverrideArguments))
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (method == null) throw new ArgumentNullException(nameof(method));
-
-            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
-            using (var scope = serviceProvider.CreateScope())
-            {
-                return factory.GetStaticMethodInvoker(method).Invoke(scope.ServiceProvider, arguments);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceProvider"></param>
-        /// <param name="constructor"></param>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public static T InvokeConstructor<T>([NotNull] this IServiceProvider serviceProvider,
-            [NotNull] ConstructorInfo constructor, OverrideArguments arguments = default(OverrideArguments))
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (constructor == null) throw new ArgumentNullException(nameof(constructor));
-
-            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
-            using (var scope = serviceProvider.CreateScope())
-            {
-                return factory.GetConstructorInvoker(constructor).HasResult<T>().Invoke(scope.ServiceProvider, arguments);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="factory"></param>
         /// <param name="instance"></param>
@@ -154,7 +83,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// or <paramref name="serviceProvider"/> is null.</exception>
         /// <exception cref="InvalidOperationException"></exception>
         /// <returns></returns>
-        public static object InvokeConstructor<T>([NotNull] this IMethodInvokerFactory<T> factory,
+        public static T InvokeConstructor<T>([NotNull] this IMethodInvokerFactory<T> factory,
             [NotNull] ConstructorInfo constructor, [NotNull] IServiceProvider serviceProvider,
             OverrideArguments arguments = default(OverrideArguments))
         {
@@ -164,7 +93,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
             using (var scope = serviceProvider.CreateScope())
             {
-                return factory.GetConstructorInvoker(constructor).Invoke(scope.ServiceProvider, arguments);
+                return factory.GetConstructorInvoker(constructor).HasResult<T>().Invoke(scope.ServiceProvider, arguments);
             }
         }
 
@@ -203,9 +132,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <summary>
         /// invoke static method.
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="invoker"></param>
         /// <param name="serviceProvider"></param>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="invoker"/> or <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
         public static TResult Invoke<TResult>([NotNull] this IStaticMethodInvoker<TResult> invoker, [NotNull] IServiceProvider serviceProvider)
         {
@@ -216,9 +145,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <summary>
         /// invoke static method.
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="invoker"></param>
         /// <param name="serviceProvider"></param>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="invoker"/> or <paramref name="serviceProvider"/> is null.</exception>
         /// <returns></returns>
         public static object Invoke([NotNull] this IStaticMethodInvoker invoker, [NotNull] IServiceProvider serviceProvider)
         {
