@@ -8,13 +8,13 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal abstract class MethodInvoker : BaseInvoker
     {
-        public MethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
+        protected MethodInvoker(IInternalMethodInvokerFactory factory, MethodInfo method)
             : base(factory, method)
         {
             this.Method = method;
         }
 
-        public MethodInfo Method { get; }
+        protected MethodInfo Method { get; }
 
         protected T InvokeMethod<T>(object instance, IServiceProvider serviceProvider, OverrideArguments args)
         {

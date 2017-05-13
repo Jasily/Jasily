@@ -18,21 +18,21 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         static BaseInvoker()
         {
-            MethodResolveArguments = typeof(BaseInvoker).GetRuntimeMethods()
+            MethodResolveArguments = typeof(BaseInvoker)
+                .GetRuntimeMethods()
                 .Where(z => z.Name == nameof(BaseInvoker.ResolveArguments))
-                .Where(z => z.GetParameters().Length == 3)
-                .Single();
+                .Single(z => z.GetParameters().Length == 3);
         }
 
 
-        public BaseInvoker(IInternalMethodInvokerFactory factory, MethodBase method)
+        protected BaseInvoker(IInternalMethodInvokerFactory factory, MethodBase method)
         {
             this.Parameters = method.GetParameters()
                 .Select(z => ParameterInfoDescriptor.Build(z))
                 .ToArray();
         }
 
-        public ParameterInfoDescriptor[] Parameters { get; }
+        protected ParameterInfoDescriptor[] Parameters { get; }
 
         protected object[] ResolveArguments(IServiceProvider serviceProvider, OverrideArguments arguments)
         {
@@ -48,8 +48,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
         private T ResolveArguments<T>(IServiceProvider serviceProvider, OverrideArguments arguments, int index)
         {
-            var p = (ParameterInfoDescriptor<T>)this.Parameters[index];
-            return p.ResolveArgumentValue(serviceProvider, arguments);
+            return ((ParameterInfoDescriptor<T>)this.Parameters[index]).ResolveArgumentValue(serviceProvider, arguments);
         }
 
         protected Expression[] ResolveArgumentsExpressions()

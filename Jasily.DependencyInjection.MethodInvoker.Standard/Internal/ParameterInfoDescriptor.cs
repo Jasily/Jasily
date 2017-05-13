@@ -11,7 +11,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return (ParameterInfoDescriptor) Activator.CreateInstance(type, parameter);
         }
 
-        public ParameterInfoDescriptor(ParameterInfo parameter)
+        protected ParameterInfoDescriptor(ParameterInfo parameter)
         {
             this.Parameter = parameter;
         }
@@ -23,7 +23,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
     internal class ParameterInfoDescriptor<T> : ParameterInfoDescriptor
     {
-        private readonly T DefaultValue;
+        private readonly T _defaultValue;
 
         public ParameterInfoDescriptor(ParameterInfo parameter) : base(parameter)
         {
@@ -36,7 +36,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 this.SingletonArgumentsType
             };
 
-            if (this.Parameter.HasDefaultValue) this.DefaultValue = (T)this.Parameter.DefaultValue;
+            if (this.Parameter.HasDefaultValue) this._defaultValue = (T)this.Parameter.DefaultValue;
         }
 
         public Type ScopedArgumentsType { get; }
@@ -83,7 +83,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public T ResolveArgumentValue(IServiceProvider provider, OverrideArguments arguments)
         {
             if (this.TryResolveArgument(provider, arguments, out var value)) return value;
-            if (this.Parameter.HasDefaultValue) return this.DefaultValue;
+            if (this.Parameter.HasDefaultValue) return this._defaultValue;
 
             throw new ParameterResolveException(this.Parameter);
         }
