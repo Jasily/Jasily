@@ -30,10 +30,9 @@ namespace Jasily.DependencyInjection.MethodInvoker
             if (instance == null) throw new ArgumentNullException(nameof(instance));
             if (method == null) throw new ArgumentNullException(nameof(method));
 
+            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
             using (var scope = serviceProvider.CreateScope())
             {
-                var factory = scope.ServiceProvider.GetService<IMethodInvokerFactory<T>>();
-                if (factory == null) throw new InvalidOperationException("before invoke method, call `UseMethodInvoker()` by `IServiceCollection`.");
                 return factory.GetInstanceMethodInvoker(method).Invoke(instance, scope.ServiceProvider, arguments);
             }
         }
@@ -54,26 +53,31 @@ namespace Jasily.DependencyInjection.MethodInvoker
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (method == null) throw new ArgumentNullException(nameof(method));
 
+            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
             using (var scope = serviceProvider.CreateScope())
             {
-                var factory = scope.ServiceProvider.GetService<IMethodInvokerFactory<T>>();
-                if (factory == null) throw new InvalidOperationException("before invoke method, call `UseMethodInvoker()` by `IServiceCollection`.");
                 return factory.GetStaticMethodInvoker(method).Invoke(scope.ServiceProvider, arguments);
             }
         }
 
-        public static object InvokeConstructor<T>([NotNull] this IServiceProvider serviceProvider,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceProvider"></param>
+        /// <param name="constructor"></param>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static T InvokeConstructor<T>([NotNull] this IServiceProvider serviceProvider,
             [NotNull] ConstructorInfo constructor, OverrideArguments arguments = default(OverrideArguments))
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (constructor == null) throw new ArgumentNullException(nameof(constructor));
 
+            var factory = serviceProvider.AsMethodInvokerProvider().GetInvokerFactory<T>();
             using (var scope = serviceProvider.CreateScope())
             {
-                var factory = scope.ServiceProvider.GetService<IMethodInvokerFactory<T>>();
-                if (factory == null)
-                    throw new InvalidOperationException("before invoke constructor, call `UseMethodInvoker()` by `IServiceCollection`.");
-                return factory.GetConstructorInvoker(constructor).Invoke(scope.ServiceProvider, arguments);
+                return factory.GetConstructorInvoker(constructor).HasResult<T>().Invoke(scope.ServiceProvider, arguments);
             }
         }
 
@@ -226,12 +230,25 @@ namespace Jasily.DependencyInjection.MethodInvoker
 
         #region cast
 
+        /// <summary>
+        /// Specific that method has return value (<typeparamref name="TResult"/>). 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="invoker"></param>
+        /// <returns></returns>
         public static IInstanceMethodInvoker<T, TResult> HasResult<T, TResult>([NotNull] this IInstanceMethodInvoker<T> invoker)
         {
             if (invoker == null) throw new ArgumentNullException(nameof(invoker));
             return (IInstanceMethodInvoker<T, TResult>) invoker;
         }
 
+        /// <summary>
+        /// Specific that method has return value (<typeparamref name="TResult"/>).
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="invoker"></param>
+        /// <returns></returns>
         public static IStaticMethodInvoker<TResult> HasResult<TResult>([NotNull] this IStaticMethodInvoker invoker)
         {
             if (invoker == null) throw new ArgumentNullException(nameof(invoker));
@@ -239,5 +256,16 @@ namespace Jasily.DependencyInjection.MethodInvoker
         }
 
         #endregion
+
+        /// <summary>
+        /// provide full API explore.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        public static MethodInvokerProvider AsMethodInvokerProvider([NotNull] this IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            return new MethodInvokerProvider(serviceProvider);
+        }
     }
 }
