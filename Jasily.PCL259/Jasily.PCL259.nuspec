@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.PCL259</id>
-        <version>0.0.0.3</version>
+        <version>0.0.0.4</version>
         <title>Jasily.PCL259</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -13,7 +13,7 @@
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <dependencies>
-            <dependency id="Jasily.Extensions.System.PCL259" version="0.0.0.3" />
+            <dependency id="Jasily.Extensions.System.PCL259" version="0.0.1.0" />
         </dependencies>
     </metadata>
     <files>
