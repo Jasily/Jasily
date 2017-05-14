@@ -1,7 +1,8 @@
-﻿using Jasily.Core;
+﻿using System;
+using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class ArrayExtensions
     {

@@ -1,6 +1,8 @@
+using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace Jasily.Extensions.System.Collections.Generic
 {
     public static class CollectionExtensions
     {

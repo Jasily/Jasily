@@ -1,13 +1,13 @@
 ﻿using System;
-
+using Jasily.Wpf.Windows.Data.ValueConverters.Internal;
 #if WINDOWS_DESKTOP
-using Jasily.Windows.Data.ValueConverters.Internal;
+
 #elif WINDOWS_UWP
 using Jasily.UI.Xaml.Data.ValueConverters.Internal;
 #endif
 
 #if WINDOWS_DESKTOP
-namespace Jasily.Windows.Data.ValueConverters
+namespace Jasily.Wpf.Windows.Data.ValueConverters
 #elif WINDOWS_UWP
 namespace Jasily.UI.Xaml.Data.ValueConverters
 #endif

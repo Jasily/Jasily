@@ -7,7 +7,7 @@
     <ProjectGuid>{33A2C8DD-BFBB-44D5-AB5D-8EEC10DD2947}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
+    <RootNamespace>Jasily.Extensions.System</RootNamespace>
     <AssemblyName>Jasily.Extensions.System.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

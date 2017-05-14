@@ -1,4 +1,4 @@
-namespace System
+namespace Jasily.Extensions.System
 {
     public enum Position
     {

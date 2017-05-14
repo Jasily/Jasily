@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Jasily.ComponentModel.Editor.Conditions;
+using Jasily.Extensions.System.Collections.Generic;
+using Jasily.Extensions.System.Reflection;
 
 namespace Jasily.ComponentModel.Editor
 {

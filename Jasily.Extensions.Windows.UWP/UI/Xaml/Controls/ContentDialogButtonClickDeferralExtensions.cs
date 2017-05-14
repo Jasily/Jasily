@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using Windows.UI.Xaml.Controls;
 using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace Windows.UI.Xaml.Controls
+namespace Jasily.Extensions.Windows.UI.Xaml.Controls
 {
     public static class ContentDialogButtonClickDeferralExtensions
     {

@@ -1,8 +1,8 @@
-﻿using JetBrains.Annotations;
-using Windows.ApplicationModel.Core;
+﻿using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class PlatformObjectExtensions
     {

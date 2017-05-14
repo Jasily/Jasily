@@ -4,6 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Jasily.Extensions.System.Linq;
 
 namespace Jasily.UI.Xaml.Data.ValueConverters
 {

@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Jasily.Extensions.System;
 using JetBrains.Annotations;
 
-namespace Windows.Storage
+namespace Jasily.Extensions.Windows.Storage
 {
     public static class StorageFolderExtensions
     {

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using JetBrains.Annotations;
 
-namespace System.ComponentModel
+namespace Jasily.Extensions.System.ComponentModel
 {
     public static class NotifyPropertyChangedExtensions
     {

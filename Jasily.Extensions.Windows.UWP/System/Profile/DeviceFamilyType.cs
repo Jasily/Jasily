@@ -1,4 +1,4 @@
-﻿namespace Windows.System.Profile
+﻿namespace Jasily.Extensions.Windows.System.Profile
 {
     public enum DeviceFamilyType
     {

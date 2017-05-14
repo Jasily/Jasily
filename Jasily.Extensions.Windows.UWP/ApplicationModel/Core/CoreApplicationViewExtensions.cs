@@ -1,9 +1,10 @@
 ﻿using System;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.ViewManagement;
 using JetBrains.Annotations;
 
-namespace Windows.ApplicationModel.Core
+namespace Jasily.Extensions.Windows.ApplicationModel.Core
 {
     public static class CoreApplicationViewExtensions
     {

@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using Jasily.Core;
+using Jasily.Extensions.System.Linq;
+using Jasily.Extensions.System.Text;
 using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     /// <summary>
     /// useful extension methods for string.

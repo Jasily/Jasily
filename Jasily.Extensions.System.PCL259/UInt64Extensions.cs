@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class UInt64Extensions
     {

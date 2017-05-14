@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace System.Net.Sockets
+namespace Jasily.Extensions.System.Net.Sockets
 {
     /// <summary>
     /// extensions for <see cref="Socket"/>.

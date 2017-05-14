@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Jasily.Core.Data.Serialization;
 using JetBrains.Annotations;
 
-namespace System.Data.Serialization
+namespace Jasily.Extensions.System.Data.Serialization
 {
     public static class XmlSerializerExtensions
     {

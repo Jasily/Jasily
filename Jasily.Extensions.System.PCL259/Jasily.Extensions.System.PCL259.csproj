@@ -8,7 +8,7 @@
     <ProjectGuid>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
+    <RootNamespace>Jasily.Extensions.System</RootNamespace>
     <AssemblyName>Jasily.Extensions.System.PCL259</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <FileAlignment>512</FileAlignment>

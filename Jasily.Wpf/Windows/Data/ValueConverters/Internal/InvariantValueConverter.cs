@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Globalization;
-
-#if WINDOWS_DESKTOP
 using System.Windows.Data;
+#if WINDOWS_DESKTOP
+
 #elif WINDOWS_UWP
 using Windows.UI.Xaml.Data;
 #endif
 
 #if WINDOWS_DESKTOP
-namespace Jasily.Windows.Data.ValueConverters.Internal
+namespace Jasily.Wpf.Windows.Data.ValueConverters.Internal
 #elif WINDOWS_UWP
 namespace Jasily.UI.Xaml.Data.ValueConverters.Internal
 #endif

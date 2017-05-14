@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using Jasily.ComponentModel;
 
-namespace Jasily.Windows.Data
+namespace Jasily.Wpf.Windows.Data
 {
     public class ListCollectionView<T> : ViewModel
     {

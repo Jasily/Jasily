@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using Jasily.Core;
+using Jasily.Extensions.System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace System.Linq
+namespace Jasily.Extensions.System.Linq
 {
     public static class EnumerableExtensions
     {

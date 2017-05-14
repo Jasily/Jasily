@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace System.IO
+namespace Jasily.Extensions.System.IO
 {
     public static class TextReaderExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls.Primitives;
 using System.Windows.Interactivity;
 
-namespace Jasily.Windows.Interactivity.Behaviors
+namespace Jasily.Wpf.Windows.Interactivity.Behaviors
 {
     public class NonSelectBehavior : Behavior<Selector>
     {

@@ -1,7 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class DelegateExtensions
     {

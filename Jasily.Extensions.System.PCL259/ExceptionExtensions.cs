@@ -1,7 +1,8 @@
+using System;
 using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class ExceptionExtensions
     {

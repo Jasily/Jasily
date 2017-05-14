@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace System.Linq
+namespace Jasily.Extensions.System.Linq
 {
     /// <summary>
     /// extension methods for <see cref="IEnumerable{T}"/>.

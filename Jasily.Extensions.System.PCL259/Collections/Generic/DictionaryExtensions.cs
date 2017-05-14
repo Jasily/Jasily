@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace Jasily.Extensions.System.Collections.Generic
 {
     /// <summary>
     /// <remarks>by IDictionary impl, key may be allow null.</remarks>

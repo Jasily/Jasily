@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using Windows.ApplicationModel.Background;
 using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace Windows.ApplicationModel.Background
+namespace Jasily.Extensions.Windows.ApplicationModel.Background
 {
     public static class BackgroundTaskDeferralExtensions
     {

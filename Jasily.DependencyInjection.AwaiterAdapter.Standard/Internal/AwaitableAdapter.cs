@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Jasily.DependencyInjection.MethodInvoker;
+using Jasily.Extensions.System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 

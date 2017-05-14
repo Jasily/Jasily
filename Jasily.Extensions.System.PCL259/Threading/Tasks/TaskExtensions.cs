@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 
-namespace System.Threading.Tasks
+namespace Jasily.Extensions.System.Threading.Tasks
 {
     public static class TaskExtensions
     {

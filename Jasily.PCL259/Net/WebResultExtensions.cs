@@ -1,11 +1,14 @@
 using System;
-using System.Data.Serialization;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Jasily.Extensions.System;
+using Jasily.Extensions.System.Data.Serialization;
+using Jasily.Extensions.System.IO;
+using Jasily.Extensions.System.Net;
 using JetBrains.Annotations;
 
 namespace Jasily.Net

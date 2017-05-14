@@ -7,7 +7,7 @@
     <ProjectGuid>{9FC18249-8402-4BA7-AAC4-940E35277D07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
+    <RootNamespace>Jasily.Extensions.System</RootNamespace>
     <AssemblyName>Jasily.Extensions.System.UWP</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>

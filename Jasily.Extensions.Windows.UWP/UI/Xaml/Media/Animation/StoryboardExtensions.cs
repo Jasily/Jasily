@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Animation;
 
-namespace Windows.UI.Xaml.Media.Animation
+namespace Jasily.Extensions.Windows.UI.Xaml.Media.Animation
 {
     public static class StoryboardExtensions
     {

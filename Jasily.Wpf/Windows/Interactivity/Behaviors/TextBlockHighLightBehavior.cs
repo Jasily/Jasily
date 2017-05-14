@@ -5,8 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Jasily.Extensions.System;
 
-namespace Jasily.Windows.Interactivity.Behaviors
+namespace Jasily.Wpf.Windows.Interactivity.Behaviors
 {
     public class TextBlockHighLightBehavior : Behavior<TextBlock>
     {

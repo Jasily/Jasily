@@ -1,10 +1,20 @@
+using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using JetBrains.Annotations;
 
-namespace System.Reflection
+namespace Jasily.Extensions.System.Reflection
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ConstructorInfoExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="constructor"></param>
+        /// <returns></returns>
         public static Func<object[], object> Compile([NotNull] this ConstructorInfo constructor)
         {
             if (constructor == null) throw new ArgumentNullException(nameof(constructor));
@@ -25,6 +35,12 @@ namespace System.Reflection
             return Expression.Lambda<Func<object[], object>>(invoker, lambdaArgument).Compile();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TDelegate"></typeparam>
+        /// <param name="constructor"></param>
+        /// <returns></returns>
         public static TDelegate Compile<TDelegate>([NotNull] this ConstructorInfo constructor)
         {
             if (constructor == null) throw new ArgumentNullException(nameof(constructor));

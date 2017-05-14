@@ -2,8 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using Jasily.Extensions.System;
 
-namespace Jasily.Windows
+namespace Jasily.Wpf.Windows
 {
     public sealed class ClipboardMonitor
     {

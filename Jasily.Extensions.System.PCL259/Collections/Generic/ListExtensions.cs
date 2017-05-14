@@ -1,8 +1,10 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace Jasily.Extensions.System.Collections.Generic
 {
     /// <summary>
     /// extensions for <see cref="List{T}"/> or <see cref="IList{T}"/>.
@@ -168,7 +170,6 @@ namespace System.Collections.Generic
 
         /// <summary>
         /// copy items from data source, make list equals to data source.
-        /// this method is helpful for some list which impl <see cref="Specialized.INotifyCollectionChanged"/> interface like <see cref="ObservableCollection&lt;"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>

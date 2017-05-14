@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace System.Reflection
+namespace Jasily.Extensions.System.Reflection
 {
     /// <summary>
     /// extension methods for <see cref="Type"/>.

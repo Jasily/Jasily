@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Threading;
+using JetBrains.Annotations;
 
-namespace System.Threading
+namespace Jasily.Extensions.System.Threading
 {
     public static class SynchronizationContextExtensions
     {

@@ -1,4 +1,6 @@
-﻿namespace System.Data.Serialization
+﻿using System;
+
+namespace Jasily.Extensions.System.Data.Serialization
 {
     public class SerializationException : Exception
     {

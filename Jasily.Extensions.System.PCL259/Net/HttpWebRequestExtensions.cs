@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Jasily.Extensions.System.IO;
+using Jasily.Extensions.System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace System.Net
+namespace Jasily.Extensions.System.Net
 {
     public static class HttpWebRequestExtensions
     {

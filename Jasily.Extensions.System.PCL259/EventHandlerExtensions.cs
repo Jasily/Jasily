@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class EventHandlerExtensions
     {

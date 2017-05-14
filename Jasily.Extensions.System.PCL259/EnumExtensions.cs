@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-namespace System
+namespace Jasily.Extensions.System
 {
     public static class EnumExtensions
     {

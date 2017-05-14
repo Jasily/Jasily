@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.IO;
+using JetBrains.Annotations;
 
-namespace System.IO
+namespace Jasily.Extensions.System.IO
 {
     public static class BinaryReaderExtensions
     {

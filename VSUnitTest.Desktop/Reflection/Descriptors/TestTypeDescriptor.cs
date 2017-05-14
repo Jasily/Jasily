@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Jasily.Cache.Internal;
+using Jasily.Extensions.System.Collections.Generic;
 using Jasily.TestUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

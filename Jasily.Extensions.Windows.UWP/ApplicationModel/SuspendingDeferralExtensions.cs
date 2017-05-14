@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using Windows.ApplicationModel;
 using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace Windows.ApplicationModel
+namespace Jasily.Extensions.Windows.ApplicationModel
 {
     public static class SuspendingDeferralExtensions
     {

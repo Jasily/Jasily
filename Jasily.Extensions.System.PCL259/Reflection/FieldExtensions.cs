@@ -1,7 +1,9 @@
+using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using JetBrains.Annotations;
 
-namespace System.Reflection
+namespace Jasily.Extensions.System.Reflection
 {
     public static class FieldExtensions
     {

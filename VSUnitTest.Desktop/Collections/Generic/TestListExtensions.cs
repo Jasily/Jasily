@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Jasily.Extensions.System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jasily.Collections.Generic

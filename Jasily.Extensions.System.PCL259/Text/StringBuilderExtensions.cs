@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Text;
+using JetBrains.Annotations;
 
-namespace System.Text
+namespace Jasily.Extensions.System.Text
 {
     public static class StringBuilderExtensions
     {

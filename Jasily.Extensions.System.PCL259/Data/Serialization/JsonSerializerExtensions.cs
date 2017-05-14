@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Jasily.Core.Data.Serialization;
 using JetBrains.Annotations;
 
-namespace System.Data.Serialization
+namespace Jasily.Extensions.System.Data.Serialization
 {
     public static class JsonSerializerExtensions
     {

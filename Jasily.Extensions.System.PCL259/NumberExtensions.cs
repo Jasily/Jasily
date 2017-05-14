@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System;
+
+namespace Jasily.Extensions.System
 {
     public static class NumberExtensions
     {

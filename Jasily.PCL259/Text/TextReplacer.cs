@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Jasily.Collections.Generic;
+using Jasily.Extensions.System;
+using Jasily.Extensions.System.Text;
 using JetBrains.Annotations;
 
 namespace Jasily.Text

@@ -1,7 +1,8 @@
 ﻿using System;
+using Windows.System.Profile;
 using JetBrains.Annotations;
 
-namespace Windows.System.Profile
+namespace Jasily.Extensions.Windows.System.Profile
 {
     public static class AnalyticsVersionInfoExtensions
     {

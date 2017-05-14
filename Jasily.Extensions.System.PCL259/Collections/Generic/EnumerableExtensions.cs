@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace Jasily.Extensions.System.Collections.Generic
 {
     public static class EnumerableExtensions
     {

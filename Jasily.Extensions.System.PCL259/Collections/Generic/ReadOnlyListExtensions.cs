@@ -1,7 +1,9 @@
-﻿using Jasily.Core;
+﻿using System;
+using System.Collections.Generic;
+using Jasily.Core;
 using JetBrains.Annotations;
 
-namespace System.Collections.Generic
+namespace Jasily.Extensions.System.Collections.Generic
 {
     /// <summary>
     /// extension method for <see cref="IReadOnlyList{T}"/>.
