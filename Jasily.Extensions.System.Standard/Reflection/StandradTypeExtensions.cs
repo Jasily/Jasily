@@ -8,8 +8,10 @@ namespace Jasily.Extensions.System.Reflection
     /// <summary>
     /// extension methods for <see cref="Type"/>.
     /// </summary>
-    public static class JasilyStandradTypeExtensions
+    public static class StandradTypeExtensions
     {
+        #region FastMakeGenericType
+
         private static readonly ConcurrentDictionary<TypeArray, Type> Cache
             = new ConcurrentDictionary<TypeArray, Type>(new TypeArrayEqualityComparer());
 
@@ -68,5 +70,7 @@ namespace Jasily.Extensions.System.Reflection
                 return true;
             }
         }
+
+        #endregion
     }
 }
