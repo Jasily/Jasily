@@ -31,6 +31,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
 
             serviceCollection.AddSingleton(typeof(VoidAwaitableAdapter<,>));
             serviceCollection.AddSingleton(typeof(GenericAwaitableAdapter<,,>));
+            serviceCollection.AddSingleton<IAwaitableAdapterFactory, AwaitableAdapterFactory>();
             serviceCollection.AddSingleton(typeof(ITaskAdapter<>), typeof(TaskAdapter<>));
         }
     }

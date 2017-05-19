@@ -25,8 +25,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            var taskWaiter = serviceProvider.GetTaskAdapter(instance.GetType());
-            return taskWaiter.AwaitableAdapter.IsAwaitable ? taskWaiter.AwaitableAdapter.GetResult(instance) : instance;
+            var adapter = serviceProvider.GetAwaitableAdapter(instance.GetType());
+            return adapter.IsAwaitable ? adapter.GetResult(instance) : instance;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         public static AsyncObject<T> Async<T>([NotNull] this IServiceProvider serviceProvider, T instance)
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            return new AsyncObject<T>(instance, serviceProvider.GetTaskAdapter<T>());
+            return new AsyncObject<T>(instance, serviceProvider.GetAwaitableAdapter<T>());
         }
     }
 }

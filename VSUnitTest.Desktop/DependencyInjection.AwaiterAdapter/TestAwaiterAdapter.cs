@@ -58,9 +58,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             var provider = sc.BuildServiceProvider();
 
             var task0 = Task.Run(() => { });
-            var ita = provider.GetTaskAdapter<Task>();
-            Assert.AreEqual(true, ita.AwaitableAdapter.IsAwaitable);
-            Assert.AreEqual(null, ita.AwaitableAdapter.GetResult(task0));
+            var adapter = provider.GetAwaitableAdapter<Task>();
+            Assert.AreEqual(true, adapter.IsAwaitable);
+            Assert.AreEqual(null, adapter.GetResult(task0));
 
             var task1 = Task.Run(() => 100);
             Assert.AreEqual(100, provider.GetValueOrAwaitableResult(task1));

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.PCL259", "Jasily.PCL259\Jasily.PCL259.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.AwaiterAdapter.Standard", "Jasily.DependencyInjection.AwaiterAdapter.Standard\Jasily.DependencyInjection.AwaiterAdapter.Standard.csproj", "{B1106F26-CBCB-413F-9262-77028C33EB7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetPackageTest", "NugetPackageTest\NugetPackageTest.csproj", "{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.ComplexGenerics", "Jasily.DependencyInjection.ComplexGenerics\Jasily.DependencyInjection.ComplexGenerics.csproj", "{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -321,6 +323,22 @@ Global
 		{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}.Release|x64.Build.0 = Release|Any CPU
 		{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}.Release|x86.Build.0 = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|ARM.Build.0 = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|x64.Build.0 = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Debug|x86.Build.0 = Debug|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|ARM.Build.0 = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|x64.ActiveCfg = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|x64.Build.0 = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|x86.ActiveCfg = Release|Any CPU
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

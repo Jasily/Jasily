@@ -6,7 +6,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
     {
         public TaskAdapter(IServiceProvider serviceProvider)
         {
-            this.AwaitableAdapter = Internal.AwaitableAdapter.GetAwaitableAdapter(serviceProvider, typeof(T));
+            
         }
 
         public IAwaitableAdapter AwaitableAdapter { get; }

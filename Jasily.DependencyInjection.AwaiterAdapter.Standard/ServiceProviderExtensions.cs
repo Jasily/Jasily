@@ -11,6 +11,27 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     /// </summary>
     public static class ServiceProviderExtensions
     {
+        [NotNull]
+        public static IAwaitableAdapter GetAwaitableAdapter<T>([NotNull] this IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetAwaitableAdapter(typeof(T));
+        }
+
+        [NotNull]
+        public static IAwaitableAdapter GetAwaitableAdapter([NotNull] this IServiceProvider serviceProvider, [NotNull] Type type)
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            var factory = serviceProvider.GetService<IAwaitableAdapterFactory>();
+            if (factory == null)
+            {
+                throw new InvalidOperationException(
+                    $"before invoke method, call `{nameof(ServiceCollectionServiceExtensions.UseAwaiterAdapter)}` by `IServiceCollection`.");
+            }
+            return factory.GetAwaitableAdapter(type);
+        }
+
         /// <summary>
         /// 
         /// </summary>

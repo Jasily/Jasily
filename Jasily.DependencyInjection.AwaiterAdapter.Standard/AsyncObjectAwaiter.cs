@@ -12,9 +12,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     public struct AsyncObjectAwaiter<T> : INotifyCompletion
     {
         private readonly T _instance;
-        private readonly ITaskAdapter<T> _adapter;
+        private readonly IAwaitableAdapter _adapter;
 
-        internal AsyncObjectAwaiter(T instance, ITaskAdapter<T> adapter)
+        internal AsyncObjectAwaiter(T instance, IAwaitableAdapter adapter)
         {
             this._instance = instance;
             this._adapter = adapter;
@@ -28,8 +28,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             get
             {
                 if (this._adapter == null) throw new InvalidOperationException();
-                if (!this._adapter.AwaitableAdapter.IsAwaitable) return true;
-                return ((IAwaitableAdapter<T>) this._adapter.AwaitableAdapter).IsCompleted(this._instance);
+                if (!this._adapter.IsAwaitable) return true;
+                return ((IAwaitableAdapter<T>) this._adapter).IsCompleted(this._instance);
             }
         }
 
@@ -39,8 +39,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         public void GetResult()
         {
             if (this._adapter == null) throw new InvalidOperationException();
-            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
-            ((IAwaitableAdapter<T>)this._adapter.AwaitableAdapter).GetResult(this._instance);
+            if (!this._adapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T>)this._adapter).GetResult(this._instance);
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         {
             if (this._adapter == null) throw new InvalidOperationException();
             if (continuation == null) throw new ArgumentNullException(nameof(continuation));
-            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
-            ((IAwaitableAdapter<T>)this._adapter.AwaitableAdapter).OnCompleted(this._instance, continuation);
+            if (!this._adapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T>)this._adapter).OnCompleted(this._instance, continuation);
         }
     }
 
@@ -64,9 +64,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     public struct AsyncObjectAwaiter<T, TResult> : INotifyCompletion
     {
         private readonly T _instance;
-        private readonly ITaskAdapter<T> _adapter;
+        private readonly IAwaitableAdapter _adapter;
 
-        internal AsyncObjectAwaiter(T instance, ITaskAdapter<T> adapter)
+        internal AsyncObjectAwaiter(T instance, IAwaitableAdapter adapter)
         {
             this._instance = instance;
             this._adapter = adapter;
@@ -80,8 +80,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             get
             {
                 if (this._adapter == null) throw new InvalidOperationException();
-                if (!this._adapter.AwaitableAdapter.IsAwaitable) return true;
-                return ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).IsCompleted(this._instance);
+                if (!this._adapter.IsAwaitable) return true;
+                return ((IAwaitableAdapter<T, TResult>)this._adapter).IsCompleted(this._instance);
             }
         }
 
@@ -91,8 +91,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         public TResult GetResult()
         {
             if (this._adapter == null) throw new InvalidOperationException();
-            if (!this._adapter.AwaitableAdapter.IsAwaitable) return default(TResult);
-            return ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).GetResult(this._instance);
+            if (!this._adapter.IsAwaitable) return default(TResult);
+            return ((IAwaitableAdapter<T, TResult>)this._adapter).GetResult(this._instance);
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
         {
             if (this._adapter == null) throw new InvalidOperationException();
             if (continuation == null) throw new ArgumentNullException(nameof(continuation));
-            if (!this._adapter.AwaitableAdapter.IsAwaitable) return;
-            ((IAwaitableAdapter<T, TResult>)this._adapter.AwaitableAdapter).OnCompleted(this._instance, continuation);
+            if (!this._adapter.IsAwaitable) return;
+            ((IAwaitableAdapter<T, TResult>)this._adapter).OnCompleted(this._instance, continuation);
         }
     }
 }

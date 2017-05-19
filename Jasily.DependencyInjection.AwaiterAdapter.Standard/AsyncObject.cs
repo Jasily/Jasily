@@ -9,9 +9,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     public struct AsyncObject<T>
     {
         private readonly T _instance;
-        private readonly ITaskAdapter<T> _adapter;
+        private readonly IAwaitableAdapter _adapter;
 
-        internal AsyncObject(T instance, ITaskAdapter<T> adapter)
+        internal AsyncObject(T instance, IAwaitableAdapter adapter)
         {
             this._instance = instance;
             this._adapter = adapter;
@@ -42,9 +42,9 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
     public struct AsyncObject<T, TResult>
     {
         private readonly T _instance;
-        private readonly ITaskAdapter<T> _adapter;
+        private readonly IAwaitableAdapter _adapter;
 
-        internal AsyncObject(T instance, ITaskAdapter<T> adapter)
+        internal AsyncObject(T instance, IAwaitableAdapter adapter)
         {
             this._instance = instance;
             this._adapter = adapter;
