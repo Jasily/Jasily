@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
+using Jasily.DependencyInjection.MethodInvoker;
 using Jasily.Extensions.System.Collections.Concurrent;
+using Jasily.Extensions.System.Reflection;
 using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
@@ -16,7 +19,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
         public AwaitableAdapterFactory([NotNull] IServiceProvider serviceProvider)
         {
             this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            this._valueFactory = k => AwaitableAdapter.GetAwaitableAdapter(serviceProvider, k);
+            this._valueFactory = this.CreateAwaitableAdapter;
         }
 
         public IAwaitableAdapter GetAwaitableAdapter([NotNull] Type instanceType)
@@ -47,6 +50,25 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             {
                 throw new NotImplementedException();
             }
+        }
+
+        [NotNull]
+        private IAwaitableAdapter CreateAwaitableAdapter(Type instanceType)
+        {
+            var info = AwaitableInfo.TryBuild(instanceType);
+            if (info == null) return NonTaskAwaiterAdapter.Instance;
+
+            var oa = new OverrideArguments();
+            oa.AddArgument("info", info);
+
+            var resultType = info.GetResultMethod.ReturnType;
+            var closedType = resultType == typeof(void)
+                ? typeof(VoidAwaitableAdapter<,>).FastMakeGenericType(instanceType, info.AwaiterType)
+                : typeof(GenericAwaitableAdapter<,,>).FastMakeGenericType(instanceType, info.AwaiterType, resultType);
+
+            var factory = this._serviceProvider.AsMethodInvokerProvider().GetInvokerFactory(closedType);
+            var ctor = factory.Constructors.Single();
+            return (IAwaitableAdapter)factory.GetConstructorInvoker(ctor).Invoke(this._serviceProvider, oa);
         }
     }
 }

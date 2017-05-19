@@ -37,25 +37,6 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             if (!this._isValueType && instance == null) throw new ArgumentNullException(nameof(instance));
             if (!this.IsAwaitable) throw new InvalidOperationException("is NOT awaitable.");
         }
-
-        [NotNull]
-        public static IAwaitableAdapter GetAwaitableAdapter(IServiceProvider provider, Type instanceType)
-        {
-            var info = AwaitableInfo.TryBuild(instanceType);
-            if (info == null) return NonTaskAwaiterAdapter.Instance;
-
-            var oa = new OverrideArguments();
-            oa.AddArgument("info", info);
-
-            var resultType = info.GetResultMethod.ReturnType;
-            var closedType = resultType == typeof(void)
-                ? typeof(VoidAwaitableAdapter<,>).FastMakeGenericType(instanceType, info.AwaiterType)
-                : typeof(GenericAwaitableAdapter<,,>).FastMakeGenericType(instanceType, info.AwaiterType, resultType);
-
-            var factory = provider.AsMethodInvokerProvider().GetInvokerFactory(closedType);
-            var ctor = factory.Constructors.Single();
-            return (IAwaitableAdapter)factory.GetConstructorInvoker(ctor).Invoke(provider, oa);
-        }
     }
 
     internal abstract class AwaitableAdapter<TInstance, TAwaiter> : AwaitableAdapter
