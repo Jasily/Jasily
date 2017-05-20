@@ -12,7 +12,7 @@ namespace Jasily.Text
         [ThreadStatic]
         private static StringBuilder cachedInstance;
 
-        public static ValueReleaser<StringBuilder> Acquire(int capacity = DefaultCapacity)
+        public static ActionReleaser<StringBuilder> Acquire(int capacity = DefaultCapacity)
         {
             StringBuilder sb;
             if (capacity <= MaxBuilderSize &&
@@ -27,12 +27,12 @@ namespace Jasily.Text
                 sb = new StringBuilder(capacity);
             }
             Debug.Assert(sb != null);
-            var releaser = new ValueReleaser<StringBuilder>(true, sb);
+            var releaser = Releaser.CreateActionReleaser(sb);
             releaser.ReleaseRaised += Releaser_ReleaseRaised;
             return releaser;
         }
 
-        private static void Releaser_ReleaseRaised(ValueReleaser<StringBuilder> sender, StringBuilder e)
+        private static void Releaser_ReleaseRaised(ActionReleaser<StringBuilder> sender, StringBuilder e)
         {
             Debug.Assert(e != null);
             if (e.Capacity <= MaxBuilderSize)

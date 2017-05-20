@@ -10,13 +10,11 @@ namespace Jasily.Threading
 
         public int CurrentCount => this.currentCount;
 
-        public Resource()
-            : this(1, 1)
+        public Resource() : this(1, 1)
         {
         }
 
-        public Resource(int initialCount)
-            : this(initialCount, initialCount)
+        public Resource(int initialCount) : this(initialCount, initialCount)
         {
 
         }
@@ -36,17 +34,17 @@ namespace Jasily.Threading
             return this.currentCount - count;
         }
 
-        public Releaser<int> Acquire(int count = 1)
+        public ReentrantReleaser<int> Acquire(int count = 1)
         {
             if (count < 1) throw new ArgumentOutOfRangeException();
-            if (count > this.currentCount) return new Releaser<int>();
+            if (count > this.currentCount) return Releaser.CreateReentrantReleaser(0, true);
             this.currentCount -= count;
-            var locker = new Releaser<int>(true, count);
+            var locker = Releaser.CreateReentrantReleaser(count);
             locker.ReleaseRaised += this.Locker_ReleaseRaised;
             return locker;
         }
 
-        private void Locker_ReleaseRaised(Releaser<int> sender, int e)
+        private void Locker_ReleaseRaised(ReentrantReleaser<int> sender, int e)
         {
             sender.ReleaseRaised -= this.Locker_ReleaseRaised;
             this.Release(e);

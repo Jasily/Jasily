@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Jasily.PCL259.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -110,6 +111,7 @@
     <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringFinder.cs" />
     <Compile Include="Text\TextReplacer.cs" />
+    <Compile Include="Threading\ReentrantReleaser.cs" />
     <Compile Include="Utils\DateTimeHelper.cs" />
     <Compile Include="DayOfWeek.cs" />
     <Compile Include="DayOfWeekExtensions.cs" />
@@ -137,7 +139,6 @@
     <Compile Include="Reflection\Activator.cs" />
     <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />
     <Compile Include="Reflection\IActivator.cs" />
-    <Compile Include="Threading\Releaser.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
@@ -151,7 +152,7 @@
     <Compile Include="TypedEventHandler.cs" />
     <Compile Include="TypedEventHandlerExtensions.cs" />
     <Compile Include="ValueContainer.cs" />
-    <Compile Include="ValueReleaser.cs" />
+    <Compile Include="ActionReleaser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
