@@ -46,6 +46,7 @@
     <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
     <Compile Include="CurryingFunc.cs" />
     <Compile Include="EventArgs.cs" />
+    <Compile Include="IReThrowContainer.cs" />
     <Compile Include="Linq\Generater.cs" />
     <Compile Include="Net\WebResult.cs" />
     <Compile Include="Net\WebResultExtensions.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Threading\Timeout.cs" />
     <Compile Include="TypedEventHandler.cs" />
     <Compile Include="TypedEventHandlerExtensions.cs" />
+    <Compile Include="ValueContainer.cs" />
     <Compile Include="ValueReleaser.cs" />
   </ItemGroup>
   <ItemGroup>
