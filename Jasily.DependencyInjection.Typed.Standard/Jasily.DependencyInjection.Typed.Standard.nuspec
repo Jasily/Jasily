@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Jasily.DependencyInjection.Typed</id>
+        <version>0.0.0.1</version>
+        <title>Jasily.DependencyInjection.Typed</title>
+        <authors>Jasily</authors>
+        <owners>Jasily</owners>
+        <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>provide cache for type operator.</description>
+        <releaseNotes />
+        <copyright>Copyright 2017</copyright>
+        <tags>DependencyInjection Jasily</tags>
+        <dependencies>
+            <dependency id="JetBrains.Annotations" version="10.4.0" />
+            <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.Typed.Standard.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.Typed.Standard.dll" />
+        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.Typed.Standard.xml" target="lib\netstandard1.4\Jasily.DependencyInjection.Typed.Standard.xml" />
+    </files>
+</package>
