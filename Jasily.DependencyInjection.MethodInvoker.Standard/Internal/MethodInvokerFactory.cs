@@ -11,9 +11,16 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal class MethodInvokerFactory<T> : IMethodInvokerFactory<T>, IInternalMethodInvokerFactory
     {
+#if DEBUG
+        /// <summary>
+        /// for debugger view. do not use.
+        /// </summary>
+        private readonly Type _currentType = typeof(T);
+#endif
+        private readonly HashSet<Type> _baseTypes = new HashSet<Type>();
         private readonly HashSet<ConstructorInfo> _constructors;
-        private readonly HashSet<MethodInfo> _methods;
-        private readonly HashSet<MethodInfo> _genericMethods;
+        private readonly HashSet<MethodInfo> _methods = new HashSet<MethodInfo>();
+        private readonly HashSet<MethodInfo> _genericMethods = new HashSet<MethodInfo>();
         private readonly ConcurrentDictionary<MethodBase, BaseInvoker> _invokerMaps
             = new ConcurrentDictionary<MethodBase, BaseInvoker>();
 
@@ -27,9 +34,29 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             var type = typeof(T);
             this.IsValueType = type.GetTypeInfo().IsValueType;           
             this._constructors = new HashSet<ConstructorInfo>(type.GetTypeInfo().DeclaredConstructors);
+
+            // inherit
+            var next = typeof(T);
+            while ((next = next.GetTypeInfo().BaseType) != null)
+            {
+                this._baseTypes.Add(next);
+            }
+
+            // methods
             var methods = type.GetRuntimeMethods().ToArray();
-            this._methods = new HashSet<MethodInfo>(methods.Where(z => !z.IsGenericMethod));
-            this._genericMethods = new HashSet<MethodInfo>(methods.Where(z => z.IsGenericMethod));
+            foreach (var m in methods.Where(z => !z.IsAbstract))
+            {
+                if (m.IsGenericMethod)
+                {
+                    this._genericMethods.Add(m);
+                }
+                else
+                {
+                    this._methods.Add(m);
+                }
+            }
+
+            // properties
             foreach (var (setter, getter) in type.GetRuntimeProperties().Select(z => (z.SetMethod, z.GetMethod)))
             {
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -37,7 +64,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (getter != null) this._methods.Add(getter);
             }
+
+            // ctors
             this.Constructors = new ReadOnlyCollection<ConstructorInfo>(this._constructors.ToArray());
+
+            // supporteds.
             this.Methods = new ReadOnlyCollection<MethodInfo>(this._methods.ToArray());
         }
 
@@ -92,39 +123,35 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         {
             if (!this._invokerMaps.TryGetValue(method, out var invoker))
             {
-                if (!this._methods.Contains(method))
+                if (method.IsGenericMethod && method.ContainsGenericParameters)
                 {
-                    if (method.IsGenericMethod)
+                    throw new InvalidOperationException("Method cannot contains generic parameters.");
+                }
+
+                var declaringType = method.DeclaringType;
+                if (declaringType != typeof(T))
+                {
+                    if (this._baseTypes.Contains(declaringType))
                     {
-                        if (method.ContainsGenericParameters)
-                        {
-                            throw new InvalidOperationException("Method cannot contains generic parameters.");
-                        }
+                        invoker = ((IInternalMethodInvokerFactory)this.ServiceProvider.GetService(
+                            typeof(IMethodInvokerFactory<>).MakeGenericType(method.DeclaringType))
+                        ).GetMethodInvoker(method);
 
-                        if (method.IsGenericMethodDefinition)
-                        {
-                            method = null;
-                        }
-                        else
-                        {
-                            var definition = method.GetGenericMethodDefinition();
-                            if (!this._genericMethods.Contains(definition))
-                            {
-                                method = null;
-                            }
-                        }
+                        return this._invokerMaps.GetOrAdd(method, invoker);
                     }
-
-                    throw new InvalidOperationException($"type {typeof(T)} does not contains the method.");
+                    throw new InvalidOperationException("Uninherit method.");
                 }
-
-                if (method == null)
+                else
                 {
-                    throw new InvalidOperationException($"Type {typeof(T)} do not contains the method.");
+                    invoker = this._invokerMaps.GetOrAdd(method, this.CreateInvoker(method));
                 }
-
-                invoker = this._invokerMaps.GetOrAdd(method, this.CreateInvoker(method));
             }
+
+            if (invoker == null)
+            {
+                throw new InvalidOperationException($"Type {typeof(T)} do not contains the method.");
+            }
+
             return invoker;
         }
 

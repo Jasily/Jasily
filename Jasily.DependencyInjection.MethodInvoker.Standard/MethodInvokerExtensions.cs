@@ -100,6 +100,21 @@ namespace Jasily.DependencyInjection.MethodInvoker
         #region default(OverrideArguments)
 
         /// <summary>
+        /// invoke object method.
+        /// </summary>
+        /// <param name="invoker"></param>
+        /// <param name="instance"></param>
+        /// <param name="serviceProvider"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="instance"/> or <paramref name="serviceProvider"/> is null.</exception>
+        /// <returns></returns>
+        public static object Invoke([NotNull] this IObjectMethodInvoker invoker,
+            [NotNull] object instance, [NotNull] IServiceProvider serviceProvider)
+        {
+            if (invoker == null) throw new ArgumentNullException(nameof(invoker));
+            return invoker.Invoke(instance, serviceProvider, default(OverrideArguments));
+        }
+
+        /// <summary>
         /// invoke instance method.
         /// </summary>
         /// <param name="invoker"></param>
