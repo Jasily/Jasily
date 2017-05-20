@@ -128,6 +128,14 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return invoker;
         }
 
+        public IObjectMethodInvoker GetObjectMethodInvoker(MethodInfo method)
+        {
+            if (method == null) throw new ArgumentNullException(nameof(method));
+            if (method.IsStatic) throw new InvalidOperationException("method is static method.");
+
+            return (IObjectMethodInvoker)this.GetMethodInvoker(method);
+        }
+
         public IInstanceMethodInvoker<T> GetInstanceMethodInvoker([NotNull] MethodInfo method)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));

@@ -37,6 +37,15 @@ namespace Jasily.DependencyInjection.MethodInvoker
         /// <exception cref="InvalidOperationException"></exception>
         /// <returns></returns>
         IStaticMethodInvoker GetConstructorInvoker([NotNull] ConstructorInfo constructor);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="method"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="method"/> is null.</exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <returns></returns>
+        IObjectMethodInvoker GetObjectMethodInvoker([NotNull] MethodInfo method);
     }
 
     /// <summary>

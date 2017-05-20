@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
     internal sealed class InstanceMethodInvoker<T> : MethodInvoker,
-        IInstanceMethodInvoker<T>, IInstanceMethodInvoker<T, object>
+        IInstanceMethodInvoker<T>, IInstanceMethodInvoker<T, object>,
+        IObjectMethodInvoker
     {
         private readonly bool isValueType;
         private Action<T, IServiceProvider, OverrideArguments> func;
@@ -58,10 +59,16 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
                     instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
         }
+
+        object IObjectMethodInvoker.Invoke(object instance, IServiceProvider serviceProvider, OverrideArguments arguments)
+        {
+            return this.Invoke((T) instance, serviceProvider, arguments);
+        }
     }
 
     internal sealed class InstanceMethodInvoker<T, TResult> : MethodInvoker,
-        IInstanceMethodInvoker<T>, IInstanceMethodInvoker<T, TResult>
+        IInstanceMethodInvoker<T>, IInstanceMethodInvoker<T, TResult>,
+        IObjectMethodInvoker
     {
         private readonly bool isValueType;
         private Func<T, IServiceProvider, OverrideArguments, TResult> func;
@@ -116,6 +123,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
             return Expression.Lambda<Func<T, IServiceProvider, OverrideArguments, TResult>>(body,
                     instance, ParameterServiceProvider, ParameterOverrideArguments
                 ).Compile();
+        }
+
+        object IObjectMethodInvoker.Invoke(object instance, IServiceProvider serviceProvider, OverrideArguments arguments)
+        {
+            return this.Invoke((T)instance, serviceProvider, arguments);
         }
     }
 }
