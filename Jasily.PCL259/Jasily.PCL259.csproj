@@ -38,6 +38,7 @@
     <Compile Include="CachedHashCode.cs" />
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Funcs\FuncTemplate.cs" />
+    <Compile Include="ChainReleaser.cs" />
     <Compile Include="Collections\Generic\KeySelectorComparer.cs" />
     <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="ComponentModel\Editor\IConverter.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="ComponentModel\ViewModel.cs" />
     <Compile Include="Diagnostics\DataCheck.cs" />
     <Compile Include="KeySelector.cs" />
+    <Compile Include="Releaser.cs" />
     <Compile Include="Text\IStringFinderSource.cs" />
     <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringFinder.cs" />
