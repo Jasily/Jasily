@@ -128,7 +128,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
             if (ps?.Length == 1 && ps[0].ParameterType == typeof(bool))
             {
                 var nextInfo = TryBuild(configureAwaitMethodInfo.ReturnType, typeChains);
-                if (nextInfo != null)
+                if (nextInfo != null && nextInfo.ResultType == info.ResultType)
                 {
                     info.ConfigureAwaitMethod = configureAwaitMethodInfo;
                     info.ConfigureAwaitAwaitableInfo = nextInfo;

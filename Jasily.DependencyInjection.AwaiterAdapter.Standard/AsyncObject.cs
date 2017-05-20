@@ -27,6 +27,11 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             return new AsyncObjectAwaiter<T>(this._instance, this._adapter);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         public AsyncObject<T, TResult> HasResultAsync<TResult>()
         {
             if (this._adapter == null) throw new InvalidOperationException();
