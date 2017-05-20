@@ -51,7 +51,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
             if (factory == null)
             {
                 throw new InvalidOperationException(
-                    $"Before get method, please call `{nameof(IServiceCollection)}.{nameof(ServiceCollectionServiceExtensions.UseMethodInvoker)}()`.");
+                    $"Before get method, please call `{nameof(IServiceCollection)}.{nameof(ServiceCollectionExtensions.UseMethodInvoker)}()`.");
             }
         }
     }

@@ -9,7 +9,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
     /// <summary>
     /// extension method for <see cref="IServiceCollection"/>.
     /// </summary>
-    public static class ServiceCollectionServiceExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// add <see cref="MethodInvoker"/> services to <paramref name="serviceCollection"/>.
