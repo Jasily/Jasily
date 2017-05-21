@@ -27,7 +27,7 @@ namespace Jasily.DependencyInjection.Features.Internal
             }
         }
 
-        public TFeature TryCreate<TFeature>([NotNull] T source, bool inherit) 
+        public TFeature TryCreateFeature<TFeature>([NotNull] T source, bool inherit) 
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -39,7 +39,7 @@ namespace Jasily.DependencyInjection.Features.Internal
 
             if (inherit && this._baseFactory != null)
             {
-                return this._baseFactory.TryCreate<TFeature>(source, inherit);
+                return this._baseFactory.TryCreateFeature<TFeature>(source, inherit);
             }
 
             return default(TFeature);

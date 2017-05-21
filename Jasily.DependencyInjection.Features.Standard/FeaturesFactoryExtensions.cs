@@ -12,7 +12,7 @@ namespace Jasily.DependencyInjection.Features
             where TFeature : class
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
-            return factory.TryCreate<TFeature>(source, inherit) ?? throw new NotSupportedException();
+            return factory.TryCreateFeature<TFeature>(source, inherit) ?? throw new NotSupportedException();
         }
     }
 }

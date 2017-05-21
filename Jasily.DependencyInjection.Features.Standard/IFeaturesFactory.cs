@@ -17,6 +17,6 @@ namespace Jasily.DependencyInjection.Features
         /// <param name="inherit"></param>
         /// <returns></returns>
         [CanBeNull]
-        TFeature TryCreate<TFeature>([NotNull] T source, bool inherit);
+        TFeature TryCreateFeature<TFeature>([NotNull] T source, bool inherit);
     }
 }
