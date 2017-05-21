@@ -33,6 +33,6 @@ namespace Jasily.DependencyInjection.Features
         /// </summary>
         public List<object> Features { get; }
 
-        IReadOnlyList<object> IReadOnlyFeaturesContainer<T>.Features => this._readonlyFeatures;
+        IReadOnlyList<object> IReadOnlyFeaturesContainer.Features => this._readonlyFeatures;
     }
 }
