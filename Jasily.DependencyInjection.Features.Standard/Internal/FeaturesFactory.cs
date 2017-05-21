@@ -49,12 +49,12 @@ namespace Jasily.DependencyInjection.Features.Internal
         }
 
         [CanBeNull]
-        public object TryCreateFeature([NotNull] Type type, [NotNull] T source, bool inherit)
+        public object TryCreateFeature([NotNull] Type featureType, [NotNull] T source, bool inherit)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (featureType == null) throw new ArgumentNullException(nameof(featureType));
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var factory = this._options.TryGetFactory(type);
+            var factory = this._options.TryGetFactory(featureType);
             if (factory != null)
             {
                 return factory.Invoke(new FeatureBuildSource<T>(source, this._serviceProvider));
@@ -62,7 +62,7 @@ namespace Jasily.DependencyInjection.Features.Internal
 
             if (inherit && this._baseFactory != null)
             {
-                return this._baseFactory.TryCreateFeature(type, source, true);
+                return this._baseFactory.TryCreateFeature(featureType, source, true);
             }
 
             return null;

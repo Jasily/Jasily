@@ -23,12 +23,12 @@ namespace Jasily.DependencyInjection.Features
         /// <summary>
         /// Create feature or null.
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="featureType"></param>
         /// <param name="source"></param>
         /// <param name="inherit"></param>
         /// <returns></returns>
         [CanBeNull]
-        object TryCreateFeature([NotNull] Type type, [NotNull] T source, bool inherit);
+        object TryCreateFeature([NotNull] Type featureType, [NotNull] T source, bool inherit);
 
         /// <summary>
         /// Create all registered features for source.
