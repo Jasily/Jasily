@@ -6,11 +6,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Jasily.DependencyInjection.Features
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class FeaturesBuilder
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [NotNull]
         public IServiceCollection ServiceCollection { get; }
 
-        public FeaturesBuilder([NotNull] IServiceCollection serviceCollection)
+        internal FeaturesBuilder([NotNull] IServiceCollection serviceCollection)
         {
             this.ServiceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
 
