@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.Typed.Standard", "Jasily.DependencyInjection.Typed.Standard\Jasily.DependencyInjection.Typed.Standard.csproj", "{5A119A36-3DDD-4D39-9958-F600A1BFB058}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.Features.Standard", "Jasily.DependencyInjection.Features.Standard\Jasily.DependencyInjection.Features.Standard.csproj", "{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -357,6 +359,22 @@ Global
 		{5A119A36-3DDD-4D39-9958-F600A1BFB058}.Release|x64.Build.0 = Release|Any CPU
 		{5A119A36-3DDD-4D39-9958-F600A1BFB058}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A119A36-3DDD-4D39-9958-F600A1BFB058}.Release|x86.Build.0 = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|ARM.Build.0 = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Debug|x86.Build.0 = Debug|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|ARM.Build.0 = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|x64.Build.0 = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
