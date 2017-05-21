@@ -11,6 +11,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.4\Jasily.DependencyInjection.Features.Standard.xml</DocumentationFile>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
