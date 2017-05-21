@@ -4,6 +4,9 @@ using JetBrains.Annotations;
 
 namespace Jasily.Extensions.System
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ArrayExtensions
     {
         public static T[] ToArray<T>([NotNull] this T[] source)

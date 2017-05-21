@@ -27,7 +27,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
             
             // ensure use method invoker.
-            serviceCollection.UseMethodInvoker();
+            serviceCollection.AddMethodInvoker();
 
             serviceCollection.AddSingleton(typeof(VoidAwaitableAdapter<,>));
             serviceCollection.AddSingleton(typeof(GenericAwaitableAdapter<,,>));

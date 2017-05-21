@@ -19,7 +19,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public void TestMethod1()
         {
             var sc = new ServiceCollection();
-            sc.UseMethodInvoker();
+            sc.AddMethodInvoker();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMethodInvokerFactory<Class1>>();
             Assert.IsNotNull(factory);
@@ -43,7 +43,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public void TestMethod2()
         {
             var sc = new ServiceCollection();
-            sc.UseMethodInvoker();
+            sc.AddMethodInvoker();
             sc.AddSingleton("sc");
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMethodInvokerFactory<Class2>>();
@@ -68,7 +68,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public void TestMethod3()
         {
             var sc = new ServiceCollection();
-            sc.UseMethodInvoker();
+            sc.AddMethodInvoker();
             sc.AddSingleton("24");
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMethodInvokerFactory<Class3>>();

@@ -56,7 +56,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public void TestMethod1()
         {
             var sc = new ServiceCollection();
-            sc.UseMethodInvoker();
+            sc.AddMethodInvoker();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMethodInvokerFactory<Class1>>();
             Assert.IsNotNull(factory);
@@ -110,7 +110,7 @@ namespace Jasily.DependencyInjection.MethodInvoker
         public void TestInheritMethod()
         {
             var sc = new ServiceCollection();
-            sc.UseMethodInvoker();
+            sc.AddMethodInvoker();
             var provider = sc.BuildServiceProvider();
 
             void AssertExpected<T>(IMethodInvokerFactory factory, T instance, object value1, object value2, object value3)

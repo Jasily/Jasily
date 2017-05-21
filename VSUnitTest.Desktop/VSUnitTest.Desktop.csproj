@@ -42,6 +42,12 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.1\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.1.1.2\lib\netstandard1.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
@@ -97,6 +103,9 @@
     <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.3.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
     </Reference>
@@ -147,6 +156,7 @@
   <ItemGroup>
     <Compile Include="DependencyInjection.AwaiterAdapter\TestAwaitableInfo.cs" />
     <Compile Include="DependencyInjection.ComplexGenerics\UnitTest1.cs" />
+    <Compile Include="DependencyInjection.Features\TestFeatures.cs" />
     <Compile Include="DependencyInjection.MethodInvoker\TestPropertyInvoker.cs" />
     <Compile Include="DependencyInjection.Typed\TestGenericTypeMaker.cs" />
     <Compile Include="TestUtils\CodeTimer.cs" />
@@ -190,6 +200,10 @@
     <ProjectReference Include="..\Jasily.DependencyInjection.ComplexGenerics\Jasily.DependencyInjection.ComplexGenerics.csproj">
       <Project>{bbc6f94d-929b-4d8d-b29b-ae5fdfa33363}</Project>
       <Name>Jasily.DependencyInjection.ComplexGenerics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.DependencyInjection.Features.Standard\Jasily.DependencyInjection.Features.Standard.csproj">
+      <Project>{bf1ca11e-9a7d-4b7a-a724-7a349e666ca3}</Project>
+      <Name>Jasily.DependencyInjection.Features.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.DependencyInjection.MemberInjection.Standard\Jasily.DependencyInjection.MemberInjection.Standard.csproj">
       <Project>{1db55be3-2717-444e-8e92-1817101edb65}</Project>
