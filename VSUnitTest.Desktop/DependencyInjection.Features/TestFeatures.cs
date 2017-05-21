@@ -22,11 +22,11 @@ namespace Jasily.DependencyInjection.Features
                 });
             var provider = sc.BuildServiceProvider();
 
-            var sb1 = provider.GetRequiredService<IFeaturesFactory<object>>().TryCreate<StringBuilder>(obj, true);
+            var sb1 = provider.GetRequiredService<IFeaturesFactory<object>>().TryCreateFeature<StringBuilder>(obj, true);
             Assert.IsNotNull(sb1);
             Assert.AreEqual(obj.ToString(), sb1.ToString());
 
-            var sb2 = provider.GetRequiredService<IFeaturesFactory<ServiceCollection>>().TryCreate<StringBuilder>(obj, true);
+            var sb2 = provider.GetRequiredService<IFeaturesFactory<ServiceCollection>>().TryCreateFeature<StringBuilder>(obj, true);
             Assert.IsNotNull(sb2);
             Assert.AreEqual(obj.ToString(), sb2.ToString());
 

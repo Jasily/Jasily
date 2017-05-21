@@ -18,7 +18,7 @@ namespace Jasily.DependencyInjection.Features
         /// <param name="inherit"></param>
         /// <returns></returns>
         [NotNull]
-        public static TFeature CreateRequiredFeature<T, TFeature>([NotNull] IFeaturesFactory<T> factory,
+        public static TFeature CreateRequiredFeature<T, TFeature>([NotNull] this IFeaturesFactory<T> factory,
             [NotNull] T source, bool inherit)
             where T : class
             where TFeature : class
@@ -37,7 +37,7 @@ namespace Jasily.DependencyInjection.Features
         /// <param name="inherit"></param>
         /// <returns></returns>
         [NotNull]
-        public static object CreateRequiredFeature<T>([NotNull] IFeaturesFactory<T> factory,
+        public static object CreateRequiredFeature<T>([NotNull] this IFeaturesFactory<T> factory,
             [NotNull] Type featureType, [NotNull] T source, bool inherit)
             where T : class
         {
@@ -54,7 +54,8 @@ namespace Jasily.DependencyInjection.Features
         /// <param name="inherit"></param>
         /// <returns></returns>
         [NotNull]
-        public static FeaturesContainer<T> CreateFeaturesContainer<T>([NotNull] IFeaturesFactory<T> factory, [NotNull] T source, bool inherit)
+        public static FeaturesContainer<T> CreateFeaturesContainer<T>([NotNull] this IFeaturesFactory<T> factory,
+            [NotNull] T source, bool inherit)
             where T : class
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
