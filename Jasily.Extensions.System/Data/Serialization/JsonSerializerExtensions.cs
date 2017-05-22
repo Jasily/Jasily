@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Runtime.Serialization.Json;
 using Jasily.Core.Data.Serialization;
 using JetBrains.Annotations;
 
@@ -58,7 +58,7 @@ namespace Jasily.Extensions.System.Data.Serialization
         public static T JsonToObject<T>([NotNull] this Stream stream)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
-
+            
             try
             {
                 return (T)GetSerializer(typeof(T)).Deserialize(stream, typeof(T));

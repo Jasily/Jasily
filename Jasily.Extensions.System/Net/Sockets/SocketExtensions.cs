@@ -8,7 +8,7 @@ namespace Jasily.Extensions.System.Net.Sockets
     /// <summary>
     /// extensions for <see cref="Socket"/>.
     /// </summary>
-    public static class JSocketExtensions
+    public static class SocketExtensions
     {
         /// <summary>
         /// Exception info see Socket.SendAsync()

@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.1.1\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -225,13 +228,9 @@
       <Project>{33a2c8dd-bfbb-44d5-ab5d-8eec10dd2947}</Project>
       <Name>Jasily.Extensions.System.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.PCL259\Jasily.Extensions.System.PCL259.csproj">
-      <Project>{55ABA9DD-DC88-4417-9D00-B99DD18CD71D}</Project>
-      <Name>Jasily.Extensions.System.PCL259</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj">
-      <Project>{432b6d1c-64ae-4f6e-a277-f0af08e05a7c}</Project>
-      <Name>Jasily.Extensions.System.Standard</Name>
+    <ProjectReference Include="..\Jasily.Extensions.System\Jasily.Extensions.System.csproj">
+      <Project>{c4ec5ed2-7e8a-4f1d-86f8-7d6b6016fe3f}</Project>
+      <Name>Jasily.Extensions.System</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
       <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>

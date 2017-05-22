@@ -12,13 +12,74 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard1.4\Jasily.Extensions.System.Standard.xml</DocumentationFile>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS;NETSTANDARD1_4;NETSTANDARD1_4</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Jasily.Extensions.System\ArrayExtensions.cs" Link="ArrayExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\ArraySegmentExtensions.cs" Link="ArraySegmentExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\ByteArrayExtensions.cs" Link="ByteArrayExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\CharExtensions.cs" Link="CharExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Concurrent\ConcurrentDictionaryExtensions.cs" Link="Collections\Concurrent\ConcurrentDictionaryExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\CollectionExtensions.cs" Link="Collections\Generic\CollectionExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\DictionaryExtensions.cs" Link="Collections\Generic\DictionaryExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\EnumerableExtensions.cs" Link="Collections\Generic\EnumerableExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\EnumeratorExtensions.cs" Link="Collections\Generic\EnumeratorExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\ListExtensions.cs" Link="Collections\Generic\ListExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\QueueExtensions.cs" Link="Collections\Generic\QueueExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Collections\Generic\ReadOnlyListExtensions.cs" Link="Collections\Generic\ReadOnlyListExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\ComparableExtensions.cs" Link="ComparableExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\ComponentModel\NotifyPropertyChangedExtensions.cs" Link="ComponentModel\NotifyPropertyChangedExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Data\Serialization\JsonSerializerExtensions.cs" Link="Data\Serialization\JsonSerializerExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Data\Serialization\SerializationException.cs" Link="Data\Serialization\SerializationException.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Data\Serialization\XmlSerializerExtensions.cs" Link="Data\Serialization\XmlSerializerExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\DelegateExtensions.cs" Link="DelegateExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\EnumExtensions.cs" Link="EnumExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\EventHandlerExtensions.cs" Link="EventHandlerExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\ExceptionExtensions.cs" Link="ExceptionExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\IO\BinaryReaderExtensions.cs" Link="IO\BinaryReaderExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\IO\StreamExtensions.cs" Link="IO\StreamExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\IO\TextReaderExtensions.cs" Link="IO\TextReaderExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Linq\Enumerable2.To.cs" Link="Linq\Enumerable2.To.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableAsyncExtensions.cs" Link="Linq\EnumerableAsyncExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableExtensions.cs" Link="Linq\EnumerableExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableOverride.cs" Link="Linq\EnumerableOverride.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Linq\JEnumerable.cs" Link="Linq\JEnumerable.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Net\Sockets\SocketExtensions.cs" Link="Net\Sockets\SocketExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\NumberExtensions.cs" Link="NumberExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Position.cs" Link="Position.cs" />
+    <Compile Include="..\Jasily.Extensions.System\RandomExtensions.cs" Link="RandomExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\ConstructorInfoExtensions.cs" Link="Reflection\ConstructorInfoExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\FieldExtensions.cs" Link="Reflection\FieldExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\MethodInfoExtensions.cs" Link="Reflection\MethodInfoExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\PropertyExtensions.cs" Link="Reflection\PropertyExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\TypeExtensions.cs" Link="Reflection\TypeExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Reflection\TypeInfoExtensions.cs" Link="Reflection\TypeInfoExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\StringComparisonExtensions.cs" Link="StringComparisonExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\StringExtensions.cs" Link="StringExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Text\StringBuilderExtensions.cs" Link="Text\StringBuilderExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Threading\SynchronizationContextExtensions.cs" Link="Threading\SynchronizationContextExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Threading\Tasks\TaskExtensions.cs" Link="Threading\Tasks\TaskExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Threading\Tasks\TaskFactoryExtensions.cs" Link="Threading\Tasks\TaskFactoryExtensions.cs" />
+    <Compile Include="..\Jasily.Extensions.System\Threading\Tasks\TaskFactoryHelper.cs" Link="Threading\Tasks\TaskFactoryHelper.cs" />
+    <Compile Include="..\Jasily.Extensions.System\UInt64Extensions.cs" Link="UInt64Extensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
+    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Collections\Concurrent\" />
+    <Folder Include="Collections\Generic\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj" />
   </ItemGroup>
 
 </Project>

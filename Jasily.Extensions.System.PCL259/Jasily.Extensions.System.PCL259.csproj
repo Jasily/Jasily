@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS;PCL259</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Jasily.Extensions.System.PCL259.XML</DocumentationFile>
@@ -109,7 +109,7 @@
     <Compile Include="..\Jasily.Extensions.System\UInt64Extensions.cs">
       <Link>UInt64Extensions.cs</Link>
     </Compile>
-        <Compile Include="..\Jasily.Extensions.System\Data\Serialization\JsonSerializerExtensions.cs">
+    <Compile Include="..\Jasily.Extensions.System\Data\Serialization\JsonSerializerExtensions.cs">
       <Link>Data\Serialization\JsonSerializerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Jasily.Extensions.System\Data\Serialization\SerializationException.cs">

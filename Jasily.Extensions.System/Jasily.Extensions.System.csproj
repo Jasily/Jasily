@@ -51,6 +51,7 @@
     <Compile Include="ArraySegmentExtensions.cs" />
     <Compile Include="ByteArrayExtensions.cs" />
     <Compile Include="CharExtensions.cs" />
+    <Compile Include="Collections\Concurrent\ConcurrentDictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Linq\EnumerableOverride.cs" />
     <Compile Include="Linq\JEnumerable.cs" />
     <Compile Include="Net\HttpWebRequestExtensions.cs" />
+    <Compile Include="Net\Sockets\SocketExtensions.cs" />
     <Compile Include="NumberExtensions.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
