@@ -10,7 +10,7 @@ namespace Jasily.Extensions.System.Collections.Concurrent
     public static class ConcurrentDictionaryExtensions
     {
         /// <summary>
-        /// The default write lock is big lock. this is key level lock.
+        /// The default write lock is scoped lock. this is key level lock.
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
@@ -55,6 +55,17 @@ namespace Jasily.Extensions.System.Collections.Concurrent
             }
         }
 
+        /// <summary>
+        /// The default write lock is scoped lock. this is key level lock.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dictionary"></param>
+        /// <param name="key"></param>
+        /// <param name="isLockerFunc"></param>
+        /// <param name="lockerFactory"></param>
+        /// <param name="valueFactory"></param>
+        /// <returns></returns>
         public static TValue FastGetOrAdd<TKey, TValue>([NotNull] this ConcurrentDictionary<TKey, TValue> dictionary, TKey key,
             [NotNull] Func<TValue, bool> isLockerFunc, [NotNull] Func<TValue> lockerFactory, [NotNull] Func<TKey, TValue> valueFactory)
             where TValue : class
