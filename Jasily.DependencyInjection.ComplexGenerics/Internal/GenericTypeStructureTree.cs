@@ -1,90 +1,12 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace Jasily.DependencyInjection.ComplexGenerics.Internal
 {
-    internal class ComplexServiceResolverProvider
-    {
-        private readonly Dictionary<Type, List<GenericsTypeResolver>> _map = new Dictionary<Type, List<GenericsTypeResolver>>();
-
-        public void AddResolver(GenericsTypeResolver typeResolver)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetClosedImplTypeOrNull(Type closedServiceType)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    internal interface IImplementationTypeResolver
-    {
-        [CanBeNull]
-        Type Resolve(Type closedServiceType);
-    }
-
-    internal class TypeResolver : IImplementationTypeResolver
-    {
-        public TypeResolver([NotNull] ComplexTypeSource serviceTypeSource) { }
-
-        [CanBeNull]
-        public Type Resolve(Type closedServiceType)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    internal class GenericsTypeResolver : IImplementationTypeResolver
-    {
-        private readonly ConcurrentDictionary<Type, Type> _map;
-        private readonly Lazy<GenericTypeStructureTree> _tree;
-
-        public GenericsTypeResolver([NotNull] ComplexTypeSource serviceTypeSource)
-        {
-            if (serviceTypeSource == null) throw new ArgumentNullException(nameof(serviceTypeSource));
-
-            this._tree = new Lazy<GenericTypeStructureTree>(() =>
-                new GenericTypeStructureTree(serviceTypeSource.ServiceType, serviceTypeSource.ImplementationType));
-            this._map = new ConcurrentDictionary<Type, Type>();
-        }
-
-        [CanBeNull]
-        public Type Resolve(Type closedServiceType)
-        {
-            if (this._map.TryGetValue(closedServiceType, out var closedImplType)) return closedImplType;
-            var r = this._tree.Value.TryMakeClosedImplementationType(closedServiceType, out closedImplType);
-            Debug.Assert(r && closedImplType != null || !r && closedImplType == null);
-            return this._map.GetOrAdd(closedServiceType, closedImplType);
-        }
-    }
-
-    internal interface ITypeStructureTree
-    {
-        bool TryMakeClosedImplementationType(Type closedServiceType, out Type closedImplType);
-    }
-
-    internal class TypeStructureTree
-    {
-        private readonly Dictionary<Type, Type> _typeMap;
-
-        public TypeStructureTree()
-        {
-            this._typeMap = new Dictionary<Type, Type>();
-        }
-
-        public bool TryMakeClosedImplementationType(Type closedServiceType, out Type closedImplType)
-        {
-            return this._typeMap.TryGetValue(closedServiceType, out closedImplType);
-        }
-    }
-
-    internal class GenericTypeStructureTree : ITypeStructureTree
+    internal class GenericTypeStructureTree
     {
         [DebuggerDisplay("{" + nameof(DebuggerDisplay) + "()}")]
         private class Node

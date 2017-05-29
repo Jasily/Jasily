@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Jasily.DependencyInjection.ComplexGenerics;
+using Jasily.DependencyInjection.ComplexGenerics.Internal;
 
 namespace Jasily.DependencyInjection.ComplexGenerics
 {
@@ -30,23 +31,23 @@ namespace Jasily.DependencyInjection.ComplexGenerics
         public void TestDefault()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.UseComplexGenericsResolver()
+            serviceCollection.AddComplexGenerics()
                 .AddTransient(typeof(Class1<,>).GetTypeInfo().GetInterfaces().Single(), typeof(Class1<,>))
                 .AddTransient(typeof(Class2<>).GetTypeInfo().GetInterfaces().Single(), typeof(Class2<>));
 
             var provider = serviceCollection.BuildServiceProvider();
-            Assert.IsInstanceOfType(provider.GetRequiredService<IInterface1<int, int, int>>(),
+            Assert.IsInstanceOfType(provider.GetRequiredComplexService<IInterface1<int, int, int>>(),
                 typeof(Class1<int, int>));
-            Assert.IsInstanceOfType(provider.GetRequiredService<IInterface1<string, int, string>>(),
+            Assert.IsInstanceOfType(provider.GetRequiredComplexService<IInterface1<string, int, string>>(),
                 typeof(Class1<string, int>));
-            Assert.IsNull(provider.GetService<IInterface1<int, double, string>>());
+            Assert.IsNull(provider.GetComplexService<IInterface1<int, double, string>>());
 
-            Assert.IsInstanceOfType(provider.GetRequiredService<IInterface1<string, List<string>, Dictionary<string, HashSet<string>>>>(),
+            Assert.IsInstanceOfType(provider.GetRequiredComplexService<IInterface1<string, List<string>, Dictionary<string, HashSet<string>>>>(),
                 typeof(Class2<string>));
-            Assert.IsNull(provider.GetService<IInterface1<string, List<string>, Dictionary<object, HashSet<string>>>>());
-            Assert.IsNull(provider.GetService<IInterface1<string, List<string>, Dictionary<string, HashSet<int>>>>());
-            Assert.IsNull(provider.GetService<IInterface1<string, List<int>, Dictionary<string, HashSet<string>>>>());
-            Assert.IsNull(provider.GetService<IInterface1<int, List<string>, Dictionary<string, HashSet<string>>>>());
+            Assert.IsNull(provider.GetComplexService<IInterface1<string, List<string>, Dictionary<object, HashSet<string>>>>());
+            Assert.IsNull(provider.GetComplexService<IInterface1<string, List<string>, Dictionary<string, HashSet<int>>>>());
+            Assert.IsNull(provider.GetComplexService<IInterface1<string, List<int>, Dictionary<string, HashSet<string>>>>());
+            Assert.IsNull(provider.GetComplexService<IInterface1<int, List<string>, Dictionary<string, HashSet<string>>>>());
         }
 
         public class Class3<TC1> : IInterface1<TC1, List<TC1>, Dictionary<string, HashSet<TC1>>>
@@ -109,48 +110,49 @@ namespace Jasily.DependencyInjection.ComplexGenerics
         public void TestGenericParameterConstraint()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(
+            var builder = serviceCollection.AddComplexGenerics();
+            builder.AddTransient(
                 typeof(Class3<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class3<>));
-            serviceCollection.AddTransient(
+            builder.AddTransient(
                 typeof(Class4<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class4<>));
-            serviceCollection.AddTransient(
+            builder.AddTransient(
                 typeof(Class5<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class5<>));
-            serviceCollection.AddTransient(
+            builder.AddTransient(
                 typeof(Class6<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class6<>));
-            serviceCollection.AddTransient(
+            builder.AddTransient(
                 typeof(Class7<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class7<>));
 
             var provider = serviceCollection.BuildServiceProvider();
 
-            Assert.IsInstanceOfType(provider.GetRequiredService<IInterface1<int, List<int>, Dictionary<string, HashSet<int>>>>(),
+            Assert.IsInstanceOfType(provider.GetRequiredComplexService<IInterface1<int, List<int>, Dictionary<string, HashSet<int>>>>(),
                 typeof(Class4<int>));
 
             Assert.IsInstanceOfType(
-                provider.GetRequiredService<
+                provider.GetRequiredComplexService<
                     IInterface1<string,
                         List<string>,
                         Dictionary<string, HashSet<string>>>>(), typeof(Class3<string>));
 
-            Assert.IsInstanceOfType(provider.GetRequiredService<
+            Assert.IsInstanceOfType(provider.GetRequiredComplexService<
                 IInterface1<SimpleDisposableClass_New,
                     List<SimpleDisposableClass_New>,
                     Dictionary<string, HashSet<SimpleDisposableClass_New>>>>(),
                 typeof(Class6<SimpleDisposableClass_New>));
 
             Assert.IsInstanceOfType(
-                provider.GetRequiredService<
+                provider.GetRequiredComplexService<
                     IInterface1<SimpleDisposableClass,
                         List<SimpleDisposableClass>,
                         Dictionary<string, HashSet<SimpleDisposableClass>>>>(),
                 typeof(Class5<SimpleDisposableClass>));
 
             Assert.IsInstanceOfType(
-                provider.GetRequiredService<
+                provider.GetRequiredComplexService<
                     IInterface1<SimpleDisposableValue,
                         List<SimpleDisposableValue>,
                         Dictionary<string, HashSet<SimpleDisposableValue>>>>(),

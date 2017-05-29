@@ -7,7 +7,7 @@ namespace Jasily.Collections.Generic
     /// 临界值
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("{Value}")]
+    [DebuggerDisplay("{" + nameof(Value) + "}")]
     public struct CriticalValue<T> : IEquatable<CriticalValue<T>>, IComparable<CriticalValue<T>>, IComparable<T>, IEquatable<T>
         where T : struct, IComparable<T>
     {

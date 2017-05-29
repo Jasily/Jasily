@@ -7,10 +7,8 @@ namespace Jasily.DependencyInjection.ComplexGenerics.Internal
     {
         public ComplexTypeSource([NotNull] Type serviceType, [NotNull] Type implementationType)
         {
-            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (implementationType == null) throw new ArgumentNullException(nameof(implementationType));
-            this.ServiceType = serviceType;
-            this.ImplementationType = implementationType;
+            this.ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+            this.ImplementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
         }
 
         public Type ServiceType { get; }
