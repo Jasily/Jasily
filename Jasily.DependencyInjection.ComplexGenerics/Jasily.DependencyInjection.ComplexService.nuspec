@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>Jasily.DependencyInjection.ComplexGenerics</id>
+        <id>Jasily.DependencyInjection.ComplexService</id>
         <version>0.0.0.1</version>
-        <title>Jasily.DependencyInjection.ComplexGenerics</title>
+        <title>Jasily.DependencyInjection.ComplexService</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
         <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
@@ -18,7 +18,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.ComplexGenerics.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.ComplexGenerics.dll" />
-        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.ComplexGenerics.xml" target="lib\netstandard1.4\Jasily.DependencyInjection.ComplexGenerics.xml" />
+        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.ComplexService.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.ComplexService.dll" />
+        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.ComplexService.xml" target="lib\netstandard1.4\Jasily.DependencyInjection.ComplexService.xml" />
     </files>
 </package>
