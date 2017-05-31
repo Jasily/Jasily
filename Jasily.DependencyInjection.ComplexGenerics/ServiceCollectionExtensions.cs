@@ -6,7 +6,7 @@ namespace Jasily.DependencyInjection.ComplexGenerics
     /// <summary>
     /// extension method for <see cref="IServiceCollection"/>.
     /// </summary>
-    public static class ServiceCollectionServiceExtensions
+    public static class ServiceCollectionExtensions
     {
         public static ComplexGenericsBuilder AddComplexGenerics([NotNull] this IServiceCollection collection)
         {

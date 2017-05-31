@@ -9,31 +9,31 @@ namespace Jasily.DependencyInjection.ComplexGenerics
     /// </summary>
     public static class ServiceProviderExtensions
     {
-        public static object GetComplexService([NotNull] this IServiceProvider serviceProvider, Type type)
+        [NotNull]
+        public static IComplexServiceFactory GetComplexServiceFactory([NotNull] this IServiceProvider serviceProvider)
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             var factory = serviceProvider.GetService<IComplexServiceFactory>();
-            if (factory == null)
-            {
-                throw new  NotSupportedException();
-            }
-            return factory.GetService(serviceProvider, type);
+            return factory ?? throw new InvalidOperationException(
+                $"Before get {nameof(IComplexServiceFactory)}, " +
+                $"please call `{nameof(IServiceCollection)}.{nameof(ServiceCollectionExtensions.AddComplexGenerics)}()`.");
         }
 
-        public static T GetComplexService<T>([NotNull] this IServiceProvider serviceProvider)
+        public static object GetComplexService([NotNull] this IServiceProvider serviceProvider, Type type)
         {
-            return (T) serviceProvider.GetComplexService(typeof(T));
+            var factory = serviceProvider.GetComplexServiceFactory();
+            return factory.GetService(serviceProvider, type);
         }
 
         public static object GetRequiredComplexService([NotNull] this IServiceProvider serviceProvider, Type type)
         {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            var factory = serviceProvider.GetService<IComplexServiceFactory>();
-            if (factory == null)
-            {
-                throw new NotSupportedException();
-            }
+            var factory = serviceProvider.GetComplexServiceFactory();
             return factory.GetRequiredService(serviceProvider, type) ?? throw new NotSupportedException();
+        }
+
+        public static T GetComplexService<T>([NotNull] this IServiceProvider serviceProvider)
+        {
+            return (T)serviceProvider.GetComplexService(typeof(T));
         }
 
         public static T GetRequiredComplexService<T>([NotNull] this IServiceProvider serviceProvider)
