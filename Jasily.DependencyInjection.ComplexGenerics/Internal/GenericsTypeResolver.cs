@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace Jasily.DependencyInjection.ComplexGenerics.Internal
+namespace Jasily.DependencyInjection.ComplexService.Internal
 {
     internal class GenericsTypeResolver : IImplementationTypeResolver
     {

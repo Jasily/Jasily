@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Jasily.DependencyInjection.ComplexGenerics.Internal
+namespace Jasily.DependencyInjection.ComplexService.Internal
 {
     internal class ComplexServiceResolverProvider
     {

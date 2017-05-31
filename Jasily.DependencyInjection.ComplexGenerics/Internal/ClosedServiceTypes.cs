@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace Jasily.DependencyInjection.ComplexGenerics.Internal
+namespace Jasily.DependencyInjection.ComplexService.Internal
 {
     internal class ClosedServiceTypes
     {

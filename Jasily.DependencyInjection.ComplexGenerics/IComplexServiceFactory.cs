@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Jasily.DependencyInjection.ComplexGenerics
+namespace Jasily.DependencyInjection.ComplexService
 {
     public interface IComplexServiceFactory
     {

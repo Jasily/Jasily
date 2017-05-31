@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
-using Jasily.DependencyInjection.ComplexGenerics.Internal;
+using Jasily.DependencyInjection.ComplexService.Internal;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jasily.DependencyInjection.ComplexGenerics
+namespace Jasily.DependencyInjection.ComplexService
 {
-    public class ComplexGenericsBuilder
+    public class ComplexServiceBuilder
     {
         [NotNull] private readonly IServiceCollection _collection;
 
-        internal ComplexGenericsBuilder(IServiceCollection collection)
+        internal ComplexServiceBuilder(IServiceCollection collection)
         {
             this._collection = collection ?? throw new ArgumentNullException(nameof(collection));
             if (collection.SingleOrDefault(z => z.ServiceType == typeof(ComplexServiceResolverProvider)) == null)
@@ -29,21 +29,21 @@ namespace Jasily.DependencyInjection.ComplexGenerics
             this._collection.AddSingleton(new ComplexTypeSource(serviceType, implementationType));
         }
 
-        public ComplexGenericsBuilder AddSingleton([NotNull] Type serviceType, [NotNull] Type implementationType)
+        public ComplexServiceBuilder AddSingleton([NotNull] Type serviceType, [NotNull] Type implementationType)
         {
             this.CommonAdd(serviceType, implementationType);
             this._collection.AddSingleton(implementationType);
             return this;
         }
 
-        public ComplexGenericsBuilder AddScoped([NotNull] Type serviceType, [NotNull] Type implementationType)
+        public ComplexServiceBuilder AddScoped([NotNull] Type serviceType, [NotNull] Type implementationType)
         {
             this.CommonAdd(serviceType, implementationType);
             this._collection.AddScoped(implementationType);
             return this;
         }
 
-        public ComplexGenericsBuilder AddTransient([NotNull] Type serviceType, [NotNull] Type implementationType)
+        public ComplexServiceBuilder AddTransient([NotNull] Type serviceType, [NotNull] Type implementationType)
         {
             this.CommonAdd(serviceType, implementationType);
             this._collection.AddTransient(implementationType);

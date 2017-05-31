@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jasily.DependencyInjection.ComplexGenerics
+namespace Jasily.DependencyInjection.ComplexService
 {
     /// <summary>
     /// extension method for <see cref="IComplexServiceFactory"/>.

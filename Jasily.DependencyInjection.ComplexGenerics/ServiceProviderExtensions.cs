@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jasily.DependencyInjection.ComplexGenerics
+namespace Jasily.DependencyInjection.ComplexService
 {
     /// <summary>
     /// extension method for <see cref="IServiceProvider"/>.
@@ -16,7 +16,7 @@ namespace Jasily.DependencyInjection.ComplexGenerics
             var factory = serviceProvider.GetService<IComplexServiceFactory>();
             return factory ?? throw new InvalidOperationException(
                 $"Before get {nameof(IComplexServiceFactory)}, " +
-                $"please call `{nameof(IServiceCollection)}.{nameof(ServiceCollectionExtensions.AddComplexGenerics)}()`.");
+                $"please call `{nameof(IServiceCollection)}.{nameof(ServiceCollectionExtensions.AddComplexService)}()`.");
         }
 
         public static object GetComplexService([NotNull] this IServiceProvider serviceProvider, Type type)

@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Jasily.DependencyInjection.ComplexGenerics.Internal
+namespace Jasily.DependencyInjection.ComplexService.Internal
 {
     internal class TypeResolver : IImplementationTypeResolver
     {
