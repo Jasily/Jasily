@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetPackageTest", "NugetPackageTest\NugetPackageTest.csproj", "{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.ComplexGenerics", "Jasily.DependencyInjection.ComplexGenerics\Jasily.DependencyInjection.ComplexGenerics.csproj", "{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.ComplexService", "Jasily.DependencyInjection.ComplexService\Jasily.DependencyInjection.ComplexService.csproj", "{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.Typed.Standard", "Jasily.DependencyInjection.Typed.Standard\Jasily.DependencyInjection.Typed.Standard.csproj", "{5A119A36-3DDD-4D39-9958-F600A1BFB058}"
 EndProject

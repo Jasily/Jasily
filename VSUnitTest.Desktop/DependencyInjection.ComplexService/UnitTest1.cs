@@ -4,11 +4,19 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Jasily.DependencyInjection.ComplexGenerics;
-using Jasily.DependencyInjection.ComplexGenerics.Internal;
 
-namespace Jasily.DependencyInjection.ComplexGenerics
+namespace Jasily.DependencyInjection.ComplexService
 {
+    [TestClass]
+    public class TestNonGeneric
+    {
+        [TestMethod]
+        public void TestDefault()
+        {
+            
+        }
+    }
+
     [TestClass]
     public class UnitTest1
     {
@@ -31,7 +39,7 @@ namespace Jasily.DependencyInjection.ComplexGenerics
         public void TestDefault()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddComplexGenerics()
+            serviceCollection.AddComplexService()
                 .AddTransient(typeof(Class1<,>).GetTypeInfo().GetInterfaces().Single(), typeof(Class1<,>))
                 .AddTransient(typeof(Class2<>).GetTypeInfo().GetInterfaces().Single(), typeof(Class2<>));
 
@@ -110,7 +118,7 @@ namespace Jasily.DependencyInjection.ComplexGenerics
         public void TestGenericParameterConstraint()
         {
             var serviceCollection = new ServiceCollection();
-            var builder = serviceCollection.AddComplexGenerics();
+            var builder = serviceCollection.AddComplexService();
             builder.AddTransient(
                 typeof(Class3<>).GetTypeInfo().GetInterfaces().Single(),
                 typeof(Class3<>));

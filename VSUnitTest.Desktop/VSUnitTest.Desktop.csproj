@@ -158,7 +158,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DependencyInjection.AwaiterAdapter\TestAwaitableInfo.cs" />
-    <Compile Include="DependencyInjection.ComplexGenerics\UnitTest1.cs" />
+    <Compile Include="DependencyInjection.ComplexService\UnitTest1.cs" />
     <Compile Include="DependencyInjection.Features\TestFeatures.cs" />
     <Compile Include="DependencyInjection.MethodInvoker\TestPropertyInvoker.cs" />
     <Compile Include="DependencyInjection.Typed\TestGenericTypeMaker.cs" />
@@ -200,9 +200,9 @@
       <Project>{b1106f26-cbcb-413f-9262-77028c33eb7e}</Project>
       <Name>Jasily.DependencyInjection.AwaiterAdapter.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.ComplexGenerics\Jasily.DependencyInjection.ComplexGenerics.csproj">
+    <ProjectReference Include="..\Jasily.DependencyInjection.ComplexService\Jasily.DependencyInjection.ComplexService.csproj">
       <Project>{bbc6f94d-929b-4d8d-b29b-ae5fdfa33363}</Project>
-      <Name>Jasily.DependencyInjection.ComplexGenerics</Name>
+      <Name>Jasily.DependencyInjection.ComplexService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.DependencyInjection.Features.Standard\Jasily.DependencyInjection.Features.Standard.csproj">
       <Project>{bf1ca11e-9a7d-4b7a-a724-7a349e666ca3}</Project>
@@ -266,7 +266,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
