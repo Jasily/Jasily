@@ -9,93 +9,120 @@ namespace Jasily.DependencyInjection.ComplexService.Internal
     internal class GenericTypeStructureTree
     {
         [DebuggerDisplay("{" + nameof(DebuggerDisplay) + "()}")]
-        private class Node
+        private abstract class Node
         {
-            private readonly Type _serviceType;
-            private readonly TypeInfo _typeInfo;
-            private readonly bool _isGenericType;
-            private readonly Node[] _genericArguments;
-            private readonly bool _isGenericParameter;
+            public Type ServiceType { get; }
 
-            public Node(GenericTypeStructureTree structureTree, Type serviceType)
+            protected Node(Type serviceType)
             {
-                this._serviceType = serviceType;
-                this._typeInfo = serviceType.GetTypeInfo();
-                this._isGenericType = this._typeInfo.IsGenericType;
-                if (this._isGenericType)
-                {
-                    var args = this._typeInfo.IsGenericTypeDefinition
-                        ? this._typeInfo.GenericTypeParameters
-                        : this._typeInfo.GenericTypeArguments;
-                    this._genericArguments = args.Select(z => new Node(structureTree, z)).ToArray();
-                }
-                else
-                {
-                    this._isGenericParameter = serviceType.IsGenericParameter;
-                    if (this._isGenericParameter)
-                    {
-                        if (!structureTree._genericParameterConstraints.ContainsKey(serviceType.Name))
-                        {
-                            structureTree._genericParameterConstraints[serviceType.Name] =
-                                new GenericParameterConstraint(serviceType, this._typeInfo);
-                        }
-                    }
-                }
+                this.ServiceType = serviceType;
             }
 
-            public bool TryResolveGenericParameter(Type type, Dictionary<string, Type> genericParameterMap)
+            public abstract bool TryResolveGenericParameter(Type type, Dictionary<string, Type> genericParameterMap);
+
+            public virtual string DebuggerDisplay()
             {
-                if (this._isGenericType)
+                return this.ServiceType.Name;
+            }
+
+            public static Node CreateNode(GenericTypeStructureTree structureTree, Type serviceType)
+            {
+                var typeInfo = serviceType.GetTypeInfo();
+
+                if (typeInfo.IsGenericType)
                 {
-                    var typeInfo = type.GetTypeInfo();
-                    if (!typeInfo.IsGenericType)
-                    {
-                        return false;
-                    }
-                    var args = typeInfo.GenericTypeArguments;
-                    if (args.Length != this._genericArguments.Length)
-                    {
-                        return false;
-                    }
-                    for (var i = 0; i < args.Length; i++)
-                    {
-                        if (!this._genericArguments[i].TryResolveGenericParameter(args[i], genericParameterMap))
-                        {
-                            return false;
-                        }
-                    }
+                    var args = typeInfo.IsGenericTypeDefinition
+                        ? typeInfo.GenericTypeParameters
+                        : typeInfo.GenericTypeArguments;
+
+                    return new GenericTypeNode(serviceType, args.Select(z => CreateNode(structureTree, z)).ToArray());
                 }
-                else if (this._isGenericParameter)
+                else if (serviceType.IsGenericParameter)
                 {
-                    if (genericParameterMap.TryGetValue(this._serviceType.Name, out var t))
+                    if (!structureTree._genericParameterConstraints.ContainsKey(serviceType.Name))
                     {
-                        if (t != type) return false;
+                        structureTree._genericParameterConstraints[serviceType.Name] =
+                            new GenericParameterConstraint(serviceType, typeInfo);
                     }
-                    else
-                    {
-                        genericParameterMap.Add(this._serviceType.Name, type);
-                    }
+
+                    return new GenericParameterNode(serviceType);
                 }
                 else
                 {
-                    if (type != this._serviceType) return false;
+                    return new TypeNode(serviceType);
+                }
+            }
+        }
+
+        private class TypeNode : Node
+        {
+            public TypeNode(Type serviceType) : base(serviceType)
+            {
+            }
+
+            public override bool TryResolveGenericParameter(Type type, Dictionary<string, Type> genericParameterMap)
+            {
+                return type == this.ServiceType;
+            }
+        }
+
+        private class GenericTypeNode : Node
+        {
+            private readonly Node[] _genericArguments;
+
+            public GenericTypeNode(Type serviceType, Node[] genericArguments) : base(serviceType)
+            {
+                this._genericArguments = genericArguments;
+            }
+
+            public override bool TryResolveGenericParameter(Type type, Dictionary<string, Type> genericParameterMap)
+            {
+                var typeInfo = type.GetTypeInfo();
+                if (!typeInfo.IsGenericType)
+                {
+                    return false;
+                }
+                var args = typeInfo.GenericTypeArguments;
+                if (args.Length != this._genericArguments.Length)
+                {
+                    return false;
+                }
+                for (var i = 0; i < args.Length; i++)
+                {
+                    if (!this._genericArguments[i].TryResolveGenericParameter(args[i], genericParameterMap))
+                    {
+                        return false;
+                    }
                 }
 
                 return true;
             }
 
-            public string DebuggerDisplay()
+            public override string DebuggerDisplay()
             {
-                if (this._isGenericType)
+                var name = this.ServiceType.Name;
+                var index = name.IndexOf('`');
+                name = name.Substring(0, index);
+                return $"{name}<{string.Join(", ", this._genericArguments.Select(z => z.DebuggerDisplay()).ToArray())}>";
+            }
+        }
+
+        private class GenericParameterNode : Node
+        {
+            public GenericParameterNode(Type serviceType) : base(serviceType)
+            {
+            }
+
+            public override bool TryResolveGenericParameter(Type type, Dictionary<string, Type> genericParameterMap)
+            {
+                if (genericParameterMap.TryGetValue(this.ServiceType.Name, out var exists))
                 {
-                    var name = this._serviceType.Name;
-                    var index = name.IndexOf('`');
-                    name = name.Substring(0, index);
-                    return $"{name}<{string.Join(", ", this._genericArguments.Select(z => z.DebuggerDisplay()).ToArray())}>";
+                    return exists == type;
                 }
                 else
                 {
-                    return this._serviceType.Name;
+                    genericParameterMap.Add(this.ServiceType.Name, type);
+                    return true;
                 }
             }
         }
@@ -103,14 +130,12 @@ namespace Jasily.DependencyInjection.ComplexService.Internal
         private class GenericParameterConstraint
         {
             private readonly Type _type;
-            private readonly TypeInfo _typeInfo;
             private readonly GenericParameterAttributes _genericParameterAttributes;
             private readonly TypeInfo[] _genericParameterConstraints;
 
             public GenericParameterConstraint(Type type, TypeInfo typeInfo)
             {
                 this._type = type;
-                this._typeInfo = typeInfo;
                 this._genericParameterAttributes = typeInfo.GenericParameterAttributes;
                 this._genericParameterConstraints = typeInfo
                     .GetGenericParameterConstraints()
@@ -171,20 +196,18 @@ namespace Jasily.DependencyInjection.ComplexService.Internal
             = new Dictionary<string, GenericParameterConstraint>();
         private readonly Node _serviceNode;
         private readonly Type _implementationType;
-        private readonly TypeInfo _implementationTypeInfo;
         private readonly string[] _implementationTypeGenericParameterNames;
 
         public GenericTypeStructureTree(Type serviceType, Type implementationType)
         {
-            this._serviceNode = new Node(this, serviceType);
+            this._serviceNode = Node.CreateNode(this, serviceType);
             this._implementationType = implementationType;
-            this._implementationTypeInfo = implementationType.GetTypeInfo();
-            if (!this._implementationTypeInfo.IsGenericTypeDefinition)
+            var implementationTypeInfo = implementationType.GetTypeInfo();
+            if (!implementationTypeInfo.IsGenericTypeDefinition)
             {
-                throw new ArgumentException($"implementation serviceTypeSource {this._implementationTypeInfo} should be generic serviceTypeSource definition.");
+                throw new ArgumentException($"implementation serviceTypeSource {implementationTypeInfo} should be generic serviceTypeSource definition.");
             }
-            this._implementationTypeGenericParameterNames = this._implementationTypeInfo
-                .GenericTypeParameters
+            this._implementationTypeGenericParameterNames = implementationTypeInfo.GenericTypeParameters
                 .Select(z => z.Name)
                 .ToArray();
             if (this._implementationTypeGenericParameterNames.Length != this._genericParameterConstraints.Count)

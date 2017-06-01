@@ -26,7 +26,7 @@ namespace Jasily.DependencyInjection.ComplexService.Internal
             {
                 if (this._singleResult == null)
                 {
-                    var source = this._results ?? Enumerable.Select<IImplementationTypeResolver, Type>(this._resolvers, z => z.Resolve(this._closedServiceType));
+                    var source = this._results ?? this._resolvers.Select(z => z.Resolve(this._closedServiceType));
                     var r = new ResolveResult(source.FirstOrDefault(z => z != null));
                     if (this._singleResult == null) Interlocked.CompareExchange(ref this._singleResult, r, null);
                 }
@@ -47,10 +47,10 @@ namespace Jasily.DependencyInjection.ComplexService.Internal
                         this._results = new Type[0];
                     }
 
-                    var source = Enumerable.Select<IImplementationTypeResolver, Type>(this._resolvers, z => z.Resolve(this._closedServiceType))
+                    var source = this._resolvers.Select(z => z.Resolve(this._closedServiceType))
                         .Where(z => z != null)
                         .ToArray();
-                    if (this._results == null) Interlocked.CompareExchange<Type[]>(ref this._results, source, null);
+                    if (this._results == null) Interlocked.CompareExchange(ref this._results, source, null);
                 }
 
                 return this._results;

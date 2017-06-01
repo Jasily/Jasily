@@ -10,15 +10,31 @@ namespace Jasily.DependencyInjection.ComplexService
     [TestClass]
     public class TestNonGeneric
     {
+        public interface IInterface1 { }
+
+        public class Class1 : IInterface1 { }
+
         [TestMethod]
-        public void TestDefault()
+        public void TestFactoryMap()
         {
-            
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddComplexService()
+                .AddTransient(typeof(IInterface1), typeof(Class1))
+                .AddTransient(typeof(Class1), typeof(Class1));
+            var provider = serviceCollection.BuildServiceProvider();
+
+            var iarray = provider.GetComplexServiceFactory().GetClosedServiceTypes(typeof(IInterface1)).ToArray();
+            Assert.AreEqual(1, iarray.Length);
+            Assert.AreEqual(typeof(Class1), iarray[0]);
+
+            var carray = provider.GetComplexServiceFactory().GetClosedServiceTypes(typeof(Class1)).ToArray();
+            Assert.AreEqual(1, carray.Length);
+            Assert.AreEqual(typeof(Class1), carray[0]);
         }
     }
 
     [TestClass]
-    public class UnitTest1
+    public class TestGeneric
     {
         public interface IInterface1<TI1, TI2, TI3>
         {
