@@ -22,7 +22,8 @@ namespace Jasily.DependencyInjection.Features
             this.ServiceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
 
             serviceCollection.AddOptions();
-            serviceCollection.TryAddSingleton(typeof(IFeaturesFactory<>), typeof(FeaturesFactory<>));
+            serviceCollection.TryAddSingleton(typeof(InternalFeaturesFactory<>));
+            serviceCollection.TryAddScoped(typeof(IFeaturesFactory<>), typeof(FeaturesFactory<>));
         }
 
         /// <summary>
