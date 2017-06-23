@@ -9,18 +9,18 @@ namespace Jasily.ComponentModel
 
     public class ViewModel<TSource> : ViewModel
     {
-        private TSource source;
+        private TSource _source;
 
-        public ViewModel(TSource source)
+        public ViewModel([CanBeNull] TSource source = default(TSource))
         {
-            this.source = source;
+            this._source = source;
         }
 
         [NotifyPropertyChanged(Order = -1)]
         public TSource Source
         {
-            get { return this.source; }
-            set { this.SetPropertyRef(ref this.source, value); }
+            get => this._source;
+            set => this.SetPropertyRef(ref this._source, value);
         }
 
         public static implicit operator TSource([NotNull] ViewModel<TSource> value)
