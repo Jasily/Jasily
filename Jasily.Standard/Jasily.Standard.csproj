@@ -34,7 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj" />
     <ProjectReference Include="..\Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj" />
   </ItemGroup>
 

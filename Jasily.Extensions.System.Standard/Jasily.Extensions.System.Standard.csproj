@@ -79,7 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj" />
+    <ProjectReference Include="..\Jasily.Core.Standard\Jasily.Core.Standard.csproj" />
   </ItemGroup>
 
 </Project>
