@@ -34,7 +34,7 @@ namespace Jasily.Collections.Generic
             => source.Select((z, i) => Create(i, z));
     }
 
-    public struct IndexValuePair<T>
+    public struct IndexValuePair<T> : IEquatable<IndexValuePair<T>>
     {
         public IndexValuePair(int index, T value)
         {
@@ -45,5 +45,20 @@ namespace Jasily.Collections.Generic
         public int Index { get; }
 
         public T Value { get; }
+
+        public bool Equals(IndexValuePair<T> other)
+        {
+            return this.Index == other.Index && EqualityComparer<T>.Default.Equals(this.Value, other.Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is IndexValuePair<T> pair && this.Equals(pair);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Index.GetHashCode() ^ EqualityComparer<T>.Default.GetHashCode(this.Value);
+        }
     }
 }

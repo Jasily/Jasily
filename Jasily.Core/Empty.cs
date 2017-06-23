@@ -13,15 +13,13 @@ namespace Jasily.Core
         /// <summary>
         /// get a empty array.
         /// </summary>
-        [NotNull]
-        [PublicAPI]
+        [NotNull, PublicAPI]
         public static T[] Array { get; }
 
         /// <summary>
         /// get a empty array (without type cast).
         /// </summary>
-        [NotNull]
-        [PublicAPI]
+        [NotNull, PublicAPI]
         public static IEnumerable<T> Enumerable { get; }
 
         static Empty()

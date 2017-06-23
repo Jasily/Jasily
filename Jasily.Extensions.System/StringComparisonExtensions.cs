@@ -5,7 +5,7 @@ namespace Jasily.Extensions.System
     public static class StringComparisonExtensions
     {
         /// <summary>
-        /// get comparer for StringComparison
+        /// get <see cref="StringComparer"/> by <see cref="StringComparison"/>.
         /// </summary>
         /// <param name="comparison"></param>
         /// <returns></returns>
