@@ -13,8 +13,10 @@
   <ItemGroup>
     <Compile Include="..\Jasily\Collections\Generic\KeySelectorComparer.cs" Link="Collections\Generic\KeySelectorComparer.cs" />
     <Compile Include="..\Jasily\ComponentModel\InvokeOnAttribute.cs" Link="ComponentModel\InvokeOnAttribute.cs" />
+    <Compile Include="..\Jasily\ComponentModel\IPropertyContainer.cs" Link="ComponentModel\IPropertyContainer.cs" />
     <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedAttribute.cs" Link="ComponentModel\NotifyPropertyChangedAttribute.cs" />
     <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedObject.cs" Link="ComponentModel\NotifyPropertyChangedObject.cs" />
+    <Compile Include="..\Jasily\ComponentModel\Property.cs" Link="ComponentModel\Property.cs" />
     <Compile Include="..\Jasily\ComponentModel\PropertySelector.cs" Link="ComponentModel\PropertySelector.cs" />
     <Compile Include="..\Jasily\ComponentModel\RefreshPropertiesMapper.cs" Link="ComponentModel\RefreshPropertiesMapper.cs" />
     <Compile Include="..\Jasily\ComponentModel\ThreadKind.cs" Link="ComponentModel\ThreadKind.cs" />

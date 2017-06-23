@@ -84,12 +84,12 @@
     <Compile Include="ComponentModel\Editor\EditableViewModelAttribute.cs" />
     <Compile Include="ComponentModel\Editor\IConverter.cs" />
     <Compile Include="ComponentModel\Editor\IEditor.cs" />
-    <Compile Include="ComponentModel\Editor\IPropertyContainer.cs" />
+    <Compile Include="ComponentModel\IPropertyContainer.cs" />
     <Compile Include="ComponentModel\Editor\IReverseConverter.cs" />
     <Compile Include="ComponentModel\Editor\ITwoWayConverter.cs" />
     <Compile Include="ComponentModel\Editor\MemberEditor.cs" />
     <Compile Include="ComponentModel\Editor\ObjectEditorViewModel.cs" />
-    <Compile Include="ComponentModel\Editor\Property.cs" />
+    <Compile Include="ComponentModel\Property.cs" />
     <Compile Include="ComponentModel\Editor\PropertyMapper.cs" />
     <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
     <Compile Include="ComponentModel\Editor\ViewModelEditor.cs" />

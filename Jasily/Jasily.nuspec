@@ -1,24 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>Jasily.Standard</id>
-        <version>0.1.0.1</version>
-        <title>Jasily.Standard</title>
+        <id>Jasily</id>
+        <version>0.1.0.0</version>
+        <title>Jasily</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
         <licenseUrl>https://github.com/Jasily/jasily-csharp/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/Jasily/jasily-csharp</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>just for test</description>
+        <description>core for jasily. just for test.</description>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
-        <tags>Jasily</tags>
         <dependencies>
-            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.0" />
+            <group targetFramework=".NETStandard1.4">
+                <dependency id="Jasily.Standard" version="0.1.0.0" />
+            </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.Standard.dll" target="lib\netstandard1.4\Jasily.Standard.dll" />
-        <file src="bin\Release\netstandard1.4\Jasily.Standard.xml" target="lib\netstandard1.4\Jasily.Standard.xml" />
     </files>
 </package>

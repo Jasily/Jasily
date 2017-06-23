@@ -1,4 +1,4 @@
-namespace Jasily.ComponentModel.Editor
+namespace Jasily.ComponentModel
 {
     public interface IPropertyContainer
     {

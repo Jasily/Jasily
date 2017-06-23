@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using JetBrains.Annotations;
 
-namespace Jasily.ComponentModel.Editor
+namespace Jasily.ComponentModel
 {
     internal class Property
     {
@@ -14,44 +14,39 @@ namespace Jasily.ComponentModel.Editor
 
     public class Property<T> : IPropertyContainer, INotifyPropertyChanged
     {
-        private T value;
+        private T _value;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Property(T value = default(T))
         {
-            this.value = value;
+            this._value = value;
         }
 
         public T Value
         {
-            get { return this.value; }
-            set
+            get => this._value;
+            [InvokeOn(ThreadKind.UIThread)] set
             {
-                var converter = this.SetterConverter;
-                if (converter != null) value = converter(value);
-
                 if (EqualityComparer<T>.Default.Equals(value)) return;
-                this.value = value;
+                this._value = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public Func<T, T> SetterConverter { get; set; }
-
         object IPropertyContainer.Value
         {
-            get { return this.Value; }
-            set { this.Value = (T)value; }
+            get => this.Value;
+            set => this.Value = (T)value;
         }
 
         /// <summary>
-        /// set value without call notify
+        /// Set value without raise <see cref="INotifyPropertyChanged.PropertyChanged"/>.
         /// </summary>
         /// <param name="value"></param>
-        public void SetValue(T value) => this.value = value;
+        public void DirectSetValue(T value) => this._value = value;
 
         private void OnPropertyChanged() => this.PropertyChanged?.Invoke(this, Property.ValuePropertyChangedEventArgs);
 
-        public static implicit operator T(Property<T> p) => p.value;
+        public static implicit operator T(Property<T> p) => p == null ? default(T) : p._value;
     }
 }
