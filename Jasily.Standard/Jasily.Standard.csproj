@@ -18,6 +18,8 @@
     <Compile Include="..\Jasily\ComponentModel\RefreshPropertiesMapper.cs" Link="ComponentModel\RefreshPropertiesMapper.cs" />
     <Compile Include="..\Jasily\ComponentModel\ViewModel.cs" Link="ComponentModel\ViewModel.cs" />
     <Compile Include="..\Jasily\KeySelector.cs" Link="KeySelector.cs" />
+    <Compile Include="..\Jasily\TypedEventHandler.cs" Link="TypedEventHandler.cs" />
+    <Compile Include="..\Jasily\TypedEventHandlerExtensions.cs" Link="TypedEventHandlerExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
