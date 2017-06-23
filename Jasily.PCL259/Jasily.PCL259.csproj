@@ -78,6 +78,27 @@
     <Compile Include="..\Jasily\Collections\Generic\ReverseComparer.cs">
       <Link>Collections\Generic\ReverseComparer.cs</Link>
     </Compile>
+    <Compile Include="..\Jasily\ComponentModel\InvokeOnAttribute.cs">
+      <Link>ComponentModel\InvokeOnAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedAttribute.cs">
+      <Link>ComponentModel\NotifyPropertyChangedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedObject.cs">
+      <Link>ComponentModel\NotifyPropertyChangedObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\PropertySelector.cs">
+      <Link>ComponentModel\PropertySelector.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\RefreshPropertiesMapper.cs">
+      <Link>ComponentModel\RefreshPropertiesMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\ThreadKind.cs">
+      <Link>ComponentModel\ThreadKind.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ComponentModel\ViewModel.cs">
+      <Link>ComponentModel\ViewModel.cs</Link>
+    </Compile>
     <Compile Include="..\Jasily\CurryingFunc.cs">
       <Link>CurryingFunc.cs</Link>
     </Compile>
@@ -163,11 +184,6 @@
     <Compile Include="ComponentModel\Editor\Property.cs" />
     <Compile Include="ComponentModel\Editor\PropertyMapper.cs" />
     <Compile Include="ComponentModel\Editor\ViewModelEditor.cs" />
-    <Compile Include="ComponentModel\NotifyPropertyChangedObject.cs" />
-    <Compile Include="ComponentModel\NotifyPropertyChangedAttribute.cs" />
-    <Compile Include="ComponentModel\PropertySelector.cs" />
-    <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
-    <Compile Include="ComponentModel\ViewModel.cs" />
     <Compile Include="Diagnostics\DataCheck.cs" />
     <Compile Include="Text\IStringFinderSource.cs" />
     <Compile Include="Text\StringBuilderCache.cs" />

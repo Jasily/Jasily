@@ -27,8 +27,11 @@ namespace Jasily.Extensions.System.ComponentModel
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
             if (propertyNames == null) throw new ArgumentNullException(nameof(propertyNames));
-            foreach (var propertyName in propertyNames)
-                handler(sender, new PropertyChangedEventArgs(propertyName));
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < propertyNames.Length; i++)
+            {
+                handler(sender, new PropertyChangedEventArgs(propertyNames[i]));
+            }
         }
 
         public static void Invoke([NotNull] this PropertyChangedEventHandler handler, object sender,
@@ -45,8 +48,11 @@ namespace Jasily.Extensions.System.ComponentModel
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
             if (eventArgs == null) throw new ArgumentNullException(nameof(eventArgs));
-            foreach (var property in eventArgs)
-                handler(sender, property);
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < eventArgs.Length; i++)
+            {
+                handler(sender, eventArgs[i]);
+            }
         }
 
         public static void Invoke([NotNull] this PropertyChangedEventHandler handler, object sender,
@@ -55,7 +61,9 @@ namespace Jasily.Extensions.System.ComponentModel
             if (handler == null) throw new ArgumentNullException(nameof(handler));
             if (eventArgs == null) throw new ArgumentNullException(nameof(eventArgs));
             foreach (var property in eventArgs)
+            {
                 handler(sender, property);
+            }
         }
     }
 }

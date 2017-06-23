@@ -93,10 +93,12 @@
     <Compile Include="ComponentModel\Editor\PropertyMapper.cs" />
     <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
     <Compile Include="ComponentModel\Editor\ViewModelEditor.cs" />
+    <Compile Include="ComponentModel\InvokeOnAttribute.cs" />
     <Compile Include="ComponentModel\NotifyPropertyChangedAttribute.cs" />
     <Compile Include="ComponentModel\NotifyPropertyChangedObject.cs" />
     <Compile Include="ComponentModel\PropertySelector.cs" />
     <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
+    <Compile Include="ComponentModel\ThreadKind.cs" />
     <Compile Include="ComponentModel\ViewModel.cs" />
     <Compile Include="CurryingFunc.cs" />
     <Compile Include="DayOfWeek.cs" />
