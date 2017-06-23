@@ -39,8 +39,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annotations\AnnotationAttribute.cs" />
-    <Compile Include="Annotations\ThreadSafetyAttribute.cs" />
+    <Compile Include="..\Jasily.Core\Annotations\AnnotationAttribute.cs">
+      <Link>Annotations\AnnotationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily.Core\Annotations\ThreadSafetyAttribute.cs">
+      <Link>Annotations\ThreadSafetyAttribute.cs</Link>
+    </Compile>
     <Compile Include="Data\Serialization\ISerializer.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="IDisposable.cs" />

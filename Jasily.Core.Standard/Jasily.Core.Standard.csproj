@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <RootNamespace>Jasily.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DocumentationFile>bin\Release\netstandard1.4\Jasily.Core.Standard.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Jasily.Core\Annotations\AnnotationAttribute.cs" Link="Annotations\AnnotationAttribute.cs" />
+    <Compile Include="..\Jasily.Core\Annotations\ThreadSafetyAttribute.cs" Link="Annotations\ThreadSafetyAttribute.cs" />
+    <Compile Include="..\Jasily.Core\Data\Serialization\ISerializer.cs" Link="Data\Serialization\ISerializer.cs" />
+    <Compile Include="..\Jasily.Core\Empty.cs" Link="Empty.cs" />
+    <Compile Include="..\Jasily.Core\IDisposable.cs" Link="IDisposable.cs" />
+    <Compile Include="..\Jasily.Core\IGetKey.cs" Link="IGetKey.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Annotations\" />
+    <Folder Include="Data\Serialization\" />
+  </ItemGroup>
+
+</Project>
