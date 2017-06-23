@@ -54,6 +54,7 @@
     <Compile Include="ChainReleaser.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
     <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
+    <Compile Include="Collections\Generic\CombineComparer.cs" />
     <Compile Include="Collections\Generic\CriticalValue.cs" />
     <Compile Include="Collections\Generic\GroupedList.cs" />
     <Compile Include="Collections\Generic\IndexValuePair.cs" />
