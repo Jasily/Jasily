@@ -162,6 +162,7 @@
     <Compile Include="DependencyInjection.Features\TestFeatures.cs" />
     <Compile Include="DependencyInjection.MethodInvoker\TestPropertyInvoker.cs" />
     <Compile Include="DependencyInjection.Typed\TestGenericTypeMaker.cs" />
+    <Compile Include="TestKeySelector.cs" />
     <Compile Include="TestUtils\CodeTimer.cs" />
     <Compile Include="TestUtils\CodeTimerHelper.cs" />
     <Compile Include="TestUtils\CodeTimerResult.cs" />

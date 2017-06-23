@@ -14,19 +14,40 @@ namespace Jasily
     {
         #region comparer
 
+        /// <summary>
+        /// provide a easy way to create <see cref="IEqualityComparer{T}"/> and <see cref="IComparer{T}"/> by single member for object.
+        /// </summary>
+        /// <typeparam name="TItem"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="keySelector"></param>
+        /// <returns></returns>
         public static KeySelectorComparer<TItem, TKey> CreateComparer<TItem, TKey>([NotNull] Func<TItem, TKey> keySelector)
-           => new KeySelectorComparer<TItem, TKey>(keySelector);
-
-        public static KeySelectorComparer<T, string> CreateComparer<T>([NotNull] Func<T, string> keySelector,
-            [NotNull] StringComparer comparer)
-            => new StringKeySelectorComparer<T>(keySelector, comparer);
-
-        private class StringKeySelectorComparer<T> : KeySelectorComparer<T, string>
         {
-            public StringKeySelectorComparer([NotNull] Func<T, string> keySelector, [NotNull] StringComparer comparer)
-                : base(keySelector, comparer, comparer)
-            {
-            }
+            return new KeySelectorComparer<TItem, TKey>(keySelector);
+        }
+
+        public static KeySelectorComparer<TItem, TKey> CreateComparer<TItem, TKey>([NotNull] Func<TItem, TKey> keySelector,
+            [NotNull] IComparer<TKey> comparer)
+        {
+            return new KeySelectorComparer<TItem, TKey>(keySelector, comparer, EqualityComparer<TKey>.Default);
+        }
+
+        public static KeySelectorComparer<TItem, TKey> CreateComparer<TItem, TKey>([NotNull] Func<TItem, TKey> keySelector,
+            [NotNull] IEqualityComparer<TKey> equalityComparer)
+        {
+            return new KeySelectorComparer<TItem, TKey>(keySelector, Comparer<TKey>.Default, equalityComparer);
+        }
+
+        public static KeySelectorComparer<TItem, TKey> CreateComparer<TItem, TKey>([NotNull] Func<TItem, TKey> keySelector,
+            [NotNull] IComparer<TKey> comparer, [NotNull] IEqualityComparer<TKey> equalityComparer)
+        {
+            return new KeySelectorComparer<TItem, TKey>(keySelector, comparer, equalityComparer);
+        }
+
+        public static KeySelectorComparer<T, string> CreateComparer<T>([NotNull] Func<T, string> keySelector, [NotNull] StringComparer comparer)
+        {
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+            return new KeySelectorComparer<T, string>(keySelector, comparer, comparer);
         }
 
         #endregion

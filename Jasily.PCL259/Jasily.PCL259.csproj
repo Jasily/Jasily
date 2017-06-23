@@ -36,19 +36,93 @@
     <DocumentationFile>bin\Release\Jasily.PCL259.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CachedHashCode.cs" />
+    <Compile Include="..\Jasily\ActionReleaser.cs">
+      <Link>ActionReleaser.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\CachedHashCode.cs">
+      <Link>CachedHashCode.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ChainReleaser.cs">
+      <Link>ChainReleaser.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\CachedLastEqualityComparer.cs">
+      <Link>Collections\Generic\CachedLastEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\CachedLastEqualityComparerExtensions.cs">
+      <Link>Collections\Generic\CachedLastEqualityComparerExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\CriticalValue.cs">
+      <Link>Collections\Generic\CriticalValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\GroupedList.cs">
+      <Link>Collections\Generic\GroupedList.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\IndexValuePair.cs">
+      <Link>Collections\Generic\IndexValuePair.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\KeySelectorComparer.cs">
+      <Link>Collections\Generic\KeySelectorComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\NameValuePair.cs">
+      <Link>Collections\Generic\NameValuePair.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\Range.cs">
+      <Link>Collections\Generic\Range.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\RangeDictionary.cs">
+      <Link>Collections\Generic\RangeDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\RangeMode.cs">
+      <Link>Collections\Generic\RangeMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Collections\Generic\ReverseComparer.cs">
+      <Link>Collections\Generic\ReverseComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\CurryingFunc.cs">
+      <Link>CurryingFunc.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\DayOfWeek.cs">
+      <Link>DayOfWeek.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\DayOfWeekExtensions.cs">
+      <Link>DayOfWeekExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\EventArgs.cs">
+      <Link>EventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\FastEnum.cs">
+      <Link>FastEnum.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\IReThrowContainer.cs">
+      <Link>IReThrowContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\KeySelector.cs">
+      <Link>KeySelector.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ObjectContainer.cs">
+      <Link>ObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Releaser.cs">
+      <Link>Releaser.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\Singleton.cs">
+      <Link>Singleton.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\TypedEventHandler.cs">
+      <Link>TypedEventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\TypedEventHandlerExtensions.cs">
+      <Link>TypedEventHandlerExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\ValueContainer.cs">
+      <Link>ValueContainer.cs</Link>
+    </Compile>
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Funcs\FuncTemplate.cs" />
-    <Compile Include="ChainReleaser.cs" />
-    <Compile Include="Collections\Generic\KeySelectorComparer.cs" />
-    <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="ComponentModel\Editor\IConverter.cs" />
     <Compile Include="ComponentModel\Editor\IReverseConverter.cs" />
     <Compile Include="ComponentModel\Editor\ITwoWayConverter.cs" />
     <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
-    <Compile Include="CurryingFunc.cs" />
-    <Compile Include="EventArgs.cs" />
-    <Compile Include="IReThrowContainer.cs" />
     <Compile Include="Linq\Generater.cs" />
     <Compile Include="Net\WebResult.cs" />
     <Compile Include="Net\WebResultExtensions.cs" />
@@ -60,21 +134,11 @@
     <Compile Include="Reflection\Descriptors\TypeInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\Descriptor.cs" />
     <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
-    <Compile Include="FastEnum.cs" />
     <Compile Include="Cache\Funcs\ObjectFunc.cs" />
     <Compile Include="Cache\Funcs\StringFunc.cs" />
     <Compile Include="Cache\Internal\Default.cs" />
     <Compile Include="Cache\Task.cs" />
-    <Compile Include="Collections\Generic\NameValuePair.cs" />
     <Compile Include="Collections\IncrementBit.cs" />
-    <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
-    <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
-    <Compile Include="Collections\Generic\CriticalValue.cs" />
-    <Compile Include="Collections\Generic\GroupedList.cs" />
-    <Compile Include="Collections\Generic\IndexValuePair.cs" />
-    <Compile Include="Collections\Generic\Range.cs" />
-    <Compile Include="Collections\Generic\RangeDictionary.cs" />
-    <Compile Include="Collections\Generic\RangeMode.cs" />
     <Compile Include="Collections\ObjectModel\GroupedObservableCollection.cs" />
     <Compile Include="ComponentModel\Editor\BaseEditor.cs" />
     <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrEmptyAttribute.cs" />
@@ -105,16 +169,12 @@
     <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
     <Compile Include="ComponentModel\ViewModel.cs" />
     <Compile Include="Diagnostics\DataCheck.cs" />
-    <Compile Include="KeySelector.cs" />
-    <Compile Include="Releaser.cs" />
     <Compile Include="Text\IStringFinderSource.cs" />
     <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringFinder.cs" />
     <Compile Include="Text\TextReplacer.cs" />
     <Compile Include="Threading\ReentrantReleaser.cs" />
     <Compile Include="Utils\DateTimeHelper.cs" />
-    <Compile Include="DayOfWeek.cs" />
-    <Compile Include="DayOfWeekExtensions.cs" />
     <Compile Include="Diagnostics\Debug.cs" />
     <Compile Include="IO\ByteSize.cs" />
     <Compile Include="IO\ExtensionsStream.cs" />
@@ -133,13 +193,11 @@
     <Compile Include="Net\Http\HttpUriBuilder.cs" />
     <Compile Include="Net\Http\ResourceStrings.cs" />
     <Compile Include="Net\Sockets\Port.cs" />
-    <Compile Include="ObjectContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\Attributes\EntryAttribute.cs" />
     <Compile Include="Reflection\Activator.cs" />
     <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />
     <Compile Include="Reflection\IActivator.cs" />
-    <Compile Include="Singleton.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringSegment.cs" />
     <Compile Include="Text\StringSegmentExtensions.cs" />
@@ -149,10 +207,6 @@
     <Compile Include="Threading\SemaphoreSlimExtensions.cs" />
     <Compile Include="Threading\Tasks\FixedTaskScheduler.cs" />
     <Compile Include="Threading\Timeout.cs" />
-    <Compile Include="TypedEventHandler.cs" />
-    <Compile Include="TypedEventHandlerExtensions.cs" />
-    <Compile Include="ValueContainer.cs" />
-    <Compile Include="ActionReleaser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">

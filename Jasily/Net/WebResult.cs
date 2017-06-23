@@ -1,0 +1,101 @@
+﻿using System;
+using System.Diagnostics;
+using System.Net;
+
+namespace Jasily.Net
+{
+    public class WebResult : IDisposable
+    {
+        private bool isDisposed;
+
+        /// <summary>
+        /// maybe null if not contain response.
+        /// </summary>
+        public WebResponse Response { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">if response is null.</exception>
+        /// <param name="response"></param>
+        public WebResult(WebResponse response)
+        {
+            this.IsSuccess = true;
+            this.Response = response ?? throw new ArgumentNullException(nameof(response));
+        }
+
+        ~WebResult()
+        {
+            if (!this.isDisposed) this.Dispose();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">if e is null.</exception>
+        /// <param name="e"></param>
+        public WebResult(WebException e)
+        {
+            this.IsSuccess = false;
+            this.WebException = e ?? throw new ArgumentNullException(nameof(e));
+            this.Response = e.Response;
+        }
+
+        public bool IsSuccess { get; protected set; }
+
+        /// <summary>
+        /// return null if this.Type != WebResultType.WebException
+        /// </summary>
+        public WebException WebException { get; }
+
+        public void Dispose()
+        {
+            this.isDisposed = true;
+            this.Response?.Dispose();
+        }
+    }
+
+    public class WebResult<T> : WebResult
+    {
+        /// <summary>
+        /// set the default value for WebResult if throw WebException. like you can set to Enumerable.Empty().!!
+        /// </summary>
+        public static T DefaultResultValue { get; set; }
+
+        public WebResult(WebResponse response, T result)
+            : base(response)
+        {
+            Debug.Assert(result != null, "if result is null, you should use WebResult, not WebResult<T>.");
+
+            this.Result = result;
+        }
+
+        public WebResult(WebException e)
+            : base(e)
+        {
+            this.Result = DefaultResultValue;
+        }
+
+        public T Result { get; }
+
+        /// <summary>
+        /// throw System.Net.WebException if this.WebException not null.
+        /// </summary>
+        /// <exception cref="System.Net.WebException"></exception>
+        /// <returns></returns>
+        public T GetResultOrThrow()
+        {
+            if (this.WebException != null)
+                throw this.WebException;
+
+            return this.Result;
+        }
+
+        public WebResult<TOut> Cast<TOut>(Func<T, TOut> selector)
+        {
+            return this.WebException != null
+                ? new WebResult<TOut>(this.WebException)
+                : new WebResult<TOut>(this.Response, selector(this.Result));
+        }
+    }
+}

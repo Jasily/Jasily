@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <RootNamespace>Jasily</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\Jasily.Standard.xml</DocumentationFile>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Jasily\Collections\Generic\KeySelectorComparer.cs" Link="Collections\Generic\KeySelectorComparer.cs" />
+    <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedAttribute.cs" Link="ComponentModel\NotifyPropertyChangedAttribute.cs" />
+    <Compile Include="..\Jasily\ComponentModel\NotifyPropertyChangedObject.cs" Link="ComponentModel\NotifyPropertyChangedObject.cs" />
+    <Compile Include="..\Jasily\ComponentModel\PropertySelector.cs" Link="ComponentModel\PropertySelector.cs" />
+    <Compile Include="..\Jasily\ComponentModel\RefreshPropertiesMapper.cs" Link="ComponentModel\RefreshPropertiesMapper.cs" />
+    <Compile Include="..\Jasily\ComponentModel\ViewModel.cs" Link="ComponentModel\ViewModel.cs" />
+    <Compile Include="..\Jasily\KeySelector.cs" Link="KeySelector.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Collections\Generic\" />
+    <Folder Include="ComponentModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj" />
+    <ProjectReference Include="..\Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj" />
+  </ItemGroup>
+
+</Project>

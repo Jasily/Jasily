@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{589292C8-95B6-4FCF-8C3F-2CD3FE976B57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Jasily</RootNamespace>
+    <AssemblyName>Jasily</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionReleaser.cs" />
+    <Compile Include="CachedHashCode.cs" />
+    <Compile Include="Cache\Action.cs" />
+    <Compile Include="Cache\Funcs\FuncTemplate.cs" />
+    <Compile Include="Cache\Funcs\ObjectFunc.cs" />
+    <Compile Include="Cache\Funcs\StringFunc.cs" />
+    <Compile Include="Cache\Internal\Default.cs" />
+    <Compile Include="Cache\Task.cs" />
+    <Compile Include="ChainReleaser.cs" />
+    <Compile Include="Collections\Generic\CachedLastEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\CachedLastEqualityComparerExtensions.cs" />
+    <Compile Include="Collections\Generic\CriticalValue.cs" />
+    <Compile Include="Collections\Generic\GroupedList.cs" />
+    <Compile Include="Collections\Generic\IndexValuePair.cs" />
+    <Compile Include="Collections\Generic\KeySelectorComparer.cs" />
+    <Compile Include="Collections\Generic\NameValuePair.cs" />
+    <Compile Include="Collections\Generic\Range.cs" />
+    <Compile Include="Collections\Generic\RangeDictionary.cs" />
+    <Compile Include="Collections\Generic\RangeMode.cs" />
+    <Compile Include="Collections\Generic\ReverseComparer.cs" />
+    <Compile Include="Collections\IncrementBit.cs" />
+    <Compile Include="Collections\ObjectModel\GroupedObservableCollection.cs" />
+    <Compile Include="ComponentModel\Editor\BaseEditor.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrEmptyAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteIfNotNullOrWhiteSpaceAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Conditions\WriteToObjectConditionAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\CollectionConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullCollectionConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullOrTrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\EmptyToNullStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\Int32ToStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\ToStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\TrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\WhiteSpaceToNullOrTrimStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\Converters\WhiteSpaceToNullStringConverter.cs" />
+    <Compile Include="ComponentModel\Editor\EditableAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\EditableMemberAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\EditableViewModelAttribute.cs" />
+    <Compile Include="ComponentModel\Editor\IConverter.cs" />
+    <Compile Include="ComponentModel\Editor\IEditor.cs" />
+    <Compile Include="ComponentModel\Editor\IPropertyContainer.cs" />
+    <Compile Include="ComponentModel\Editor\IReverseConverter.cs" />
+    <Compile Include="ComponentModel\Editor\ITwoWayConverter.cs" />
+    <Compile Include="ComponentModel\Editor\MemberEditor.cs" />
+    <Compile Include="ComponentModel\Editor\ObjectEditorViewModel.cs" />
+    <Compile Include="ComponentModel\Editor\Property.cs" />
+    <Compile Include="ComponentModel\Editor\PropertyMapper.cs" />
+    <Compile Include="ComponentModel\Editor\TwoWayConverter.cs" />
+    <Compile Include="ComponentModel\Editor\ViewModelEditor.cs" />
+    <Compile Include="ComponentModel\NotifyPropertyChangedAttribute.cs" />
+    <Compile Include="ComponentModel\NotifyPropertyChangedObject.cs" />
+    <Compile Include="ComponentModel\PropertySelector.cs" />
+    <Compile Include="ComponentModel\RefreshPropertiesMapper.cs" />
+    <Compile Include="ComponentModel\ViewModel.cs" />
+    <Compile Include="CurryingFunc.cs" />
+    <Compile Include="DayOfWeek.cs" />
+    <Compile Include="DayOfWeekExtensions.cs" />
+    <Compile Include="Diagnostics\DataCheck.cs" />
+    <Compile Include="Diagnostics\Debug.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="FastEnum.cs" />
+    <Compile Include="IO\ByteSize.cs" />
+    <Compile Include="IO\ExtensionsStream.cs" />
+    <Compile Include="IO\Internal\ReadonlyStream.cs" />
+    <Compile Include="IO\Internal\WrapStream.cs" />
+    <Compile Include="IO\IStreamHandler.cs" />
+    <Compile Include="IO\IStreamReadHandler.cs" />
+    <Compile Include="IO\IStringSegmentReader.cs" />
+    <Compile Include="IO\MergedReadonlyStream.cs" />
+    <Compile Include="IO\StreamReadObserverHandler.cs" />
+    <Compile Include="IO\StreamReadProgressHandler.cs" />
+    <Compile Include="IReThrowContainer.cs" />
+    <Compile Include="KeySelector.cs" />
+    <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />
+    <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
+    <Compile Include="Linq\Expressions\Cache\Extensions.cs" />
+    <Compile Include="Linq\Generater.cs" />
+    <Compile Include="Net\Http\Headers\RangeHeader.cs" />
+    <Compile Include="Net\Http\HttpUriBuilder.cs" />
+    <Compile Include="Net\Http\ResourceStrings.cs" />
+    <Compile Include="Net\Sockets\Port.cs" />
+    <Compile Include="Net\WebResult.cs" />
+    <Compile Include="Net\WebResultExtensions.cs" />
+    <Compile Include="ObjectContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\Activator.cs" />
+    <Compile Include="Reflection\Attributes\DefaultValueAttribute.cs" />
+    <Compile Include="Reflection\Attributes\EntryAttribute.cs" />
+    <Compile Include="Reflection\Descriptors\Descriptor.cs" />
+    <Compile Include="Reflection\Descriptors\FieldInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\Internal\MemberInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\MethodInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\PropertyInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\TypeDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\TypeInfoDescriptor.cs" />
+    <Compile Include="Reflection\IActivator.cs" />
+    <Compile Include="Releaser.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Text\IStringFinderSource.cs" />
+    <Compile Include="Text\StringBuilderCache.cs" />
+    <Compile Include="Text\StringConvertHelper.cs" />
+    <Compile Include="Text\StringFinder.cs" />
+    <Compile Include="Text\StringSegment.cs" />
+    <Compile Include="Text\StringSegmentExtensions.cs" />
+    <Compile Include="Text\TextReplacer.cs" />
+    <Compile Include="Threading\LockFreeResource.cs" />
+    <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Threading\ReentrantReleaser.cs" />
+    <Compile Include="Threading\Resource.cs" />
+    <Compile Include="Threading\SemaphoreSlimExtensions.cs" />
+    <Compile Include="Threading\Tasks\FixedTaskScheduler.cs" />
+    <Compile Include="Threading\Timeout.cs" />
+    <Compile Include="TypedEventHandler.cs" />
+    <Compile Include="TypedEventHandlerExtensions.cs" />
+    <Compile Include="Utils\DateTimeHelper.cs" />
+    <Compile Include="ValueContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
+      <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
+      <Name>Jasily.Core.PCL259</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jasily.Extensions.System\Jasily.Extensions.System.csproj">
+      <Project>{c4ec5ed2-7e8a-4f1d-86f8-7d6b6016fe3f}</Project>
+      <Name>Jasily.Extensions.System</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
