@@ -33,7 +33,7 @@ class PackageXml:
         return os.path.split(self._path)[1]
 
     def load(self):
-        self._xml_model = ET.parse(path)
+        self._xml_model = ET.parse(self._path)
         return self._xml_model
 
     def save(self):
@@ -89,7 +89,7 @@ class VersionUpdater:
     def confirm(self):
         print('press any key to update version to %s:' % self._version)
         for pkg in self._xmls:
-            print('   ' + pkg)
+            print('   ' + str(pkg))
         input()
         for item in self._xmls:
             item.save()
