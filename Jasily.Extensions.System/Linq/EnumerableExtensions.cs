@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Jasily.Core;
 using Jasily.Extensions.System.Collections.Generic;
@@ -14,6 +17,39 @@ namespace Jasily.Extensions.System.Linq
     /// </summary>
     public static class EnumerableExtensions
     {
+        /// <summary>
+        /// Try direct get count if <paramref name="source"/> is 
+        /// <see cref="ICollection{T}"/> or <see cref="ICollection"/> or <see cref="IReadOnlyCollection{T}"/>.
+        /// This function do not enumerate any elements from <paramref name="source"/>.
+        /// return -1 if cannot get.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int TryDirectGetCount<T>([NotNull] this IEnumerable<T> source)
+        {
+            Debug.Assert(source != null);
+            return (source as ICollection<T>)?.Count ??
+                   (source as ICollection)?.Count ??
+                   (source as IReadOnlyCollection<T>)?.Count ?? -1;
+        }
+
+        /// <summary>
+        /// Try direct get count if <paramref name="source"/> is 
+        /// <see cref="ICollection"/>.
+        /// This function do not enumerate any elements from <paramref name="source"/>.
+        /// return -1 if cannot get.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int TryDirectGetCount([NotNull] this IEnumerable source)
+        {
+            Debug.Assert(source != null);
+            return (source as ICollection)?.Count ?? -1;
+        }
+
         /// <summary>
         /// CancellationToken support for enumerable.
         /// </summary>
@@ -294,46 +330,120 @@ namespace Jasily.Extensions.System.Linq
 
         #region random
 
-        public static T RandomTake<T>([NotNull] this T[] source, [NotNull] Random random, bool throwIfEmpty = false)
-            => (source as IList<T>).RandomTake(random, throwIfEmpty);
+        #region random take
 
-        public static T RandomTake<T>([NotNull] this List<T> source, [NotNull] Random random, bool throwIfEmpty = false)
-            => (source as IList<T>).RandomTake(random, throwIfEmpty);
-
-        public static T RandomTake<T>([NotNull] this IList<T> source, [NotNull] Random random, bool throwIfEmpty = false)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static T InternalRandomTake<T>([NotNull] this IList<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
             switch (source.Count)
             {
-                case 0:
-                    if (throwIfEmpty) throw new InvalidOperationException();
-                    return default(T);
+                case 0: throw new InvalidOperationException();
                 case 1: return source[0];
             }
             return source[random.Next(source.Count)];
         }
 
-        public static T RandomTake<T>([NotNull] this IReadOnlyList<T> source, [NotNull] Random random, bool throwIfEmpty = false)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static T InternalRandomTake<T>([NotNull] this IReadOnlyList<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
             switch (source.Count)
             {
-                case 0:
-                    if (throwIfEmpty) throw new InvalidOperationException();
-                    return default(T);
+                case 0: throw new InvalidOperationException();
                 case 1: return source[0];
             }
             return source[random.Next(source.Count)];
         }
 
+        /// <summary>
+        /// Random take one element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        public static T RandomTake<T>([NotNull] this T[] source, [NotNull] Random random)
+        {
+            return InternalRandomTake((IList<T>) source, random);
+        }
+
+        /// <summary>
+        /// Random take one element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        public static T RandomTake<T>([NotNull] this List<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTake((IList<T>)source, random);
+        }
+
+        /// <summary>
+        /// Random take one element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        public static T RandomTake<T>([NotNull] this IList<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTake(source, random);
+        }
+
+        /// <summary>
+        /// Random take one element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
+        public static T RandomTake<T>([NotNull] this IReadOnlyList<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTake(source, random);
+        }
+
+        /// <summary>
+        /// Random take one element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty.</exception>
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static T RandomTake<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random, bool throwIfEmpty = false)
+        public static T RandomTake<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (random == null) throw new ArgumentNullException(nameof(random));
-
             switch (source)
             {
                 case IList<T> li:
@@ -341,88 +451,188 @@ namespace Jasily.Extensions.System.Linq
 
                 case IReadOnlyList<T> li:
                     return li.RandomTake(random);
-
-                default:
-                    break;
             }
 
-            var c = source.TryGetCount();
-            if (c < 0)
-            {
-                return source.ToArray().RandomTake(random);
-            }
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
-            switch (c)
-            {
-                case 0:
-                    if (throwIfEmpty) throw new InvalidOperationException();
-                    return default(T);
-                case 1:
-                    return source.First();
-                default:
-                    return source.Skip(random.Next(c)).First();
-            }
+            var c = source.TryDirectGetCount();
+            return c < 0
+                ? source.ToArray().RandomTake(random)
+                : (c > 1 ? source.Skip(random.Next(c)) : source).First();
         }
 
-        public static IEnumerable<T> RandomSort<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static T InternalRandomTakeOrDefault<T>([NotNull] this IList<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
-            return (source as IList<T>)?.RandomSort(random) ??
-                   (source as ICollection<T>)?.RandomSort(random) ??
-                   (source.ToArray()).RandomSort(random);
+            switch (source.Count)
+            {
+                case 0: return default(T);
+                case 1: return source[0];
+            }
+            return source[random.Next(source.Count)];
         }
 
-        public static IEnumerable<T> RandomSort<T>([NotNull] this ICollection<T> source, [NotNull] Random random)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static T InternalRandomTakeOrDefault<T>([NotNull] this IReadOnlyList<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
-            var count = source.Count;
-            if (count == 0) yield break;
-            if (count == 1)
+            switch (source.Count)
             {
-                yield return source.First();
-                yield break;
+                case 0: return default(T);
+                case 1: return source[0];
             }
-            var array = Enumerable.Range(0, count).ToArray();
-            var cache = new List<T>(count);
-            using (var itor = source.GetEnumerator())
+            return source[random.Next(source.Count)];
+        }
+
+        /// <summary>
+        /// Random take one element or <see langword="default"/>(T) if <paramref name="source"/> is empty.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        public static T RandomTakeOrDefault<T>([NotNull] this T[] source, [NotNull] Random random)
+        {
+            return InternalRandomTakeOrDefault((IList<T>)source, random);
+        }
+
+        /// <summary>
+        /// Random take one element or <see langword="default"/>(T) if <paramref name="source"/> is empty.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        public static T RandomTakeOrDefault<T>([NotNull] this List<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTakeOrDefault((IList<T>)source, random);
+        }
+
+        /// <summary>
+        /// Random take one element or <see langword="default"/>(T) if <paramref name="source"/> is empty.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        public static T RandomTakeOrDefault<T>([NotNull] this IList<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTakeOrDefault(source, random);
+        }
+
+        /// <summary>
+        /// Random take one element or <see langword="default"/>(T) if <paramref name="source"/> is empty.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        public static T RandomTakeOrDefault<T>([NotNull] this IReadOnlyList<T> source, [NotNull] Random random)
+        {
+            return InternalRandomTakeOrDefault(source, random);
+        }
+
+        /// <summary>
+        /// Random take one element or <see langword="default"/>(T) if <paramref name="source"/> is empty.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">one of arguments is null.</exception>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public static T RandomTakeOrDefault<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
+        {
+            switch (source)
             {
+                case IList<T> li:
+                    return li.RandomTakeOrDefault(random);
+
+                case IReadOnlyList<T> li:
+                    return li.RandomTakeOrDefault(random);
+            }
+
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
+
+            var c = source.TryDirectGetCount();
+            return c < 0 
+                ? source.ToArray().RandomTake(random) 
+                : (c > 1 ? source.Skip(random.Next(c)) : source).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region random order
+
+        /// <summary>
+        /// Random sort the sequence.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        [NotNull, Pure, SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public static IEnumerable<T> RandomOrderBy<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
+
+            IEnumerable<T> InternalOrderBy(IList<T> list)
+            {
+                var count = list.Count;
+                if (count == 0) yield break;
+                if (count == 1)
+                {
+                    yield return list[0];
+                    yield break;
+                }
+                var array = Enumerable.Range(0, count).ToArray();
                 while (count > 0)
                 {
                     var index = random.Next(count);
-                    while (index >= cache.Count)
-                    {
-                        if (!itor.MoveNext()) throw new InvalidOperationException("source was changed");
-                        cache.Add(itor.Current);
-                    }
-                    yield return cache[array[index]];
+                    yield return list[array[index]];
                     array[index] = array[count - 1];
                     count--;
                 }
             }
+
+            switch (source)
+            {
+                case List<T> l:
+                    return InternalOrderBy(l);
+                case T[] a:
+                    return InternalOrderBy(a);
+                default:
+                    return InternalOrderBy(source.ToArray());
+            }
         }
 
-        public static IEnumerable<T> RandomSort<T>([NotNull] this IList<T> source, [NotNull] Random random)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (random == null) throw new ArgumentNullException(nameof(random));
-            var count = source.Count;
-            if (count == 0) yield break;
-            if (count == 1)
-            {
-                yield return source[0];
-                yield break;
-            }
-            var array = Enumerable.Range(0, count).ToArray();
-            while (count > 0)
-            {
-                var index = random.Next(count);
-                yield return source[array[index]];
-                array[index] = array[count - 1];
-                count--;
-            }
-        }
+        #endregion
 
         #endregion
 
@@ -519,6 +729,7 @@ namespace Jasily.Extensions.System.Linq
         /// <param name="count"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
         public static IEnumerable<T> Skip<T>([NotNull] this T[] source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -543,6 +754,7 @@ namespace Jasily.Extensions.System.Linq
         /// <param name="count"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
         public static IEnumerable<T> Skip<T>([NotNull] this List<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -563,6 +775,7 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
+        [NotNull]
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

@@ -70,33 +70,7 @@ namespace Jasily.Extensions.System.Linq
 
         #region count
 
-        /// <summary>
-        /// return -1 if cannot get.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        [PublicAPI]
-        public static int TryGetCount<T>([NotNull] this IEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return (source as ICollection<T>)?.Count ??
-                   (source as ICollection)?.Count ??
-                   (source as IReadOnlyCollection<T>)?.Count ?? -1;
-        }
-
-        /// <summary>
-        /// return -1 if cannot get.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        [PublicAPI]
-        public static int TryGetCount([NotNull] this IEnumerable source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return (source as ICollection)?.Count ?? -1;
-        }
+        
 
         [PublicAPI]
         public static int Count([NotNull] this IEnumerable source)
