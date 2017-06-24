@@ -15,6 +15,7 @@ namespace Jasily.Extensions.System.Linq
     /// <summary>
     /// extension methods for <see cref="IEnumerable{T}"/>.
     /// </summary>
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static class EnumerableExtensions
     {
         /// <summary>
@@ -80,135 +81,7 @@ namespace Jasily.Extensions.System.Linq
 
         #region edit enumerable
 
-        #region add
-
-        [PublicAPI]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T item, Position position = Position.End)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            switch (position)
-            {
-                case Position.Begin:
-                    IEnumerable<T> StartIterator()
-                    {
-                        yield return item;
-                        foreach (var z in source) yield return z;
-                    }
-                    return StartIterator();
-
-                case Position.End:
-                    IEnumerable<T> EndIterator()
-                    {
-                        foreach (var z in source) yield return z;
-                        yield return item;
-                    }
-                    return EndIterator();
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(position), position, null);
-            }
-        }
         
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T item, int index)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            IEnumerable<T> Iterator()
-            {
-                using (var itor = source.GetEnumerator())
-                {
-                    var i = 0;
-                    while (i < index && itor.MoveNext())
-                    {
-                        yield return itor.Current;
-                        i++;
-                    }
-                    yield return item;
-                    while (itor.MoveNext()) yield return itor.Current;
-                }
-            }
-
-            return Iterator();
-        }
-
-        #endregion
-
-        #region insert or set
-
-        public static IEnumerable<T> Insert<T>([NotNull] this IEnumerable<T> source, int index, T item)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
-
-            IEnumerable<T> Iterator()
-            {
-                var i = 0;
-                using (var itor = source.GetEnumerator())
-                {
-                    while (i < index && itor.MoveNext())
-                    {
-                        yield return itor.Current;
-                        i++;
-                    }
-
-                    if (i == index)
-                    {
-                        yield return item;
-                    }
-                    else
-                    {
-                        throw new IndexOutOfRangeException(
-                            $"source only contains {i} element. cannot insert into index <{index}>.");
-                    }
-
-                    while (itor.MoveNext())
-                    {
-                        yield return itor.Current;
-                    }
-                }
-            };
-
-            return Iterator();
-        }
-
-        public static IEnumerable<T> Set<T>([NotNull] this IEnumerable<T> source, int index, T item)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
-
-            IEnumerable<T> Iterator()
-            {
-                var i = 0;
-                using (var itor = source.GetEnumerator())
-                {
-                    while (i < index && itor.MoveNext())
-                    {
-                        yield return itor.Current;
-                        i++;
-                    }
-
-                    if (i == index && itor.MoveNext())
-                    {
-                        yield return item;
-                    }
-                    else
-                    {
-                        throw new IndexOutOfRangeException(
-                            $"source only contains {i} element. cannot set index <{index}>.");
-                    }
-
-                    while (itor.MoveNext())
-                    {
-                        yield return itor.Current;
-                    }
-                }
-            };
-
-            return Iterator();
-        }
-
-        #endregion
 
         #region join
 
@@ -258,30 +131,6 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
-        public static T Index<T>([NotNull] this IEnumerable<T> source, int index)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
-
-            if (source is IList<T> list)
-            {
-                if (list.Count <= index) throw new IndexOutOfRangeException();
-                return list[index];
-            }
-
-            if (source is IReadOnlyList<T> list2)
-            {
-                if (list2.Count <= index) throw new IndexOutOfRangeException();
-                return list2[index];
-            }
-
-            using (var itor = source.Skip(index).GetEnumerator())
-            {
-                if (!itor.MoveNext()) throw new IndexOutOfRangeException();
-                return itor.Current;
-            }
-        }
-
         private static IEnumerable<T> AppendToStartIterator<T>([NotNull] IEnumerable<T> source, T value)
         {
             yield return value;
@@ -313,16 +162,41 @@ namespace Jasily.Extensions.System.Linq
 
         #region null <=> empty
 
+        /// <summary>
+        /// Return <see cref="Enumerable.Empty{T}"/> if <paramref name="source"/> is <see langword="null"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
         [NotNull]
-        public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> enumerable)
-            => enumerable ?? Enumerable.Empty<T>();
+        public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();
 
+        /// <summary>
+        /// Return a empty <see cref="Array"/> if <paramref name="array"/> is <see langword="null"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <returns></returns>
         [NotNull]
         public static T[] EmptyIfNull<T>([CanBeNull] this T[] array) => array ?? (T[])Enumerable.Empty<T>();
 
+        /// <summary>
+        /// Return <see langword="null"/> if <paramref name="array"/> is empty.
+        /// This is useful on database model or json.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <returns></returns>
         [CanBeNull]
-        public static T[] NullIfEmpty<T>([CanBeNull] this T[] item) => item == null || item.Length == 0 ? null : item;
+        public static T[] NullIfEmpty<T>([CanBeNull] this T[] array) => array == null || array.Length == 0 ? null : array;
 
+        /// <summary>
+        /// Return <see langword="null"/> if <paramref name="item"/> is empty.
+        /// This is useful on database model or json.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [CanBeNull]
         public static List<T> NullIfEmpty<T>([CanBeNull] this List<T> item) => item == null || item.Count == 0 ? null : item;
 
@@ -596,7 +470,7 @@ namespace Jasily.Extensions.System.Linq
         /// <param name="source"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        [NotNull, Pure, SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        [NotNull, Pure]
         public static IEnumerable<T> OrderBy<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -722,7 +596,7 @@ namespace Jasily.Extensions.System.Linq
         #region skip
 
         /// <summary>
-        /// Override <see cref="Enumerable.Skip"/> for <see cref="Array"/>.
+        /// Override <see cref="Enumerable.Skip{T}"/> for <see cref="Array"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -747,7 +621,7 @@ namespace Jasily.Extensions.System.Linq
         }
 
         /// <summary>
-        /// Override <see cref="Enumerable.Skip"/> for <see cref="List{T}"/>.
+        /// Override <see cref="Enumerable.Skip{T}"/> for <see cref="List{T}"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -775,13 +649,19 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
+        /// <summary>
+        /// Take last <paramref name="count"/> elements.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [NotNull]
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0) return Empty<T>.Array;
-
-            // ReSharper disable once PossibleMultipleEnumeration
+            
             switch (source)
             {
                 case T[] array:
@@ -792,14 +672,13 @@ namespace Jasily.Extensions.System.Linq
 
                 default:
                     var q = new Queue<T>(count);
-                    // ReSharper disable once PossibleMultipleEnumeration
                     foreach (var item in source)
                     {
                         if (q.Count == count)
                             q.Dequeue();
                         q.Enqueue(item);
                     }
-                    return q.AsReadOnly();
+                    return q;
             }
         }
 
@@ -842,6 +721,7 @@ namespace Jasily.Extensions.System.Linq
         /// <param name="action"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">throw if one of argument is null.</exception>
+        [NotNull]
         public static IEnumerable<T> Pipe<T>([NotNull] this IEnumerable<T> source, [NotNull]  Action<T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -852,6 +732,155 @@ namespace Jasily.Extensions.System.Linq
                 yield return element;
             }
         }
+
+        /// <summary>
+        /// Get element by index.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">throw if <paramref name="index"/> less then zero.</exception>
+        /// <exception cref="IndexOutOfRangeException">throw if <paramref name="index"/> greater then count of <paramref name="source"/>.</exception>
+        public static T Index<T>([NotNull] this IEnumerable<T> source, int index)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+
+            switch (source)
+            {
+                case IList<T> li:
+                    return li[index];
+
+                case IReadOnlyList<T> li:
+                    return li[index];
+
+                default:
+                    using (var itor = source.Skip(index).GetEnumerator())
+                    {
+                        if (!itor.MoveNext()) throw new IndexOutOfRangeException();
+                        return itor.Current;
+                    }
+            }
+        }
+
+        #region add or insert or set
+
+        /// <summary>
+        /// Append <paramref name="item"/> to end of <paramref name="source"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, T item)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            IEnumerable<T> EndIterator()
+            {
+                foreach (var z in source) yield return z;
+                yield return item;
+            }
+
+            return EndIterator();
+        }
+
+        /// <summary>
+        /// Insert <paramref name="item"/> into <paramref name="source"/> by <paramref name="index"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="index"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> Insert<T>([NotNull] this IEnumerable<T> source, int index, T item)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+
+            IEnumerable<T> Iterator()
+            {
+                var i = 0;
+                using (var itor = source.GetEnumerator())
+                {
+                    while (i < index && itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                        i++;
+                    }
+
+                    if (i == index)
+                    {
+                        yield return item;
+                    }
+                    else
+                    {
+                        throw new IndexOutOfRangeException(
+                            $"source only contains {i} element. cannot insert into index <{index}>.");
+                    }
+
+                    while (itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                    }
+                }
+            };
+
+            return Iterator();
+        }
+
+        /// <summary>
+        /// Set <paramref name="item"/> into <paramref name="source"/> by <paramref name="index"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="index"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> Set<T>([NotNull] this IEnumerable<T> source, int index, T item)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+
+            IEnumerable<T> Iterator()
+            {
+                var i = 0;
+                using (var itor = source.GetEnumerator())
+                {
+                    while (i < index && itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                        i++;
+                    }
+
+                    if (i == index && itor.MoveNext())
+                    {
+                        yield return item;
+                    }
+                    else
+                    {
+                        throw new IndexOutOfRangeException($"source only contains {i} element. cannot set index <{index}>.");
+                    }
+
+                    while (itor.MoveNext())
+                    {
+                        yield return itor.Current;
+                    }
+                }
+            };
+
+            return Iterator();
+        }
+
+        #endregion
 
         #endregion
 

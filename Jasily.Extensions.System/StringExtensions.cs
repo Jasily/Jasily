@@ -270,7 +270,7 @@ namespace Jasily.Extensions.System
                     return newValue + str.Substring(oldValue.Length);
                 default:
                     return string.Concat(Enumerable.Repeat(newValue, count)
-                        .Append(str.Substring(oldValue.Length * count), Position.End));
+                        .Append(str.Substring(oldValue.Length * count)));
             }
         }
 
