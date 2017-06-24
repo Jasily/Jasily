@@ -79,58 +79,6 @@ namespace Jasily.Extensions.System.Linq
             return Iterator();
         }
 
-        #region edit enumerable
-
-        
-
-        #region join
-
-        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, T spliter)
-        {
-            using (var itor = source.GetEnumerator())
-            {
-                if (!itor.MoveNext()) yield break;
-                while (true)
-                {
-                    yield return itor.Current;
-                    if (!itor.MoveNext()) yield break;
-                    yield return spliter;
-                }
-            }
-        }
-
-        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, Func<T> spliterFunc)
-        {
-            using (var itor = source.GetEnumerator())
-            {
-                if (!itor.MoveNext()) yield break;
-                while (true)
-                {
-                    yield return itor.Current;
-                    if (!itor.MoveNext()) yield break;
-                    yield return spliterFunc();
-                }
-            }
-        }
-
-        public static IEnumerable<T> JoinWith<T>(this IEnumerable<T> source, Action action)
-        {
-            using (var itor = source.GetEnumerator())
-            {
-                if (!itor.MoveNext()) yield break;
-                while (true)
-                {
-                    yield return itor.Current;
-                    if (!itor.MoveNext()) yield break;
-                    action();
-                }
-            }
-        }
-
-        #endregion
-
-        #endregion
-
         private static IEnumerable<T> AppendToStartIterator<T>([NotNull] IEnumerable<T> source, T value)
         {
             yield return value;
@@ -649,39 +597,6 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
-        /// <summary>
-        /// Take last <paramref name="count"/> elements.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        [NotNull]
-        public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count <= 0) return Empty<T>.Array;
-            
-            switch (source)
-            {
-                case T[] array:
-                    return array.Skip(count - array.Length);
-
-                case List<T> list:
-                    return list.Skip(count - list.Count);
-
-                default:
-                    var q = new Queue<T>(count);
-                    foreach (var item in source)
-                    {
-                        if (q.Count == count)
-                            q.Dequeue();
-                        q.Enqueue(item);
-                    }
-                    return q;
-            }
-        }
-
         #region for some array op
 
         /// <summary>
@@ -714,13 +629,46 @@ namespace Jasily.Extensions.System.Linq
         #region for some linq missing method
 
         /// <summary>
+        /// Take last <paramref name="count"/> elements.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        [NotNull]
+        public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count <= 0) return Empty<T>.Array;
+
+            switch (source)
+            {
+                case T[] array:
+                    return array.Skip(count - array.Length);
+
+                case List<T> list:
+                    return list.Skip(count - list.Count);
+
+                default:
+                    var q = new Queue<T>(count);
+                    foreach (var item in source)
+                    {
+                        if (q.Count == count)
+                            q.Dequeue();
+                        q.Enqueue(item);
+                    }
+                    return q;
+            }
+        }
+
+        /// <summary>
         /// Invoke <paramref name="action"/> on each element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">throw if one of argument is null.</exception>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
         [NotNull]
         public static IEnumerable<T> Pipe<T>([NotNull] this IEnumerable<T> source, [NotNull]  Action<T> action)
         {
@@ -876,6 +824,102 @@ namespace Jasily.Extensions.System.Linq
                     }
                 }
             };
+
+            return Iterator();
+        }
+
+        #endregion
+
+        #region join
+
+        /// <summary>
+        /// Join elements.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="spliter"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="source"/> is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> JoinWith<T>([NotNull] this IEnumerable<T> source, T spliter)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            IEnumerable<T> Iterator()
+            {
+                using (var itor = source.GetEnumerator())
+                {
+                    if (!itor.MoveNext()) yield break;
+                    while (true)
+                    {
+                        yield return itor.Current;
+                        if (!itor.MoveNext()) yield break;
+                        yield return spliter;
+                    }
+                }
+            }
+
+            return Iterator();
+        }
+
+        /// <summary>
+        /// Join elements.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="spliterGenerator"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> JoinWith<T>([NotNull] this IEnumerable<T> source, [NotNull] Func<T> spliterGenerator)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (spliterGenerator == null) throw new ArgumentNullException(nameof(spliterGenerator));
+
+            IEnumerable<T> Iterator()
+            {
+                using (var itor = source.GetEnumerator())
+                {
+                    if (!itor.MoveNext()) yield break;
+                    while (true)
+                    {
+                        yield return itor.Current;
+                        if (!itor.MoveNext()) yield break;
+                        yield return spliterGenerator();
+                    }
+                }
+            }
+
+            return Iterator();
+        }
+
+        /// <summary>
+        /// Join elements.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="spliterGenerator"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        [NotNull]
+        public static IEnumerable<T> JoinWith<T>([NotNull] this IEnumerable<T> source, [NotNull] Action spliterGenerator)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (spliterGenerator == null) throw new ArgumentNullException(nameof(spliterGenerator));
+
+            IEnumerable<T> Iterator()
+            {
+                using (var itor = source.GetEnumerator())
+                {
+                    if (!itor.MoveNext()) yield break;
+                    while (true)
+                    {
+                        yield return itor.Current;
+                        if (!itor.MoveNext()) yield break;
+                        spliterGenerator();
+                    }
+                }
+            }
 
             return Iterator();
         }
