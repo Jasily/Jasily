@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Core.Standard</id>
-        <version>0.0.0.2</version>
+        <version>0.1.0.2</version>
         <title>Jasily.Core.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -13,7 +13,7 @@
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <dependencies>
-            <dependency id="Jasily.Extensions.System" version="0.0.0.3" />
+            <dependency id="Jasily.Extensions.System" version="0.1.0.2" />
         </dependencies>
     </metadata>
     <files>
