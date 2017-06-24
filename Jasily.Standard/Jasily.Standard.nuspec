@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Standard</id>
-        <version>0.1.0.2</version>
+        <version>0.1.0.3</version>
         <title>Jasily.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -14,7 +14,7 @@
         <copyright>Copyright 2017</copyright>
         <tags>Jasily</tags>
         <dependencies>
-            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.2" />
+            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.3" />
         </dependencies>
     </metadata>
     <files>
