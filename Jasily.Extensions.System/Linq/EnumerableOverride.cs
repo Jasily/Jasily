@@ -11,30 +11,6 @@ namespace Jasily.Extensions.System.Linq
 {
     public static class EnumerableOverride
     {
-        #region skip
-
-        public static IEnumerable<T> Skip<T>([NotNull] this T[] source, int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            for (var i = count; i < source.Length; i++)
-            {
-                yield return source[i];
-            }
-        }
-
-        public static IEnumerable<T> Skip<T>([NotNull] this List<T> source, int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            for (var i = count; i < source.Count; i++)
-            {
-                yield return source[i];
-            }
-        }
-
-        #endregion
-
         #region orderby
 
         private static class C<T>

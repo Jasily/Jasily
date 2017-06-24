@@ -507,31 +507,87 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
+        #region override linq function for special type
+
+        #region skip
+
+        /// <summary>
+        /// Override <see cref="Enumerable.Skip"/> for <see cref="Array"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        public static IEnumerable<T> Skip<T>([NotNull] this T[] source, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source.Length < count) return source;
+
+            IEnumerable<T> Iterator()
+            {
+                for (var i = count; i < source.Length; i++)
+                {
+                    yield return source[i];
+                }
+            }
+
+            return Iterator();
+        }
+
+        /// <summary>
+        /// Override <see cref="Enumerable.Skip"/> for <see cref="List{T}"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        public static IEnumerable<T> Skip<T>([NotNull] this List<T> source, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source.Count < count) return source;
+
+            IEnumerable<T> Iterator()
+            {
+                for (var i = count; i < source.Count; i++)
+                {
+                    yield return source[i];
+                }
+            }
+
+            return Iterator();
+        }
+
+        #endregion
+
+        #endregion
+
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0) return Empty<T>.Array;
 
+            // ReSharper disable once PossibleMultipleEnumeration
             switch (source)
             {
                 case T[] array:
-                    return array.Length < count ? array.AsReadOnly() : array.Skip(count - array.Length);
+                    return array.Skip(count - array.Length);
 
                 case List<T> list:
-                    return list.Count < count ? list.AsReadOnly() : list.Skip(count - list.Count);
+                    return list.Skip(count - list.Count);
 
                 default:
-                    break;
+                    var q = new Queue<T>(count);
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    foreach (var item in source)
+                    {
+                        if (q.Count == count)
+                            q.Dequeue();
+                        q.Enqueue(item);
+                    }
+                    return q.AsReadOnly();
             }
-
-            var q = new Queue<T>(count);
-            foreach (var item in source)
-            {
-                if (q.Count == count)
-                    q.Dequeue();
-                q.Enqueue(item);
-            }
-            return q.AsReadOnly();
         }
 
         #region for some array op
