@@ -590,14 +590,14 @@ namespace Jasily.Extensions.System.Linq
         #region random order
 
         /// <summary>
-        /// Random sort the sequence.
+        /// Order by random.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="random"></param>
         /// <returns></returns>
         [NotNull, Pure, SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static IEnumerable<T> RandomOrder<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
+        public static IEnumerable<T> OrderBy<T>([NotNull] this IEnumerable<T> source, [NotNull] Random random)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
