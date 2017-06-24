@@ -10,6 +10,7 @@ import os
 import sys
 import traceback
 import xml.etree.ElementTree as ET
+import re
 
 
 NS = { 'ns': 'http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' }
@@ -29,7 +30,14 @@ class VersionUpdater:
 
     def read_version(self):
         with open(self._verfile) as fp:
-            return fp.read()
+            ver = fp.read()
+        m = re.match(r'^(\d)+\.(\d)+\.(\d)+\.(\d)+$', ver)
+        vs = list(m.groups())
+        vs[-1] = str(int(vs[-1]) + 1)
+        ver = '.'.join(vs)
+        with open(self._verfile, 'w') as fp:
+            fp.write(ver)
+        return ver
 
     def resolve_version(self, path):
         if os.path.splitext(path)[1].lower() != '.nuspec':
