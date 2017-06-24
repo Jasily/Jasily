@@ -15,6 +15,8 @@ namespace Jasily.ComponentModel
     public class Property<T> : IPropertyContainer, INotifyPropertyChanged
     {
         private T _value;
+
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Property(T value = default(T))

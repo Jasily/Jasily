@@ -139,9 +139,6 @@
     <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableOverride.cs">
       <Link>Linq\EnumerableOverride.cs</Link>
     </Compile>
-    <Compile Include="..\Jasily.Extensions.System\Linq\JEnumerable.cs">
-      <Link>Linq\JEnumerable.cs</Link>
-    </Compile>
     <Compile Include="..\Jasily.Extensions.System\Net\HttpWebRequestExtensions.cs">
       <Link>Net\HttpWebRequestExtensions.cs</Link>
     </Compile>

@@ -75,7 +75,6 @@
     <Compile Include="Linq\EnumerableAsyncExtensions.cs" />
     <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="Linq\EnumerableOverride.cs" />
-    <Compile Include="Linq\JEnumerable.cs" />
     <Compile Include="Net\HttpWebRequestExtensions.cs" />
     <Compile Include="Net\Sockets\SocketExtensions.cs" />
     <Compile Include="NumberExtensions.cs" />

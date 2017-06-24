@@ -44,7 +44,6 @@
     <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableAsyncExtensions.cs" Link="Linq\EnumerableAsyncExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableExtensions.cs" Link="Linq\EnumerableExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Linq\EnumerableOverride.cs" Link="Linq\EnumerableOverride.cs" />
-    <Compile Include="..\Jasily.Extensions.System\Linq\JEnumerable.cs" Link="Linq\JEnumerable.cs" />
     <Compile Include="..\Jasily.Extensions.System\Net\Sockets\SocketExtensions.cs" Link="Net\Sockets\SocketExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\NumberExtensions.cs" Link="NumberExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Position.cs" Link="Position.cs" />

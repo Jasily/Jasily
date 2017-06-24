@@ -9,6 +9,9 @@ using JetBrains.Annotations;
 
 namespace Jasily.Extensions.System.Linq
 {
+    /// <summary>
+    /// extension methods for <see cref="IEnumerable{T}"/>.
+    /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
@@ -504,23 +507,6 @@ namespace Jasily.Extensions.System.Linq
 
         #endregion
 
-        public static int CopyToArray<T>([NotNull] this IEnumerable<T> source, [NotNull] T[] array, int arrayIndex, int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            if (array == null) throw new ArgumentNullException(nameof(array));
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-            if (arrayIndex > array.Length || count > array.Length - arrayIndex) throw new ArgumentException();
-
-            var i = arrayIndex;
-            foreach (var item in source.Take(count))
-            {
-                array[i++] = item;
-            }
-            return i - arrayIndex;
-        }
-
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -548,6 +534,45 @@ namespace Jasily.Extensions.System.Linq
             return q.AsReadOnly();
         }
 
+        #region for some array op
+
+        /// <summary>
+        /// Copy elements to <paramref name="array"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="array"></param>
+        /// <param name="arrayIndex"></param>
+        /// <param name="count">the max count to copy.</param>
+        /// <returns>how many element was copyed.</returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static int CopyToArray<T>([NotNull] this IEnumerable<T> source, [NotNull] T[] array, int arrayIndex, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            array.EnsureInArrayRange(arrayIndex, count, nameof(array), nameof(arrayIndex), nameof(count));
+
+            var i = arrayIndex;
+            foreach (var item in source.Take(count))
+            {
+                array[i++] = item;
+            }
+            return i - arrayIndex;
+        }
+
+        #endregion
+
+        #region for some linq missing method
+
+        /// <summary>
+        /// Invoke <paramref name="action"/> on each element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of argument is null.</exception>
         public static IEnumerable<T> Pipe<T>([NotNull] this IEnumerable<T> source, [NotNull]  Action<T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -558,5 +583,54 @@ namespace Jasily.Extensions.System.Linq
                 yield return element;
             }
         }
+
+        #endregion
+
+        #region for reduce delegate create.
+
+        /// <summary>
+        /// Filter item by whether reference equals null.
+        /// Same as <code>.Where(x => !ReferenceEquals(x, <see langword="null"/>))</code>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="source"/> is null.</exception>
+        public static IEnumerable<T> NotNull<T>([NotNull] this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            IEnumerable<T> Iterator()
+            {
+                foreach (var item in source)
+                {
+                    if (!ReferenceEquals(item, null)) yield return item;
+                }
+            }
+
+            return Iterator();
+        }
+
+        /// <summary>
+        /// If any item in <paramref name="source"/> is null, return <see langword="true"/>; 
+        /// otherwise, return <see langword="false"/>.
+        /// (If <paramref name="source"/> is empty, also return <see langword="false"/>.)
+        /// Same as <code>.Any(x => ReferenceEquals(x, <see langword="null"/>))</code>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="source"/> is null.</exception>
+        public static bool AnyIsNull<T>([NotNull] this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            foreach (var item in source)
+            {
+                if (ReferenceEquals(item, null)) return true;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Jasily.Core;
 using JetBrains.Annotations;
 
@@ -138,5 +139,34 @@ namespace Jasily.Extensions.System
             }
             return newArray;
         }
+
+        #region ensure range in array
+
+        /// <summary>
+        /// Check whether 
+        /// [<paramref name="index"/>, <paramref name="index"/> + <paramref name="length"/>] 
+        /// in range of <paramref name="array"/>.
+        /// If not, raise some <see cref="Exception"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <param name="length"></param>
+        /// <param name="arrayName"></param>
+        /// <param name="indexName"></param>
+        /// <param name="lengthName"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="array"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">throw if <paramref name="index"/> or <paramref name="length"/> less then 0</exception>
+        /// <exception cref="ArgumentException">throw if <paramref name="index"/> + <paramref name="length"/> greater than <paramref name="array"/>.Length.</exception>
+        public static void EnsureInArrayRange<T>([NotNull] this T[] array, int index, int length,
+            [CanBeNull] string arrayName = null, [CanBeNull] string indexName = null, [CanBeNull] string lengthName = null)
+        {
+            if (array == null) throw new ArgumentNullException(arrayName ?? nameof(array));
+            if (index < 0) throw new ArgumentOutOfRangeException(indexName ?? nameof(index));
+            if (length < 0) throw new ArgumentOutOfRangeException(lengthName ?? nameof(length));
+            if (index + length > array.Length) throw new ArgumentException();
+        }
+
+        #endregion
     }
 }
