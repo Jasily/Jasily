@@ -106,6 +106,9 @@
     <Compile Include="..\Jasily.Extensions.System\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Jasily.Extensions.System\Text\EncodingExtensions.cs">
+      <Link>Text\EncodingExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Jasily.Extensions.System\UInt64Extensions.cs">
       <Link>UInt64Extensions.cs</Link>
     </Compile>

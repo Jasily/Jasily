@@ -2,47 +2,60 @@
 using System.IO;
 using System.Text;
 using JetBrains.Annotations;
+using Jasily.Extensions.System.Text;
 
 namespace Jasily.Extensions.System
 {
+    /// <summary>
+    /// Extension methods for <see langword="byte"/>[].
+    /// </summary>
     public static class ByteArrayExtensions
     {
         /// <summary>
-        /// to readonly MemoryStream
+        /// To readonly MemoryStream
         /// </summary>
-        /// <param name="bytes"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static MemoryStream ToMemoryStream([NotNull] this byte[] bytes)
+        /// <exception cref="ArgumentNullException">throw if <paramref name="buffer"/> is null.</exception>
+        public static MemoryStream ToMemoryStream([NotNull] this byte[] buffer)
         {
-            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
-            return new MemoryStream(bytes, false);
+            return new MemoryStream(buffer, false);
         }
 
         /// <summary>
-        /// get string use special encoding
+        /// Get <see langword="string"/> use specified encoding.
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">throw from <see cref="Encoding.GetString(byte[], int, int)"/></exception>
+        /// <exception cref="ArgumentException">throw from <see cref="Encoding.GetString(byte[], int, int)"/></exception>
+        /// <exception cref="DecoderFallbackException">throw from <see cref="Encoding.GetString(byte[], int, int)"/></exception>
         public static string GetString([NotNull] this byte[] bytes, [NotNull] Encoding encoding)
         {
-            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
             if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            return encoding.GetString(bytes, 0, bytes.Length);
+            return encoding.GetString(bytes);
         }
 
         /// <summary>
-        /// get string use encoding-utf8
+        /// Get <see langword="string"/> use Utf-8 encoding.
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
         public static string GetString([NotNull] this byte[] bytes) => bytes.GetString(Encoding.UTF8);
 
-        public static string GetHexString([NotNull] this byte[] bytes) => BitConverter.ToString(bytes);
+        public static string GetHexString([NotNull] this byte[] value) => BitConverter.ToString(value);
 
-        public static string GetHexString([NotNull] this byte[] bytes, int startIndex) => BitConverter.ToString(bytes, startIndex);
+        public static string GetHexString([NotNull] this byte[] value, int startIndex)
+        {
+            return BitConverter.ToString(value, startIndex);
+        }
 
-        public static string GetHexString([NotNull] this byte[] bytes, int startIndex, int length)
-            => BitConverter.ToString(bytes, startIndex, length);
+        public static string GetHexString([NotNull] this byte[] value, int startIndex, int length)
+        {
+            return BitConverter.ToString(value, startIndex, length);
+        }
     }
 }

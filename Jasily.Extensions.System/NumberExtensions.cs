@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Jasily.Extensions.System
 {
@@ -40,6 +41,7 @@ namespace Jasily.Extensions.System
             return InternalGetEachNumbers(number, 20);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte[] InternalGetEachNumbers(ulong number, int bufferSize)
         {
             var buffer = new byte[bufferSize];
