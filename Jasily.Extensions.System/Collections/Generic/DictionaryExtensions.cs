@@ -13,7 +13,17 @@ namespace Jasily.Extensions.System.Collections.Generic
     {
         #region get value or default
 
-        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key,
+        /// <summary>
+        /// Get value from <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="dict"/> or <paramref name="key"/> is null.</exception>
+        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key,
             TValue defaultValue = default(TValue))
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
@@ -21,7 +31,17 @@ namespace Jasily.Extensions.System.Collections.Generic
             return dict.TryGetValue(key, out TValue value) ? value : defaultValue;
         }
 
-        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key,
+        /// <summary>
+        /// Get value from <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValueFactory"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key,
             [NotNull] Func<TValue> defaultValueFactory)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
@@ -30,8 +50,22 @@ namespace Jasily.Extensions.System.Collections.Generic
             return dict.TryGetValue(key, out TValue value) ? value : defaultValueFactory();
         }
 
-        public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict,
-            TKey key, [NotNull] Func<TValue, TResult> valueSelector, TResult defaultValue = default(TResult))
+        /// <summary>
+        /// Get value from <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="valueSelector"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        /// throw if <paramref name="dict"/> or <paramref name="key"/> or <paramref name="valueSelector"/> is null.
+        /// </exception>
+        public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key,
+            [NotNull] Func<TValue, TResult> valueSelector, TResult defaultValue = default(TResult))
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (valueSelector == null) throw new ArgumentNullException(nameof(valueSelector));
@@ -39,8 +73,20 @@ namespace Jasily.Extensions.System.Collections.Generic
             return dict.TryGetValue(key, out TValue value) ? valueSelector(value) : defaultValue;
         }
 
-        public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict,
-            TKey key, [NotNull] Func<TValue, TResult> valueSelector, [NotNull] Func<TResult> defaultValueFactory)
+        /// <summary>
+        /// Get value from <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="valueSelector"></param>
+        /// <param name="defaultValueFactory"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        public static TResult GetValueOrDefault<TKey, TValue, TResult>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key,
+            [NotNull] Func<TValue, TResult> valueSelector, [NotNull] Func<TResult> defaultValueFactory)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (valueSelector == null) throw new ArgumentNullException(nameof(valueSelector));
@@ -49,7 +95,16 @@ namespace Jasily.Extensions.System.Collections.Generic
             return dict.TryGetValue(key, out TValue value) ? valueSelector(value) : defaultValueFactory();
         }
 
-        public static TValue? GetValueOrNull<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key)
+        /// <summary>
+        /// Get value from <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">throw if one of arguments is null.</exception>
+        public static TValue? GetValueOrNull<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key)
             where TValue : struct
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
