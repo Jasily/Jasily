@@ -200,16 +200,5 @@ namespace Jasily.DependencyInjection.MethodInvoker
         }
 
         #endregion
-
-        /// <summary>
-        /// provide full API explore.
-        /// </summary>
-        /// <param name="serviceProvider"></param>
-        /// <returns></returns>
-        public static MethodInvokerProvider AsMethodInvokerProvider([NotNull] this IServiceProvider serviceProvider)
-        {
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            return new MethodInvokerProvider(serviceProvider);
-        }
     }
 }

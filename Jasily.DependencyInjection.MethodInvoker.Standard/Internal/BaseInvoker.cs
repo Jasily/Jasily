@@ -28,7 +28,7 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         protected BaseInvoker(IInternalMethodInvokerFactory factory, MethodBase method)
         {
             this.Parameters = method.GetParameters()
-                .Select(z => ParameterInfoDescriptor.Build(z))
+                .Select(ParameterInfoDescriptor.Build)
                 .ToArray();
         }
 
