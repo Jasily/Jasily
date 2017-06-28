@@ -3,15 +3,15 @@ using System.Reflection;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
-    internal abstract class ParameterInfoDescriptor
+    internal abstract class ParameterResolver
     {
-        public static ParameterInfoDescriptor Build(ParameterInfo parameter)
+        public static ParameterResolver Build(ParameterInfo parameter)
         {
-            var type = typeof(ParameterInfoDescriptor<>).MakeGenericType(parameter.ParameterType);
-            return (ParameterInfoDescriptor) Activator.CreateInstance(type, parameter);
+            var type = typeof(ParameterResolver<>).MakeGenericType(parameter.ParameterType);
+            return (ParameterResolver) Activator.CreateInstance(type, parameter);
         }
 
-        protected ParameterInfoDescriptor(ParameterInfo parameter)
+        protected ParameterResolver(ParameterInfo parameter)
         {
             this.Parameter = parameter;
         }
@@ -21,11 +21,11 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
         public abstract object ResolveArgumentObject(IServiceProvider provider, OverrideArguments arguments);
     }
 
-    internal class ParameterInfoDescriptor<T> : ParameterInfoDescriptor
+    internal class ParameterResolver<T> : ParameterResolver
     {
         private readonly T _defaultValue;
 
-        public ParameterInfoDescriptor(ParameterInfo parameter) : base(parameter)
+        public ParameterResolver(ParameterInfo parameter) : base(parameter)
         {
             this.ScopedArgumentsType = typeof(IScopedArguments<T>);
             this.SingletonArgumentsType = typeof(ISingletonArguments<T>);
