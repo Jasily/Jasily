@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Jasily.DependencyInjection.MethodInvoker.Internal
 {
@@ -23,69 +25,39 @@ namespace Jasily.DependencyInjection.MethodInvoker.Internal
 
     internal class ParameterResolver<T> : ParameterResolver
     {
+        private readonly object _defaultObject;
         private readonly T _defaultValue;
+        private IArgumentResolver<T> _argumentResolver;
 
         public ParameterResolver(ParameterInfo parameter) : base(parameter)
         {
-            this.ScopedArgumentsType = typeof(IScopedArguments<T>);
-            this.SingletonArgumentsType = typeof(ISingletonArguments<T>);
-
-            this.ArgumentsTypes = new[]
+            if (this.Parameter.HasDefaultValue)
             {
-                this.ScopedArgumentsType,
-                this.SingletonArgumentsType
-            };
-
-            if (this.Parameter.HasDefaultValue) this._defaultValue = (T)this.Parameter.DefaultValue;
+                this._defaultObject = this.Parameter.DefaultValue;
+                this._defaultValue = (T)this._defaultObject;
+            }
         }
 
-        public Type ScopedArgumentsType { get; }
-
-        public Type SingletonArgumentsType { get; }
-
-        public Type[] ArgumentsTypes { get; }
-
-        private bool TryResolveArgument(IServiceProvider provider, OverrideArguments arguments, out T value)
+        private IArgumentResolver<T> GetArgumentResolver(IServiceProvider provider)
         {
-            if (arguments.TryGetValue(this.Parameter, out value, provider))
+            if (this._argumentResolver == null)
             {
-                return true;
+                var resolver = provider.GetRequiredService<IArgumentResolver<T>>();
+                Interlocked.CompareExchange(ref this._argumentResolver, resolver, null);
             }
-
-            for (var i = 0; i < this.ArgumentsTypes.Length; i++)
-            {
-                if (provider.GetService(this.ArgumentsTypes[i]) is IArguments<T> args &&
-                    args.TryGetValue(this.Parameter.Name, out value))
-                {
-                    return true;
-                }
-            }
-
-            var obj = provider.GetService(typeof(T));
-            if (obj != null)
-            {
-                value = (T)obj;
-                return true;
-            }
-
-            value = default(T);
-            return false;
+            return this._argumentResolver;
         }
 
         public override object ResolveArgumentObject(IServiceProvider provider, OverrideArguments arguments)
         {
-            if (this.TryResolveArgument(provider, arguments, out var value)) return value;
-            if (this.Parameter.HasDefaultValue) return this.Parameter.DefaultValue;
-
-            throw new ParameterResolveException(this.Parameter);
+            return this.GetArgumentResolver(provider)
+                .ResolveArgument(provider, this.Parameter, arguments, this._defaultObject);
         }
 
         public T ResolveArgumentValue(IServiceProvider provider, OverrideArguments arguments)
         {
-            if (this.TryResolveArgument(provider, arguments, out var value)) return value;
-            if (this.Parameter.HasDefaultValue) return this._defaultValue;
-
-            throw new ParameterResolveException(this.Parameter);
+            return this.GetArgumentResolver(provider)
+                .ResolveArgument(provider, this.Parameter, arguments, this._defaultValue);
         }
     }
 }
