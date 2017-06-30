@@ -1,5 +1,4 @@
 ﻿using System;
-using Jasily.DependencyInjection.MemberInjection.AutoInjection;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
+namespace Jasily.DependencyInjection.MemberInjection
 {
     /// <summary>
     /// provide instance injector interface.

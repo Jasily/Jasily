@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Jasily.DependencyInjection.MemberInjection.AutoInjection
+namespace Jasily.DependencyInjection.MemberInjection
 {
     /// <summary>
     /// attribute work for auto inject.
