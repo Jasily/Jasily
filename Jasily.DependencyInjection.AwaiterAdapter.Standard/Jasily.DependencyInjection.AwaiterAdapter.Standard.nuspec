@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.DependencyInjection.AwaiterAdapter.Standard</id>
-        <version>0.0.0.7</version>
+        <version>0.1.0.5</version>
         <title>Jasily.DependencyInjection.AwaiterAdapter.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -15,8 +15,8 @@
         <tags>await</tags>
         <dependencies>
             <dependency id="JetBrains.Annotations" version="10.4.0" />
-            <dependency id="Jasily.Extensions.System.Standard" version="0.0.1.2" />
-            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.0.1.8" />
+            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.5" />
+            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.1.0.5" />
             <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
         </dependencies>
     </metadata>

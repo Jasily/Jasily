@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Core.Standard</id>
-        <version>0.1.0.3</version>
+        <version>0.1.0.5</version>
         <title>Jasily.Core.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>

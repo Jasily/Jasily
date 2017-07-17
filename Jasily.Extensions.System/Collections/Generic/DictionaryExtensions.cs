@@ -135,6 +135,15 @@ namespace Jasily.Extensions.System.Collections.Generic
             return ret;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static TValue GetValueOrAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key, TValue value)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
@@ -143,6 +152,15 @@ namespace Jasily.Extensions.System.Collections.Generic
             return ret;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="valueFactory"></param>
+        /// <returns></returns>
         public static TValue GetValueOrAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key,
             [NotNull] Func<TValue> valueFactory)
         {
@@ -170,8 +188,16 @@ namespace Jasily.Extensions.System.Collections.Generic
         }
 
         #endregion
-
-        [PublicAPI]
+        
+        /// <summary>
+        /// Add If key is not exists.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static bool TryAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
@@ -180,13 +206,26 @@ namespace Jasily.Extensions.System.Collections.Generic
             return true;
         }
 
-        [PublicAPI]
+        /// <summary>
+        /// Create a <see cref="IReadOnlyDictionary{TKey, TValue}"/> wrap for <see cref="IDictionary{TKey, TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <returns></returns>
         public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             return new ReadOnlyDictionary<TKey, TValue>(dict);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="item"></param>
         public static void Add<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TValue item)
             where TValue : IGetKey<TKey>
         {
@@ -196,8 +235,14 @@ namespace Jasily.Extensions.System.Collections.Generic
             dict.Add(item.GetKey(), item);
         }
 
-        public static void AddRange<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict,
-            [NotNull] IEnumerable<TValue> items)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="items"></param>
+        public static void AddRange<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] IEnumerable<TValue> items)
             where TValue : IGetKey<TKey>
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));

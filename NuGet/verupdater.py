@@ -110,14 +110,18 @@ class PackageXml:
 
     @version.setter
     def version(self, value):
-        self._version = AppVersion(value)
+        nv = AppVersion(value)
+        if self._version > nv:
+            print('Error (%s): %s < %s' % (self, self._version, nv))
+            raise ValueError
+        self._version = nv
         self._x_version.text = str(value)
 
     def load(self):
         return self._xml_root
 
     def save(self):
-        self._xml_model.write(self._path, xml_declaration=True, encoding='utf-8')
+        self._xml_root.write(self._path, xml_declaration=True, encoding='utf-8')
 
 
 class VersionUpdater:
@@ -135,8 +139,6 @@ class VersionUpdater:
         with open(self._verfile) as fp:
             ver = AppVersion(fp.read())
         ver.incr()
-        with open(self._verfile, 'w') as fp:
-            fp.write(str(ver))
         return ver
 
     def resolve_version(self, path):
@@ -169,6 +171,8 @@ class VersionUpdater:
         for pkg in self._xmls:
             print('   ' + str(pkg))
         input()
+        with open(self._verfile, 'w') as fp:
+            fp.write(str(self._version))
         for item in self._xmls:
             item.save()
 

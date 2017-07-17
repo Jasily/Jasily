@@ -23,35 +23,35 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Core.PCL259", "Jasil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.MethodInvoker.PCL7", "Jasily.DependencyInjection.MethodInvoker.PCL7\Jasily.DependencyInjection.MethodInvoker.PCL7.csproj", "{0E11699A-3C58-4DED-93EF-18DB8F716E9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System.Standard", "Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj", "{432B6D1C-64AE-4F6E-A277-F0AF08E05A7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Extensions.System.Standard", "Jasily.Extensions.System.Standard\Jasily.Extensions.System.Standard.csproj", "{432B6D1C-64AE-4F6E-A277-F0AF08E05A7C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Wpf", "Jasily.Wpf\Jasily.Wpf.csproj", "{DD40FBC7-795B-43AE-8BBD-949CC0912F90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Win32", "Jasily.Win32\Jasily.Win32.csproj", "{284529BB-301C-4A3A-902E-E32A0EBFC99D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.MethodInvoker.Standard", "Jasily.DependencyInjection.MethodInvoker.Standard\Jasily.DependencyInjection.MethodInvoker.Standard.csproj", "{2E0C2313-455F-442A-9270-AEE9A826EE92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.MethodInvoker.Standard", "Jasily.DependencyInjection.MethodInvoker.Standard\Jasily.DependencyInjection.MethodInvoker.Standard.csproj", "{2E0C2313-455F-442A-9270-AEE9A826EE92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.MemberInjection.Standard", "Jasily.DependencyInjection.MemberInjection.Standard\Jasily.DependencyInjection.MemberInjection.Standard.csproj", "{1DB55BE3-2717-444E-8E92-1817101EDB65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.MemberInjection.Standard", "Jasily.DependencyInjection.MemberInjection.Standard\Jasily.DependencyInjection.MemberInjection.Standard.csproj", "{1DB55BE3-2717-444E-8E92-1817101EDB65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.AwaiterAdapter.Standard", "Jasily.DependencyInjection.AwaiterAdapter.Standard\Jasily.DependencyInjection.AwaiterAdapter.Standard.csproj", "{B1106F26-CBCB-413F-9262-77028C33EB7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.AwaiterAdapter.Standard", "Jasily.DependencyInjection.AwaiterAdapter.Standard\Jasily.DependencyInjection.AwaiterAdapter.Standard.csproj", "{B1106F26-CBCB-413F-9262-77028C33EB7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetPackageTest", "NugetPackageTest\NugetPackageTest.csproj", "{87494604-91BD-4BE3-9B78-3FAF3B9CB9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.ComplexService", "Jasily.DependencyInjection.ComplexService\Jasily.DependencyInjection.ComplexService.csproj", "{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.ComplexService", "Jasily.DependencyInjection.ComplexService\Jasily.DependencyInjection.ComplexService.csproj", "{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.Typed.Standard", "Jasily.DependencyInjection.Typed.Standard\Jasily.DependencyInjection.Typed.Standard.csproj", "{5A119A36-3DDD-4D39-9958-F600A1BFB058}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.Typed.Standard", "Jasily.DependencyInjection.Typed.Standard\Jasily.DependencyInjection.Typed.Standard.csproj", "{5A119A36-3DDD-4D39-9958-F600A1BFB058}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.DependencyInjection.Features.Standard", "Jasily.DependencyInjection.Features.Standard\Jasily.DependencyInjection.Features.Standard.csproj", "{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.Features.Standard", "Jasily.DependencyInjection.Features.Standard\Jasily.DependencyInjection.Features.Standard.csproj", "{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Extensions.System", "Jasily.Extensions.System\Jasily.Extensions.System.csproj", "{C4EC5ED2-7E8A-4F1D-86F8-7D6B6016FE3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Converters.Standard", "Jasily.Converters.Standard\Jasily.Converters.Standard.csproj", "{946F3D40-5BE5-46A8-BF9E-17242CC6EEEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Converters.Standard", "Jasily.Converters.Standard\Jasily.Converters.Standard.csproj", "{946F3D40-5BE5-46A8-BF9E-17242CC6EEEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily", "Jasily\Jasily.csproj", "{589292C8-95B6-4FCF-8C3F-2CD3FE976B57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Standard", "Jasily.Standard\Jasily.Standard.csproj", "{B41196E4-960A-4C01-8B7D-3C518DEDBC98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Standard", "Jasily.Standard\Jasily.Standard.csproj", "{B41196E4-960A-4C01-8B7D-3C518DEDBC98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Core.Standard", "Jasily.Core.Standard\Jasily.Core.Standard.csproj", "{C921C80D-DE30-476F-BBF5-0DD3C77E6B72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Core.Standard", "Jasily.Core.Standard\Jasily.Core.Standard.csproj", "{C921C80D-DE30-476F-BBF5-0DD3C77E6B72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Core", "Jasily.Core\Jasily.Core.csproj", "{ECBC812D-2F4F-4633-913E-4892101DE02E}"
 EndProject
@@ -60,6 +60,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily~", "Jasily~", "{86C4242F-B22F-4424-A676-82C1B5335C69}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Extensions.System~", "Jasily.Extensions.System~", "{7D57D61A-3026-4130-9719-C398A2892FFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.DependencyInjection~", "Jasily.DependencyInjection~", "{680B5B3E-2C7B-424C-89B0-CDEA778714A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.Factory.Standard", "Jasily.DependencyInjection.Factory.Standard\Jasily.DependencyInjection.Factory.Standard.csproj", "{752719EE-9668-4571-80A1-06B8813D6173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -489,6 +493,22 @@ Global
 		{ECBC812D-2F4F-4633-913E-4892101DE02E}.Release|x64.Build.0 = Release|Any CPU
 		{ECBC812D-2F4F-4633-913E-4892101DE02E}.Release|x86.ActiveCfg = Release|Any CPU
 		{ECBC812D-2F4F-4633-913E-4892101DE02E}.Release|x86.Build.0 = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|ARM.Build.0 = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|x64.Build.0 = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Debug|x86.Build.0 = Debug|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|ARM.ActiveCfg = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|ARM.Build.0 = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|x64.ActiveCfg = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|x64.Build.0 = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|x86.ActiveCfg = Release|Any CPU
+		{752719EE-9668-4571-80A1-06B8813D6173}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -501,13 +521,21 @@ Global
 		{33A2C8DD-BFBB-44D5-AB5D-8EEC10DD2947} = {7D57D61A-3026-4130-9719-C398A2892FFC}
 		{9FC18249-8402-4BA7-AAC4-940E35277D07} = {7D57D61A-3026-4130-9719-C398A2892FFC}
 		{4FE68AB9-C412-4F5F-A5A8-5F55F932492F} = {C8137607-4BCD-42EA-ADF0-73B449381F0E}
+		{0E11699A-3C58-4DED-93EF-18DB8F716E9B} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
 		{432B6D1C-64AE-4F6E-A277-F0AF08E05A7C} = {7D57D61A-3026-4130-9719-C398A2892FFC}
 		{DD40FBC7-795B-43AE-8BBD-949CC0912F90} = {86C4242F-B22F-4424-A676-82C1B5335C69}
 		{284529BB-301C-4A3A-902E-E32A0EBFC99D} = {86C4242F-B22F-4424-A676-82C1B5335C69}
+		{2E0C2313-455F-442A-9270-AEE9A826EE92} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
+		{1DB55BE3-2717-444E-8E92-1817101EDB65} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
+		{B1106F26-CBCB-413F-9262-77028C33EB7E} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
+		{BBC6F94D-929B-4D8D-B29B-AE5FDFA33363} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
+		{5A119A36-3DDD-4D39-9958-F600A1BFB058} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
+		{BF1CA11E-9A7D-4B7A-A724-7A349E666CA3} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
 		{C4EC5ED2-7E8A-4F1D-86F8-7D6B6016FE3F} = {7D57D61A-3026-4130-9719-C398A2892FFC}
 		{589292C8-95B6-4FCF-8C3F-2CD3FE976B57} = {86C4242F-B22F-4424-A676-82C1B5335C69}
 		{B41196E4-960A-4C01-8B7D-3C518DEDBC98} = {86C4242F-B22F-4424-A676-82C1B5335C69}
 		{C921C80D-DE30-476F-BBF5-0DD3C77E6B72} = {C8137607-4BCD-42EA-ADF0-73B449381F0E}
 		{ECBC812D-2F4F-4633-913E-4892101DE02E} = {C8137607-4BCD-42EA-ADF0-73B449381F0E}
+		{752719EE-9668-4571-80A1-06B8813D6173} = {680B5B3E-2C7B-424C-89B0-CDEA778714A2}
 	EndGlobalSection
 EndGlobal

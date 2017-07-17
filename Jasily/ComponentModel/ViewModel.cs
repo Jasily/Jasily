@@ -71,6 +71,7 @@ namespace Jasily.ComponentModel
                 }
             }
         }
+
         /// <summary>
         /// raise after invoke <see cref="OnSourceUpdated"/>;
         /// </summary>

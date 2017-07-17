@@ -614,7 +614,7 @@ namespace Jasily.Extensions.System.Linq
         public static int CopyToArray<T>([NotNull] this IEnumerable<T> source, [NotNull] T[] array, int arrayIndex, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            array.EnsureInArrayRange(arrayIndex, count, nameof(array), nameof(arrayIndex), nameof(count));
+            array.EnsureArrayArguments(arrayIndex, count, nameof(array), nameof(arrayIndex), nameof(count));
 
             var i = arrayIndex;
             foreach (var item in source.Take(count))

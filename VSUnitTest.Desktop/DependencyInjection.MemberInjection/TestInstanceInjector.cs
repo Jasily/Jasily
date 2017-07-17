@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Jasily.DependencyInjection.MemberInjection.AutoInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -41,8 +40,7 @@ namespace Jasily.DependencyInjection.MemberInjection
             var sc = new ServiceCollection();
             sc.AddSingleton<StringBuilder>();
             sc.AddSingleton("123");
-            sc.UseMemberInjector();
-            sc.UseInstanceInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var injector = provider.GetService<IInstanceInjector<TestClass1>>();
             var instance = new TestClass1();
@@ -62,8 +60,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestDefault_UnResolve()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
-            sc.UseInstanceInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var injector = provider.GetService<IInstanceInjector<TestClass1>>();
             var instance = new TestClass1();
@@ -89,8 +86,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestError()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
-            sc.UseInstanceInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var injector = provider.GetService<IInstanceInjector<TestClass2>>();
         }

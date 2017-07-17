@@ -19,7 +19,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             var sc = new ServiceCollection();
             sc.AddSingleton<StringBuilder>();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -31,7 +31,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestProperty_UnResolve()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -44,7 +44,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             var sc = new ServiceCollection();
             sc.AddSingleton<StringBuilder>();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -57,7 +57,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestProperty_RequiredUnResolve()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -70,7 +70,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             var sc = new ServiceCollection();
             sc.AddSingleton("123");
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -82,7 +82,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestField_UnResolve()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -95,7 +95,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         {
             var sc = new ServiceCollection();
             sc.AddSingleton("123");
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
@@ -108,7 +108,7 @@ namespace Jasily.DependencyInjection.MemberInjection
         public void TestField_RequiredUnResolve()
         {
             var sc = new ServiceCollection();
-            sc.UseMemberInjector();
+            sc.AddMemberInjection();
             var provider = sc.BuildServiceProvider();
             var factory = provider.GetService<IMemberInjectorFactory<TestClass1>>();
             var instance = new TestClass1();
