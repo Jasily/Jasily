@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Include="..\Jasily.Core\Annotations\AnnotationAttribute.cs" Link="Annotations\AnnotationAttribute.cs" />
     <Compile Include="..\Jasily.Core\Annotations\ThreadSafetyAttribute.cs" Link="Annotations\ThreadSafetyAttribute.cs" />
+    <Compile Include="..\Jasily.Core\Boxed.cs" Link="Boxed.cs" />
     <Compile Include="..\Jasily.Core\Data\Serialization\ISerializer.cs" Link="Data\Serialization\ISerializer.cs" />
     <Compile Include="..\Jasily.Core\Empty.cs" Link="Empty.cs" />
     <Compile Include="..\Jasily.Core\IDisposable.cs" Link="IDisposable.cs" />

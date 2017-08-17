@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Annotations\AnnotationAttribute.cs" />
     <Compile Include="Annotations\ThreadSafetyAttribute.cs" />
+    <Compile Include="Boxed.cs" />
     <Compile Include="Data\Serialization\ISerializer.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="IDisposable.cs" />
