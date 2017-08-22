@@ -9,6 +9,7 @@ namespace Jasily.Extensions.System.Data.Serialization
 {
     public static class XmlSerializerExtensions
     {
+        [NotNull]
         public static event Func<Type, ISerializer> SerializerFactory;
 
         static XmlSerializerExtensions()
@@ -18,24 +19,24 @@ namespace Jasily.Extensions.System.Data.Serialization
 
         private class Serializer : ISerializer
         {
-            private readonly XmlSerializer serializer;
+            private readonly XmlSerializer _serializer;
 
             public Serializer(Type type)
             {
-                this.serializer = new XmlSerializer(type);
+                this._serializer = new XmlSerializer(type);
             }
 
-            public object Deserialize([NotNull] Stream stream, [CanBeNull] Type type)
+            public object Deserialize(Stream stream, Type type)
             {
                 if (stream == null) throw new ArgumentNullException(nameof(stream));
-                return this.serializer.Deserialize(stream);
+                return this._serializer.Deserialize(stream);
             }
 
-            public void Serialize([NotNull] Stream stream, [NotNull] object obj)
+            public void Serialize(Stream stream, object obj)
             {
                 if (stream == null) throw new ArgumentNullException(nameof(stream));
                 if (obj == null) throw new ArgumentNullException(nameof(obj));
-                this.serializer.Serialize(stream, obj);
+                this._serializer.Serialize(stream, obj);
             }
         }
 
@@ -127,7 +128,20 @@ namespace Jasily.Extensions.System.Data.Serialization
         /// <exception cref="IOException"></exception>
         /// <exception cref="SerializationException"></exception>
         /// <returns></returns>
+        [Obsolete("use `ToXmlBytes`.", true)]
         public static byte[] ObjectToXml([NotNull]  this object obj)
+        {
+            return obj.ToXmlBytes();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="obj"/> is null.</exception>
+        /// <exception cref="SerializationException"></exception>
+        /// <returns></returns>
+        public static byte[] ToXmlBytes([NotNull]  this object obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
             using (var ms = new MemoryStream())
@@ -137,10 +151,6 @@ namespace Jasily.Extensions.System.Data.Serialization
                 try
                 {
                     serializer.Serialize(ms, obj);
-                }
-                catch (IOException)
-                {
-                    throw;
                 }
                 catch (Exception e)
                 {

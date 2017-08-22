@@ -9,6 +9,7 @@ namespace Jasily.Extensions.System.Data.Serialization
 {
     public static class JsonSerializerExtensions
     {
+        [NotNull]
         public static event Func<Type, ISerializer> SerializerFactory;
 
         static JsonSerializerExtensions()
@@ -18,24 +19,24 @@ namespace Jasily.Extensions.System.Data.Serialization
 
         private class Serializer : ISerializer
         {
-            private readonly DataContractJsonSerializer serializer;
+            private readonly DataContractJsonSerializer _serializer;
 
             public Serializer(Type type)
             {
-                this.serializer = new DataContractJsonSerializer(type);
+                this._serializer = new DataContractJsonSerializer(type);
             }
 
-            public object Deserialize([NotNull] Stream stream, [CanBeNull] Type type)
+            public object Deserialize(Stream stream, Type type)
             {
                 if (stream == null) throw new ArgumentNullException(nameof(stream));
-                return this.serializer.ReadObject(stream);
+                return this._serializer.ReadObject(stream);
             }
 
-            public void Serialize([NotNull] Stream stream, [NotNull] object obj)
+            public void Serialize(Stream stream, object obj)
             {
                 if (stream == null) throw new ArgumentNullException(nameof(stream));
                 if (obj == null) throw new ArgumentNullException(nameof(obj));
-                this.serializer.WriteObject(stream, obj);
+                this._serializer.WriteObject(stream, obj);
             }
         }
 
@@ -123,11 +124,22 @@ namespace Jasily.Extensions.System.Data.Serialization
         /// 
         /// </summary>
         /// <param name="obj"></param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns></returns>
+        [Obsolete("use `ToJsonBytes`.", true)]
+        public static byte[] ObjectToJson([NotNull]  this object obj)
+        {
+            return obj.ToJsonBytes();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="obj"/> is null.</exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SerializationException"></exception>
         /// <returns></returns>
-        public static byte[] ObjectToJson([NotNull]  this object obj)
+        public static byte[] ToJsonBytes([NotNull]  this object obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
             using (var ms = new MemoryStream())
@@ -137,10 +149,6 @@ namespace Jasily.Extensions.System.Data.Serialization
                 try
                 {
                     serializer.Serialize(ms, obj);
-                }
-                catch (IOException)
-                {
-                    throw;
                 }
                 catch (Exception e)
                 {
