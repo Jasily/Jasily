@@ -715,6 +715,7 @@ namespace Jasily.Extensions.System.Linq
 
         #region add or insert or set
 
+#if !NETSTANDARD2_0
         /// <summary>
         /// Append <paramref name="item"/> to end of <paramref name="source"/>.
         /// </summary>
@@ -736,7 +737,7 @@ namespace Jasily.Extensions.System.Linq
 
             return EndIterator();
         }
-
+#endif
         /// <summary>
         /// Insert <paramref name="item"/> into <paramref name="source"/> by <paramref name="index"/>.
         /// </summary>
@@ -828,9 +829,9 @@ namespace Jasily.Extensions.System.Linq
             return Iterator();
         }
 
-        #endregion
+#endregion
 
-        #region join
+#region join
 
         /// <summary>
         /// Join elements.
@@ -924,11 +925,11 @@ namespace Jasily.Extensions.System.Linq
             return Iterator();
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region for reduce delegate create.
+#region for reduce delegate create.
 
         /// <summary>
         /// Filter item by whether reference equals null.
@@ -973,6 +974,6 @@ namespace Jasily.Extensions.System.Linq
             return false;
         }
 
-        #endregion
+#endregion
     }
 }

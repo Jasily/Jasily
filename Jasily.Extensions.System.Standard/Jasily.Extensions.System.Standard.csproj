@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Jasily.Extensions.System</RootNamespace>
   </PropertyGroup>
 
@@ -12,7 +12,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard1.4\Jasily.Extensions.System.Standard.xml</DocumentationFile>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;JETBRAINS_ANNOTATIONS;NETSTANDARD1_4;NETSTANDARD1_4</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

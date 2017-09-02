@@ -7,7 +7,7 @@ namespace Jasily.DependencyInjection.Typed.Internal
 {
     internal class GenericTypeFactory : IGenericTypeFactory
     {
-        private readonly ConcurrentDictionary<Type, IReThrowContainer<IGenericTypeMaker>> _typeMakersmap
+        private readonly ConcurrentDictionary<Type, IReThrowContainer<IGenericTypeMaker>> _typeMakersMap
             = new ConcurrentDictionary<Type, IReThrowContainer<IGenericTypeMaker>>();
         private readonly Func<Type, IReThrowContainer<IGenericTypeMaker>> _typeMakerFactory = GenericTypeMaker.TryCreate;
 
@@ -15,7 +15,7 @@ namespace Jasily.DependencyInjection.Typed.Internal
         public IGenericTypeMaker GetTypeMaker([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            var maker = this._typeMakersmap.GetOrAdd(type, this._typeMakerFactory);
+            var maker = this._typeMakersMap.GetOrAdd(type, this._typeMakerFactory);
             return maker.GetOrThrow();
         }
     }

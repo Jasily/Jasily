@@ -2,11 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Jasily.DependencyInjection.Typed</RootNamespace>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.4\Jasily.DependencyInjection.Typed.Standard.xml</DocumentationFile>
+    <RootNamespace>Jasily.DependencyInjection.Factory</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
