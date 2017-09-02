@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Extensions.System.Standard</id>
-        <version>0.1.0.5</version>
+        <version>0.1.0.6</version>
         <title>Jasily.Extensions.System.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -16,11 +16,11 @@
         <dependencies>
             <dependency id="JetBrains.Annotations" version="10.4.0" />
             <dependency id="System.ValueTuple" version="4.3.0" />
-            <dependency id="Jasily.Core.Standard" version="0.1.0.5" />
+            <dependency id="Jasily.Core.Standard" version="0.1.0.6" />
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.Extensions.System.Standard.dll" target="lib\netstandard1.4\Jasily.Extensions.System.Standard.dll" />
-        <file src="bin\Release\netstandard1.4\Jasily.Extensions.System.Standard.xml" target="lib\netstandard1.4\Jasily.Extensions.System.Standard.xml" />
+        <file src="bin\Release\netstandard2.0\Jasily.Extensions.System.Standard.dll" target="lib\netstandard2.0\Jasily.Extensions.System.Standard.dll" />
+        <file src="bin\Release\netstandard2.0\Jasily.Extensions.System.Standard.xml" target="lib\netstandard2.0\Jasily.Extensions.System.Standard.xml" />
     </files>
 </package>

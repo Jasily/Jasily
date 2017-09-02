@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.Core.Standard</id>
-        <version>0.1.0.5</version>
+        <version>0.1.0.6</version>
         <title>Jasily.Core.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -14,7 +14,7 @@
         <copyright>Copyright 2017</copyright>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.Core.Standard.dll" target="lib\netstandard1.4\Jasily.Core.Standard.dll" />
-        <file src="bin\Release\netstandard1.4\Jasily.Core.Standard.xml" target="lib\netstandard1.4\Jasily.Core.Standard.xml" />
+        <file src="bin\Release\netstandard2.0\Jasily.Core.Standard.dll" target="lib\netstandard2.0\Jasily.Core.Standard.dll" />
+        <file src="bin\Release\netstandard2.0\Jasily.Core.Standard.xml" target="lib\netstandard2.0\Jasily.Core.Standard.xml" />
     </files>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Jasily.DependencyInjection.AwaiterAdapter.Standard</id>
-        <version>0.1.0.5</version>
+        <version>0.1.0.6</version>
         <title>Jasily.DependencyInjection.AwaiterAdapter.Standard</title>
         <authors>Jasily</authors>
         <owners>Jasily</owners>
@@ -15,13 +15,13 @@
         <tags>await</tags>
         <dependencies>
             <dependency id="JetBrains.Annotations" version="10.4.0" />
-            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.5" />
-            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.1.0.5" />
+            <dependency id="Jasily.Extensions.System.Standard" version="0.1.0.6" />
+            <dependency id="Jasily.DependencyInjection.MethodInvoker.Standard" version="0.1.0.6" />
             <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.1" />
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.AwaiterAdapter.Standard.dll" target="lib\netstandard1.4\Jasily.DependencyInjection.AwaiterAdapter.Standard.dll" />
-        <file src="bin\Release\netstandard1.4\Jasily.DependencyInjection.AwaiterAdapter.Standard.xml" target="lib\netstandard1.4\Jasily.DependencyInjection.AwaiterAdapter.Standard.xml" />
+        <file src="bin\Release\netstandard2.0\Jasily.DependencyInjection.AwaiterAdapter.Standard.dll" target="lib\netstandard2.0\Jasily.DependencyInjection.AwaiterAdapter.Standard.dll" />
+        <file src="bin\Release\netstandard2.0\Jasily.DependencyInjection.AwaiterAdapter.Standard.xml" target="lib\netstandard2.0\Jasily.DependencyInjection.AwaiterAdapter.Standard.xml" />
     </files>
 </package>

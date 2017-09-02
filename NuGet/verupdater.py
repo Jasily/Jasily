@@ -145,7 +145,6 @@ class VersionUpdater:
         if os.path.splitext(path)[1].lower() != '.nuspec':
             raise Exception
         self._internal_incr_version(path)
-        self.confirm()
 
     def _internal_incr_version(self, path):
         p = PackageXml(path)
@@ -187,7 +186,9 @@ def main(argv=None):
         argv = sys.argv
     try:
         updater = JasilyVersionUpdater(argv[0])
-        updater.resolve_version(argv[1])
+        for arg in argv[1:]:
+            updater.resolve_version(argv[1])
+        self.confirm()
     except Exception:
         traceback.print_exc()
         input()
