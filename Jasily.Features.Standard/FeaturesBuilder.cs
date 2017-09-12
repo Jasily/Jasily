@@ -16,10 +16,6 @@ namespace Jasily.Features
     {
         private readonly Dictionary<Type, object> _features = new Dictionary<Type, object>();
 
-        public FeaturesBuilder()
-        {
-        }
-
         private FeaturesOptions<T> GetOrCreateOptions<T>()
         {
             if (!this._features.TryGetValue(typeof(T), out var value))
