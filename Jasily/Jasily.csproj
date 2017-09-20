@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -113,7 +113,6 @@
     <Compile Include="IO\Internal\WrapStream.cs" />
     <Compile Include="IO\IStreamHandler.cs" />
     <Compile Include="IO\IStreamReadHandler.cs" />
-    <Compile Include="IO\IStringSegmentReader.cs" />
     <Compile Include="IO\MergedReadonlyStream.cs" />
     <Compile Include="IO\StreamReadObserverHandler.cs" />
     <Compile Include="IO\StreamReadProgressHandler.cs" />
@@ -149,8 +148,6 @@
     <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
     <Compile Include="Text\StringFinder.cs" />
-    <Compile Include="Text\StringSegment.cs" />
-    <Compile Include="Text\StringSegmentExtensions.cs" />
     <Compile Include="Text\TextReplacer.cs" />
     <Compile Include="Threading\LockFreeResource.cs" />
     <Compile Include="Threading\ReaderWriterLockSlimExtensions.cs" />
@@ -165,9 +162,6 @@
     <Compile Include="ValueContainer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Jasily.Core.PCL259\Jasily.Core.PCL259.csproj">
       <Project>{4fe68ab9-c412-4f5f-a5a8-5f55f932492f}</Project>
       <Name>Jasily.Core.PCL259</Name>
@@ -176,6 +170,9 @@
       <Project>{c4ec5ed2-7e8a-4f1d-86f8-7d6b6016fe3f}</Project>
       <Name>Jasily.Extensions.System</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
