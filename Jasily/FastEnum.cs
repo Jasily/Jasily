@@ -5,7 +5,7 @@ using System.Reflection;
 using Jasily.Core;
 using Jasily.Extensions.System;
 using Jasily.Extensions.System.Collections.Generic;
-using Jasily.Linq.Expressions.Cache;
+using Jasily.BlackTechnology;
 using JetBrains.Annotations;
 
 namespace Jasily
@@ -53,7 +53,7 @@ namespace Jasily
             internal static readonly Func<GenericEnumItem, T> ItemSelector = z => z.Item;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             internal readonly T Item;
 
@@ -64,9 +64,9 @@ namespace Jasily
             }
         }
 
-        private static ulong ToUlong(T e) => e.ConvertUnchecked<T, ulong>();
+        private static ulong ToUlong(T e) =>  ConvertUnchecked.Convert<T, ulong>(e);
 
-        private static T FromUlong(ulong e) => e.ConvertUnchecked<ulong, T>();
+        private static T FromUlong(ulong e) => ConvertUnchecked.Convert<ulong, T>(e);
 
         static FastEnum()
         {
@@ -88,7 +88,7 @@ namespace Jasily
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         /// <param name="completeMatch">if set true, if not complete match, will return null.</param>

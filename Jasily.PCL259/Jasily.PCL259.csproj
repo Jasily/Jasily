@@ -39,6 +39,12 @@
     <Compile Include="..\Jasily\ActionReleaser.cs">
       <Link>ActionReleaser.cs</Link>
     </Compile>
+    <Compile Include="..\Jasily\BlackTechnology\ConvertChecked.cs">
+      <Link>BlackTechnology\ConvertChecked.cs</Link>
+    </Compile>
+    <Compile Include="..\Jasily\BlackTechnology\ConvertUnchecked.cs">
+      <Link>BlackTechnology\ConvertUnchecked.cs</Link>
+    </Compile>
     <Compile Include="..\Jasily\CachedHashCode.cs">
       <Link>CachedHashCode.cs</Link>
     </Compile>
@@ -238,8 +244,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.11.0.0\lib\portable-net4+sl50+win8+wpa81+wp8\JetBrains.Annotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

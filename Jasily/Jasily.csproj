@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionReleaser.cs" />
+    <Compile Include="BlackTechnology\ConvertChecked.cs" />
+    <Compile Include="BlackTechnology\ConvertUnchecked.cs" />
     <Compile Include="CachedHashCode.cs" />
     <Compile Include="Cache\Action.cs" />
     <Compile Include="Cache\Funcs\FuncTemplate.cs" />
@@ -118,9 +120,6 @@
     <Compile Include="IO\StreamReadProgressHandler.cs" />
     <Compile Include="IReThrowContainer.cs" />
     <Compile Include="KeySelector.cs" />
-    <Compile Include="Linq\Expressions\Cache\ConvertChecked.cs" />
-    <Compile Include="Linq\Expressions\Cache\ConvertUnchecked.cs" />
-    <Compile Include="Linq\Expressions\Cache\Extensions.cs" />
     <Compile Include="Linq\Generater.cs" />
     <Compile Include="Net\Http\Headers\RangeHeader.cs" />
     <Compile Include="Net\Http\HttpUriBuilder.cs" />
@@ -174,5 +173,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
