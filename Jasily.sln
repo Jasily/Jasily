@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.PCL259", "Jasily.PCL259\Jasily.PCL259.csproj", "{D825D5A8-00F4-4D48-85E1-58B66F3958D9}"
 EndProject
@@ -70,6 +70,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Features.Standard.Test", "Jasily.Features.Standard.Test\Jasily.Features.Standard.Test.csproj", "{CE3CD340-D6B1-415C-A146-E358E2C943E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Features", "Jasily.Features", "{1A630DF8-F6FE-4A31-BABF-A0B3E940249C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.TypeMakers", "Jasily.TypeMakers\Jasily.TypeMakers.csproj", "{3BB1E55A-575D-40A2-89BC-406F56C2F775}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -547,6 +549,22 @@ Global
 		{CE3CD340-D6B1-415C-A146-E358E2C943E1}.Release|x64.Build.0 = Release|Any CPU
 		{CE3CD340-D6B1-415C-A146-E358E2C943E1}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE3CD340-D6B1-415C-A146-E358E2C943E1}.Release|x86.Build.0 = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|x64.Build.0 = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Debug|x86.Build.0 = Debug|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|ARM.Build.0 = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|x64.ActiveCfg = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|x64.Build.0 = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|x86.ActiveCfg = Release|Any CPU
+		{3BB1E55A-575D-40A2-89BC-406F56C2F775}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
