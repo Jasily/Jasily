@@ -162,7 +162,6 @@
     <Compile Include="DependencyInjection.ComplexService\UnitTest1.cs" />
     <Compile Include="DependencyInjection.Features\TestFeatures.cs" />
     <Compile Include="DependencyInjection.MethodInvoker\TestPropertyInvoker.cs" />
-    <Compile Include="DependencyInjection.Typed\TestGenericTypeMaker.cs" />
     <Compile Include="GenericMakers\TestGenericMaker.cs" />
     <Compile Include="TestKeySelector.cs" />
     <Compile Include="TestUtils\CodeTimer.cs" />
@@ -218,10 +217,6 @@
     <ProjectReference Include="..\Jasily.DependencyInjection.MethodInvoker.Standard\Jasily.DependencyInjection.MethodInvoker.Standard.csproj">
       <Project>{2e0c2313-455f-442a-9270-aee9a826ee92}</Project>
       <Name>Jasily.DependencyInjection.MethodInvoker.Standard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jasily.DependencyInjection.Typed.Standard\Jasily.DependencyInjection.Typed.Standard.csproj">
-      <Project>{5a119a36-3ddd-4d39-9958-f600a1bfb058}</Project>
-      <Name>Jasily.DependencyInjection.Typed.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.Desktop\Jasily.Desktop.csproj">
       <Project>{0a825a8a-522a-4a51-8301-fd903bb07968}</Project>
