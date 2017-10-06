@@ -66,7 +66,7 @@ namespace Jasily.DependencyInjection.AwaiterAdapter
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            var taskWaiter = (ITaskAdapter)serviceProvider.GetService(typeof(ITaskAdapter<>).FastMakeGenericType(type));
+            var taskWaiter = (ITaskAdapter)serviceProvider.GetService(typeof(ITaskAdapter<>).MakeGenericType(type));
             if (taskWaiter == null)
             {
                 throw new InvalidOperationException(

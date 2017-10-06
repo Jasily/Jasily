@@ -63,8 +63,8 @@ namespace Jasily.DependencyInjection.AwaiterAdapter.Internal
 
             var resultType = info.GetResultMethod.ReturnType;
             var closedType = resultType == typeof(void)
-                ? typeof(VoidAwaitableAdapter<,>).FastMakeGenericType(instanceType, info.AwaiterType)
-                : typeof(GenericAwaitableAdapter<,,>).FastMakeGenericType(instanceType, info.AwaiterType, resultType);
+                ? typeof(VoidAwaitableAdapter<,>).MakeGenericType(instanceType, info.AwaiterType)
+                : typeof(GenericAwaitableAdapter<,,>).MakeGenericType(instanceType, info.AwaiterType, resultType);
 
             var factory = this._serviceProvider.AsMethodInvokerProvider().GetInvokerFactory(closedType);
             var ctor = factory.Constructors.Single();
