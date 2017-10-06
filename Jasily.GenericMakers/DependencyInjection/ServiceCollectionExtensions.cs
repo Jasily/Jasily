@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Jasily.TypeMakers.DependencyInjection
+namespace Jasily.GenericMakers.DependencyInjection
 {
     /// <summary>
     /// extension method for <see cref="IServiceCollection"/>.
@@ -11,7 +11,7 @@ namespace Jasily.TypeMakers.DependencyInjection
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Add singleton <see cref="IGenericTypeMakerBucket"/> services to the <see cref="IServiceCollection"/>.
+        /// Add singleton <see cref="IGenericMakerBucket"/> services to the <see cref="IServiceCollection"/>.
         /// </summary>
         /// <param name="serviceCollection"></param>
         /// <exception cref="ArgumentNullException">throw if <paramref name="serviceCollection"/> is null.</exception>
@@ -19,7 +19,7 @@ namespace Jasily.TypeMakers.DependencyInjection
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
 
-            serviceCollection.TryAddSingleton<IGenericTypeMakerBucket, GenericTypeMakerBucket>();
+            serviceCollection.TryAddSingleton<IGenericMakerBucket, GenericMakerBucket>();
         }
     }
 }
