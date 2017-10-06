@@ -1,5 +1,4 @@
 using System.Reflection;
-using Jasily.Reflection.Descriptors.Internal;
 using JetBrains.Annotations;
 
 namespace Jasily.Reflection.Descriptors

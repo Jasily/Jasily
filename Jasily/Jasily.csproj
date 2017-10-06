@@ -134,11 +134,9 @@
     <Compile Include="Reflection\Attributes\EntryAttribute.cs" />
     <Compile Include="Reflection\Descriptors\Descriptor.cs" />
     <Compile Include="Reflection\Descriptors\FieldInfoDescriptor.cs" />
-    <Compile Include="Reflection\Descriptors\IDescriptor.cs" />
-    <Compile Include="Reflection\Descriptors\Internal\MemberInfoDescriptor.cs" />
+    <Compile Include="Reflection\Descriptors\MemberInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\MethodInfoDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\PropertyInfoDescriptor.cs" />
-    <Compile Include="Reflection\Descriptors\TypeDescriptor.cs" />
     <Compile Include="Reflection\Descriptors\TypeInfoDescriptor.cs" />
     <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
