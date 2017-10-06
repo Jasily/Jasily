@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Jasily.GenericMakers.Internal
+namespace Jasily.Reflection.GenericMakers.Internal
 {
     internal struct TypeArguments : IEquatable<TypeArguments>
     {

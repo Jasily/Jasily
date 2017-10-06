@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace Jasily.GenericMakers
+namespace Jasily.Reflection.GenericMakers
 {
     public interface IGenericMakerBucket
     {

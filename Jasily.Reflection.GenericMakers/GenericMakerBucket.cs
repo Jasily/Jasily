@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace Jasily.GenericMakers
+namespace Jasily.Reflection.GenericMakers
 {
     public class GenericMakerBucket : IGenericMakerBucket
     {

@@ -71,7 +71,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Features.Standard.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Features", "Jasily.Features", "{1A630DF8-F6FE-4A31-BABF-A0B3E940249C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.GenericMakers", "Jasily.GenericMakers\Jasily.GenericMakers.csproj", "{C15C45F1-FDD6-43D0-97E9-A1D6AC05BE9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Reflection.GenericMakers", "Jasily.Reflection.GenericMakers\Jasily.Reflection.GenericMakers.csproj", "{C15C45F1-FDD6-43D0-97E9-A1D6AC05BE9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

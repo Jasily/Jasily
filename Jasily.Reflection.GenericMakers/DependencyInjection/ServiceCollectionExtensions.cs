@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Jasily.GenericMakers.DependencyInjection
+namespace Jasily.Reflection.GenericMakers.DependencyInjection
 {
     /// <summary>
     /// extension method for <see cref="IServiceCollection"/>.

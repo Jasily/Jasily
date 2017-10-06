@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Reflection;
-using Jasily.GenericMakers.Internal;
+using Jasily.Reflection.GenericMakers.Internal;
 using JetBrains.Annotations;
 
-namespace Jasily.GenericMakers
+namespace Jasily.Reflection.GenericMakers
 {
     public class GenericMethodMaker : IGenericMethodMaker
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using Jasily.GenericMakers.Internal;
+using Jasily.Reflection.GenericMakers.Internal;
 using JetBrains.Annotations;
 
-namespace Jasily.GenericMakers
+namespace Jasily.Reflection.GenericMakers
 {
     public class GenericTypeMaker : IGenericTypeMaker
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Jasily.GenericMakers
+namespace Jasily.Reflection.GenericMakers
 {
     public interface IGenericTypeMaker
     {

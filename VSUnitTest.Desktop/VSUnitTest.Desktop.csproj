@@ -230,9 +230,9 @@
       <Project>{c4ec5ed2-7e8a-4f1d-86f8-7d6b6016fe3f}</Project>
       <Name>Jasily.Extensions.System</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Jasily.GenericMakers\Jasily.GenericMakers.csproj">
+    <ProjectReference Include="..\Jasily.Reflection.GenericMakers\Jasily.Reflection.GenericMakers.csproj">
       <Project>{c15c45f1-fdd6-43d0-97e9-a1d6ac05be9f}</Project>
-      <Name>Jasily.GenericMakers</Name>
+      <Name>Jasily.Reflection.GenericMakers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jasily.PCL259\Jasily.PCL259.csproj">
       <Project>{d825d5a8-00f4-4d48-85e1-58b66f3958d9}</Project>
