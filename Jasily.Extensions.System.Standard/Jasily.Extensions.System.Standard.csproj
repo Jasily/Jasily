@@ -20,7 +20,6 @@
     <Compile Include="..\Jasily.Extensions.System\ArraySegmentExtensions.cs" Link="ArraySegmentExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\ByteArrayExtensions.cs" Link="ByteArrayExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\CharExtensions.cs" Link="CharExtensions.cs" />
-    <Compile Include="..\Jasily.Extensions.System\Collections\Concurrent\ConcurrentDictionaryExtensions.cs" Link="Collections\Concurrent\ConcurrentDictionaryExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Collections\Generic\CollectionExtensions.cs" Link="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Collections\Generic\DictionaryExtensions.cs" Link="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="..\Jasily.Extensions.System\Collections\Generic\EnumerableExtensions.cs" Link="Collections\Generic\EnumerableExtensions.cs" />
@@ -73,7 +72,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Collections\Concurrent\" />
     <Folder Include="Collections\Generic\" />
   </ItemGroup>
 

@@ -55,13 +55,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.Core.Standard", "Jas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jasily.Core", "Jasily.Core\Jasily.Core.csproj", "{ECBC812D-2F4F-4633-913E-4892101DE02E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Core~", "Jasily.Core~", "{C8137607-4BCD-42EA-ADF0-73B449381F0E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Core", "Jasily.Core", "{C8137607-4BCD-42EA-ADF0-73B449381F0E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily~", "Jasily~", "{86C4242F-B22F-4424-A676-82C1B5335C69}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily", "Jasily", "{86C4242F-B22F-4424-A676-82C1B5335C69}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Extensions.System~", "Jasily.Extensions.System~", "{7D57D61A-3026-4130-9719-C398A2892FFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.Extensions.System", "Jasily.Extensions.System", "{7D57D61A-3026-4130-9719-C398A2892FFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.DependencyInjection~", "Jasily.DependencyInjection~", "{680B5B3E-2C7B-424C-89B0-CDEA778714A2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jasily.DependencyInjection", "Jasily.DependencyInjection", "{680B5B3E-2C7B-424C-89B0-CDEA778714A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jasily.DependencyInjection.Factory.Standard", "Jasily.DependencyInjection.Factory.Standard\Jasily.DependencyInjection.Factory.Standard.csproj", "{752719EE-9668-4571-80A1-06B8813D6173}"
 EndProject
