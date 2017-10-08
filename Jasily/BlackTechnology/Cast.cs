@@ -1,33 +1,39 @@
 ﻿using System;
-using System.CodeDom;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
 namespace Jasily.BlackTechnology
 {
-    public static class ConvertChecked
+    public static class Cast
     {
         /// <summary>
-        /// ConvertChecked avoid boxing.
+        /// Cast avoid boxing.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDest"></typeparam>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static TDest Convert<TSource, TDest>(TSource item)
+        public static TDest To<TSource, TDest>(TSource item)
         {
             return Core<TSource, TDest>.Func(item);
         }
 
-        internal static class Core<TFrom, TTo>
+        private static class Core<TFrom, TTo>
         {
             [NotNull] public static readonly Func<TFrom, TTo> Func;
 
             static Core()
             {
-                var p = Expression.Parameter(typeof(TFrom));
-                var c = Expression.ConvertChecked(p, typeof(TTo));
-                Func = Expression.Lambda<Func<TFrom, TTo>>(c, p).Compile();
+                if (typeof(TTo).IsAssignableFrom(typeof(TFrom)))
+                {
+                    var p = Expression.Parameter(typeof(TFrom));
+                    Func = Expression.Lambda<Func<TFrom, TTo>>(p, p).Compile();
+                    return;
+                }
+
+                // def
+                Func = ConvertChecked.Core<TFrom, TTo>.Func;
             }
         }
     }

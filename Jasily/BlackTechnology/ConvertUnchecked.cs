@@ -18,7 +18,7 @@ namespace Jasily.BlackTechnology
             return Core<TSource, TDest>.Func(item);
         }
 
-        private static class Core<TFrom, TTo>
+        internal static class Core<TFrom, TTo>
         {
             [NotNull] public static readonly Func<TFrom, TTo> Func;
 

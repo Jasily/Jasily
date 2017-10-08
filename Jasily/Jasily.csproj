@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionReleaser.cs" />
+    <Compile Include="BlackTechnology\Cast.cs" />
     <Compile Include="BlackTechnology\ConvertChecked.cs" />
     <Compile Include="BlackTechnology\ConvertUnchecked.cs" />
     <Compile Include="CachedHashCode.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Reflection\IActivator.cs" />
     <Compile Include="Releaser.cs" />
     <Compile Include="Singleton.cs" />
+    <Compile Include="Size.cs" />
     <Compile Include="Text\IStringFinderSource.cs" />
     <Compile Include="Text\StringBuilderCache.cs" />
     <Compile Include="Text\StringConvertHelper.cs" />
